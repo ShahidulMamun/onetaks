@@ -12,7 +12,7 @@ use App\Http\Controllers\Admin\CountryController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\PaymentMethodController;
-use App\Http\Controllers\Admin\SettingtController;
+use App\Http\Controllers\Admin\SettingController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -128,7 +128,10 @@ Route::middleware(['auth', 'admin'])
         Route::post('/payment-method/update', [PaymentMethodController::class, 'update'])->name('payment-method.update');
        Route::delete('/payment-method/delete/{id}', [PaymentMethodController::class, 'delete'])->name('payment-method.delete');
 
-   
+       //
+       Route::get('/website-setting/', [SettingController::class, 'index'])->name('setting');
+       Route::post('/settings-update', [SettingController::class, 'update'])->name('settings.update');
+
    
 
 
