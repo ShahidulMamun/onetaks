@@ -12,7 +12,7 @@ class CountryController extends Controller
     public function index(){
     	$continents = Continent::where('is_active',true)->orderBy('name','asc')->get();
     	$countries = Country::where('is_active',true)->orderBy('name','asc')->get();
-    	return view('admin.country',compact(['countries','continents']));
+    	return view('admin.country.index',compact(['countries','continents']));
     }
 
     public function store(Request $request)

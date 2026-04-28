@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('type')->nullable(); // personal / agent / merchant
             $table->string('number'); // 01XXXXXXXXX
             $table->string('logo')->nullable();
-            $table->enum('status',['active','inactive'])->default('active');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

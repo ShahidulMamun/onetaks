@@ -1,4 +1,4 @@
-
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,sans-serif;background:#f1f5f9;color:#0f172a;font-size:14px}
@@ -121,54 +121,198 @@ tr:last-child td{border-bottom:none}
   <div class="body">
     <div class="overlay" id="overlay" onclick="closeSB()"></div>
 
-   @include('admin.layouts.sidebar');
+   @include('admin.layouts.sidebar')
 
     <main class="main">
-      <div class="pg-head">
-        <div>
-          <div class="pg-title" id="pg-title">Dashboard</div>
-          <div class="pg-sub">Welcome back · Last updated 2 min ago</div>
-        </div>
-        <div class="pills">
-          <span class="pill on" onclick="setPill(this)">7d</span>
-          <span class="pill" onclick="setPill(this)">30d</span>
-          <span class="pill" onclick="setPill(this)">90d</span>
-        </div>
-      </div>
+      <div class="row">
 
-      <div class="stats">
-        <div class="sc"><div class="ic" style="background:#eff6ff"><svg viewBox="0 0 16 16" fill="none" stroke="#2563eb" stroke-width="1.8"><path d="M8 1v2M8 13v2M1 8h2M13 8h2"/><circle cx="8" cy="8" r="3.5"/></svg></div><div class="lbl">Revenue</div><div class="val">$84.2k</div><div class="dl up">▲ +12.4%</div></div>
-        <div class="sc"><div class="ic" style="background:#f0fdf4"><svg viewBox="0 0 16 16" fill="none" stroke="#16a34a" stroke-width="1.8"><rect x="2" y="4" width="12" height="9" rx="1.5"/><path d="M5 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/></svg></div><div class="lbl">Active Jobs</div><div class="val">1,382</div><div class="dl up">▲ +8.1%</div></div>
-        <div class="sc"><div class="ic" style="background:#fef3c7"><svg viewBox="0 0 16 16" fill="none" stroke="#d97706" stroke-width="1.8"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 2"/></svg></div><div class="lbl">Pending</div><div class="val">247</div><div class="dl dn">▼ action needed</div></div>
-        <div class="sc"><div class="ic" style="background:#fdf4ff"><svg viewBox="0 0 16 16" fill="none" stroke="#9333ea" stroke-width="1.8"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M2 14a6 6 0 0 1 12 0"/></svg></div><div class="lbl">New Users</div><div class="val">3,841</div><div class="dl up">▲ +19.7%</div></div>
-        <div class="sc"><div class="ic" style="background:#fff1f2"><svg viewBox="0 0 16 16" fill="none" stroke="#e11d48" stroke-width="1.8"><circle cx="8" cy="7" r="4"/><path d="M8 5v2.5M8 9.5h.01"/></svg></div><div class="lbl">Disputes</div><div class="val">19</div><div class="dl dn">▼ -2 today</div></div>
-        <div class="sc"><div class="ic" style="background:#ecfdf5"><svg viewBox="0 0 16 16" fill="none" stroke="#059669" stroke-width="1.8"><path d="M3 8l3 3 7-7"/></svg></div><div class="lbl">Avg Value</div><div class="val">$61.40</div><div class="dl up">▲ +$4.20</div></div>
-      </div>
+              <div class="col-md-4">
+            <div class="card shadow-sm border-0 rounded-3 mt-3">
+              <div class="card-header bg-success text-white">
+                  <h5 class="mb-0">Add Method</h5>
+              </div>
 
-      <div class="card">
-        <div class="card-h">
-          <div><div class="card-t">Revenue — this week</div><div class="card-s">Daily earnings</div></div>
-        </div>
-        <svg id="rchart" viewBox="0 0 340 90" preserveAspectRatio="none" style="width:100%;height:80px;display:block"></svg>
-      </div>
+              <div class="card-body">
+                  <form action="{{ route('admin.payment-method.store') }}" method="POST" enctype="multipart/form-data">
+                      @csrf
 
-      <div class="card">
-        <div class="card-h">
-          <div><div class="card-t">Recent Orders</div></div>
-          <span class="pill">View all</span>
-        </div>
-        <div style="overflow-x:auto">
-          <table>
-            <thead><tr><th style="width:28%">Buyer</th><th style="width:30%">Service</th><th style="width:18%">Amt</th><th style="width:24%">Status</th></tr></thead>
-            <tbody id="otb"></tbody>
-          </table>
-        </div>
-      </div>
+                      <div class="mb-3">
+                          <label class="form-label">Name</label>
+                          <input type="text" name="name" class="form-control" placeholder="Name (bKash)" required>
+                          @error('name')
+                          <div class="alert alert-danger">{{$message}}</div>
+                          @enderror
+                      </div>
 
-      <div class="card">
-        <div class="card-h"><div><div class="card-t">Activity Feed</div><div class="card-s">Real-time events</div></div></div>
-        <div id="afeed"></div>
+                      <div class="mb-3">
+                          <label class="form-label">Account Number</label>
+                          <input type="text" name="number" class="form-control" placeholder="01928XXXXXX" required>
+                           @error('number')
+                           <div class="alert alert-danger">{{$message}}</div>
+                           @enderror
+                      </div>
+                      <div class="mb-3">
+                          <label class="form-label">Type</label>
+                          <select name="type" class="form-control" required>
+                              <option value="">Select Type</option>
+                              <option value="personal">Personal</option>
+                              <option value="agent">Agent</option>
+                              <option value="merchant">Merchant</option>
+                            
+                          </select>
+                           @error('type')
+                           <div class="alert alert-danger">{{$message}}</div>
+                           @enderror
+                      </div>
+
+                        <div class="mb-3">
+                          <label class="form-label">Logo</label>
+                          <input type="file" name="logo" class="form-control">
+                           @error('logo')
+                           <div class="alert alert-danger">{{$message}}</div>
+                           @enderror
+                       </div>
+
+                      <button type="submit" class="btn btn-success w-100">
+                          Save
+                      </button>
+                  </form>
+              </div>
+          </div>
+         </div>
+         <div class="col-md-8">
+               <div class="card shadow-sm border-0 rounded-3 mt-3">
+                   <div class="card-body">
+                   <table class="table table-striped  table-responsive">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>AC/Number</th>
+                        <th>AC Type</th>
+                        <th>Logo</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                     @foreach($methods as $method)
+                      <tr>
+                        <td>1</td>
+                        <td>{{ $method->name}}</td>
+                        <td>{{ $method->number}}</td>
+                         <td>{{ $method->type}}</td>
+                        <td>
+                          <img src="{{asset('storage/'.$method->logo)}}" style="width: 80px; height: 40px">
+                        </td>
+                        <td>
+                          @if($method->status=="active")
+                           <strong class="badge badge-success mt-2">{{$method->status}}</strong>
+                          @else
+                           <strong class="badge badge-danger mt-2">{{$method->status}}</strong>
+                          @endif
+
+                        </td>
+                        <td>
+                        
+                        <!-- delete button -->
+                        <a href="{{ route('admin.payment-method.delete', $method->id) }}"
+                           onclick="return confirm('Are you sure to delete method?')">
+                           <button class="btn btn-sm btn-danger">Delete</button>
+                        </a>
+
+                        <!-- edit button -->
+                         <button class="editBtn btn btn-sm btn-success"
+
+                              data-id="{{ $method->id }}"
+                              data-name="{{ $method->name }}"
+                              data-type="{{ $method->type }}"
+                              data-number="{{ $method->number }}"
+                              data-status="{{ $method->status }}"
+                              data-logo="{{ $method->logo }}">
+                              Edit
+                        </button>
+                          
+
+                        </td>
+                      </tr>
+                    @endforeach
+                     
+                    </tbody>
+                  </table>
+                  </div>
+            </div>
+         </div>
+    
       </div>
+       <!-- =======edit modal start======= -->
+          <div class="modal fade" id="editModal">
+            <div class="modal-dialog">
+                <form id="editForm" action="{{route('admin.payment-method.update')}}" method="POST" enctype="multipart/form-data">
+                    @csrf
+
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5>Edit Payment Method</h5>
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span>&times;</span>
+                            </button>
+                        </div>
+
+
+                        <div class="modal-body">
+
+                            <input type="hidden" name="id" id="edit_id">
+                            
+                            <div class="form-group">
+                              <label><strong>Name</strong></label>
+                               <input type="text" name="name" id="edit_name" class="form-control mb-2">
+                            <span class="text-danger" id="name_error"></span>
+                            </div>
+                           
+                          <div class="form-group">
+                              <label><strong>Type</strong></label>
+
+                          <select name="type" id="edit_type" class="form-control mb-2" required>
+                              <option value="personal">Personal</option>
+                              <option value="agent">Agent</option>
+                              <option value="merchant">Merchant</option>
+                            
+                          </select>
+                           <span class="text-danger" id="type_error"></span>
+                          </div>
+                            
+                            <div class="form-group">
+                              <label><strong>Number</strong></label>
+
+                            <input type="text" name="number" id="edit_number" class="form-control mb-2">
+                            <span class="text-danger" id="number_error"></span>
+                          </div>
+
+                          <div class="form-group">
+                              <label><strong>Status</strong></label>
+                            <select name="status" id="edit_status" class="form-control mb-2">
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                          </div>
+                          <div class="form-group">
+                              <label><strong>Logo</strong></label>
+                            <input type="file" name="logo" class="form-control mb-2">
+
+                            <img id="edit_preview" width="80">
+                          </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Update</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+      <!--  ========edit modal end======== -->
     </main>
   </div>
 </div>
@@ -243,4 +387,67 @@ var acts=[
 document.getElementById('afeed').innerHTML=acts.map(function(a){
   return '<div class="fi"><div class="fd" style="background:'+a.bg+'"><svg viewBox="0 0 12 12" fill="none" stroke="'+a.ic+'" stroke-width="1.6" width="12" height="12"><circle cx="6" cy="4" r="2"/><path d="M2 10a4 4 0 0 1 8 0"/></svg></div><div><div class="ft">'+a.t+'</div><div class="fti">'+a.ti+'</div></div></div>';
 }).join('');
+</script>
+
+<!-- script for edit modal open and data set -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  
+  $(document).on('click', '.editBtn', function () {
+
+    let id = $(this).data('id');
+    $('#edit_id').val(id);
+    $('#edit_name').val($(this).data('name'));
+    $('#edit_type').val($(this).data('type'));
+    $('#edit_number').val($(this).data('number'));
+    $('#edit_status').val($(this).data('status'));
+
+    let logo = $(this).data('logo');
+
+    if (logo) {
+        $('#edit_preview').attr('src', '/storage/' + logo);
+    } else {
+        $('#edit_preview').attr('src', '');
+    }
+
+    // // dynamic form action
+    // $('#editForm').attr('action', '/admin/payment-method/update/');
+
+    $('#editModal').modal('show');
+});
+</script>
+
+<!-- script validation error handling -->
+<script>
+$('#editForm').on('submit', function (e) {
+
+    let form = $(this);
+
+    e.preventDefault(); // temporarily stop
+
+    $.ajax({
+        url: form.attr('action'),
+        type: 'POST',
+        data: new FormData(this),
+        processData: false,
+        contentType: false,
+
+        success: function () {
+            form.off('submit'); // remove handler
+            form.submit(); // real submit
+        },
+        error: function (xhr) {
+
+            if (xhr.status === 422) {
+                let errors = xhr.responseJSON.errors;
+
+                $('#name_error').text(errors.name ? errors.name[0] : '');
+                $('#number_error').text(errors.number ? errors.number[0] : '');
+                $('#type_error').text(errors.type ? errors.type[0] : '');
+            }
+        }
+    });
+
+});
 </script>

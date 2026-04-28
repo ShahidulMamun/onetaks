@@ -11,7 +11,7 @@ class ContinentController extends Controller
 {
     public function index(){
     	$continents = Continent::where('is_active',true)->orderBy('name','asc')->get();
-    	return view('admin.continent',compact('continents'));
+    	return view('admin.continent.index',compact('continents'));
     }
 
     public function store(Request $request)

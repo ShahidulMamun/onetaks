@@ -11,6 +11,10 @@ use App\Http\Controllers\Admin\ContinentController;
 use App\Http\Controllers\Admin\CountryController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SubCategoryController;
+use App\Http\Controllers\Admin\PaymentMethodController;
+use App\Http\Controllers\Admin\SettingtController;
+
+
 use Illuminate\Support\Facades\Route;
 
 // web pages
@@ -115,6 +119,17 @@ Route::middleware(['auth', 'admin'])
             ->name('subcategory');
         Route::post('/subcategory-store', [SubCategoryController::class, 'store'])
             ->name('subcategory.store');
+
+        //method method route
+        Route::get('/payment-method', [PaymentMethodController::class, 'index'])
+            ->name('payment.method'); 
+        Route::post('/payment-method-store', [PaymentMethodController::class, 'store'])
+            ->name('payment-method.store');   
+        Route::post('/payment-method/update', [PaymentMethodController::class, 'update'])->name('payment-method.update');
+       Route::delete('/payment-method/delete/{id}', [PaymentMethodController::class, 'delete'])->name('payment-method.delete');
+
+   
+   
 
 
     });
