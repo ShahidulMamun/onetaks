@@ -177,34 +177,6 @@ class UserJobController extends Controller
     public function finishedjobs(){
         return view('user.finished_job');
     }
-   // browse deal
-   public function browsedeal(){
-        return view('user.browse_deal'); 
-    }
-
- // deal create
-
- public function dealcreate(){
-    return view('user.deal_create'); 
-    }
-
-// my deal post
-  public function mydealpost(){
-    return view('user.my_deal_post'); 
-    }
-
-// dealorder
-public function dealorder(){
-    return view('user.deal_order'); 
-    } 
-// add deposit
-public function adddeposit(){
-    return view('user.deposit'); 
-    }
-
-// deposithistory
-public function deposithistory(){
-    return view('user.deposit_history'); 
-    }
+  
 
 }

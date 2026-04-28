@@ -4,6 +4,8 @@ use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\User\UserDashboardController;
 use App\Http\Controllers\User\UserProfileController;
 use App\Http\Controllers\User\UserJobController;
+use App\Http\Controllers\User\UserDepositController;
+use App\Http\Controllers\User\UserDealController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\ContinentController;
 use App\Http\Controllers\Admin\CountryController;
@@ -46,6 +48,8 @@ Route::middleware(['auth', 'user'])
 
         Route::get('/dashboard', [UserDashboardController::class, 'userDashboard'])
             ->name('dashboard');
+
+       //profile route
         Route::get('/profile', [UserProfileController::class, 'userProfile'])
             ->name('profile');
         Route::post('/profile-update', [UserProfileController::class, 'userProfileUpdate'])
@@ -56,19 +60,24 @@ Route::middleware(['auth', 'user'])
             ->name('photo.update');
 
 
+        //job route
         Route::get('/create-job',  [UserJobController::class, 'create'])->name('create.job');
         Route::post('/create-job', [UserJobController::class, 'store'])->name('create.job.store');
-
         Route::get('/my-jobs',  [UserJobController::class, 'myjobs'])->name('my.jobs');
         Route::get('/find-jobs',  [UserJobController::class, 'findjobs'])->name('find.jobs'); 
         Route::get('/finished-job',  [UserJobController::class, 'finishedjobs'])->name('finished.jobs'); 
-        Route::get('/browse-deal',  [UserJobController::class, 'browsedeal'])->name('browse.deal'); 
-        Route::get('/deal-create',  [UserJobController::class, 'dealcreate'])->name('deal.create');
-        Route::get('/my-deal-post',  [UserJobController::class, 'mydealpost'])->name('my.deal.post'); 
-        Route::get('/deal-order',  [UserJobController::class, 'dealorder'])->name('deal.order');
-        Route::get('/deposit',  [UserJobController::class, 'adddeposit'])->name('deposit');
-        Route::get('/deposit-history',  [UserJobController::class, 'deposithistory'])->name('deposit.history');
- 
+
+
+        //deal route
+        Route::get('/browse-deal',  [UserDealController::class, 'browsedeal'])->name('browse.deal'); 
+        Route::get('/deal-create',  [UserDealController::class, 'dealcreate'])->name('deal.create');
+        Route::get('/my-deal-post',  [UserDealController::class, 'mydealpost'])->name('my.deal.post'); 
+        Route::get('/deal-order',  [UserDealController::class, 'dealorder'])->name('deal.order');
+
+
+        //deposit route
+        Route::get('/deposit',  [UserDepositController::class, 'create'])->name('deposit');
+        Route::get('/deposit-history',  [UserDepositController::class, 'depositHistory'])->name('deposit.history');
         Route::get('continents/', [UserJobController::class, 'continents']);
         Route::get('continents/{id}/countries',[UserJobController::class, 'countries']);
         Route::get('job-categories',[UserJobController::class, 'categories']);
@@ -102,7 +111,6 @@ Route::middleware(['auth', 'admin'])
             ->name('category');
         Route::post('/category-store', [CategoryController::class, 'store'])
             ->name('category.store');
-
         Route::get('/subcategory-add', [SubCategoryController::class, 'index'])
             ->name('subcategory');
         Route::post('/subcategory-store', [SubCategoryController::class, 'store'])

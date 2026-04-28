@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('deposits', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('payment_method_id');
             $table->decimal('amount', 10, 2);
-            $table->string('phone')->nullable(); // sender number
+            $table->string('sender_number')->nullable(); // sender number
             $table->string('transaction_id')->nullable()->unique();
             $table->string('screenshot')->nullable();
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');

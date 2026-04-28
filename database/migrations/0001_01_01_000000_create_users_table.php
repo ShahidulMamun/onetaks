@@ -29,8 +29,10 @@ return new class extends Migration
         $table->timestamp('email_verified_at')->nullable();
         $table->string('password', 100);
         $table->string('photo', 191)->nullable();
-        $table->decimal('earning', 15, 2)->default(0);
-        $table->decimal('deposit', 15, 2)->default(0);
+        $table->decimal('total_earning', 15, 2)->default(0);
+        $table->decimal('current_earning', 15, 2)->default(0);
+        $table->decimal('total_deposit', 15, 2)->default(0);
+        $table->decimal('current_deposit', 15, 2)->default(0);
         $table->foreignId('referred_by')->nullable()->constrained('users')->nullOnDelete();
         $table->integer('total_refer')->default(0);
         $table->decimal('deposit_commission_from_refer', 15, 2)->default(0);
