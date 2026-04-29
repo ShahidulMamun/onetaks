@@ -11,11 +11,14 @@
       <div class="sec-label">Overview</div>
       <div class="ni on" onclick="navClick(this,'Dashboard')">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="5" height="5" rx="1.5"/><rect x="9" y="2" width="5" height="5" rx="1.5"/><rect x="2" y="9" width="5" height="5" rx="1.5"/><rect x="9" y="9" width="5" height="5" rx="1.5"/></svg>
-        Dashboard
+        
+         <a class="link text-success" style="text-decoration: none;" href="{{route('admin.dashboard')}}">Dashboard</a>
       </div>
       <div class="ni" onclick="navClick(this,'Users')">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M2 14a6 6 0 0 1 12 0"/></svg>
-        Users <span class="nbadge red">2.4k</span>
+         <a class="link text-success" style="text-decoration: none;" href="{{route('admin.users')}}">Users</a>
+
+         <span class="nbadge red">2.4k</span>
       </div>
       <div class="ni" onclick="navClick(this,'Job Listings')">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="4" width="12" height="9" rx="1.5"/><path d="M5 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/></svg>

@@ -13,7 +13,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\SettingController;
-
+use App\Http\Controllers\Admin\UserController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -128,10 +128,13 @@ Route::middleware(['auth', 'admin'])
         Route::post('/payment-method/update', [PaymentMethodController::class, 'update'])->name('payment-method.update');
        Route::delete('/payment-method/delete/{id}', [PaymentMethodController::class, 'delete'])->name('payment-method.delete');
 
-       //
+       //site setting route
        Route::get('/website-setting/', [SettingController::class, 'index'])->name('setting');
        Route::post('/settings-update', [SettingController::class, 'update'])->name('settings.update');
 
+       //user route(for admin)
+       Route::get('/users/', [UserController::class, 'index'])->name('users');
+       Route::get('/user-status-update/', [UserController::class, 'userActiveInactive'])->name('update-user-status');
    
 
 
