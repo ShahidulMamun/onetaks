@@ -4,8 +4,7 @@
      <div class="row">
 <div class="filter-bar px-3">
   <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-    <span class="result-count">322 Result</span>
-
+    <span class="result-count text-dark fw-bold"><i class="fa fa-bars text-primary" aria-hidden="true"></i>  Available Jobs <span class="badge bg-danger">500</span></span> 
     <div class="d-flex align-items-center gap-2 flex-wrap">
       <div class="cat-dropdown-wrapper">
         <select class="filter-select" id="catSelect" style="width:150px;" onchange="toggleDropdown(this)">
@@ -37,23 +36,22 @@
     <table class="table table-striped table-borderless">
   <thead class="table-light">
     <tr class="">
-      <th scope="col">Status</th>
-      <th scope="col">Job Name</th>
+      <th scope="col">Title</th>
+      <th scope="col">Payment</th>
       <th scope="col">Progress</th>
-      <th scope="col">Not Rated</th>
-      <th scope="col">Cost</th>
+      <th scope="col">Employer</th>
+      <th scope="col">Action</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>Jacob</td>
+     
+      <td> Watch Youtube Video + Like</td>
+      <td class="fw-bold" style="color: #1abc9c;">0.0200</td>
+      <td class="fw-bold"><span class="badge badge badge-light text-muted shadow">500/200</span></td>
+      <td class="fw-bold"><button class="btn btn-sm text-white" style="background-color:#1abc9c;">95%</button></td>
+       <td class="fw-bold"><button class="btn btn-sm text-white" style="background-color:#6658dd;">Done</button></td>
     </tr>
-
-
   </tbody>
 </table>
          </div>
