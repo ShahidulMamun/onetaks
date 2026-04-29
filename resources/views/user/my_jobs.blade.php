@@ -31,28 +31,29 @@
     </div>
 	</div>
 	<!-- table -->
-	<div class="col-12 col-xsm-12 col-sm-12 col-md-12 col-lg-12 col-xxl-12 mt-5">
-   <table class="table table-striped table-borderless">
-   <thead class="">
+<div class="col-12 mt-5">
+    <table class="table table-striped table-borderless">
+  <thead class="table-light">
     <tr class="">
-      <th scope="col">Status</th>
-      <th scope="col">Job Name</th>
+      <th scope="col">Title</th>
+      <th scope="col">Payment</th>
       <th scope="col">Progress</th>
-      <th scope="col">Not Rated</th>
-      <th scope="col">Cost</th>
+      <th scope="col">Employer</th>
+      <th scope="col">Action</th>
     </tr>
   </thead>
   <tbody>
-    <tr class="">
-      <th scope="row">Mark</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-       <td>Jacob</td>
+    <tr>
+     
+      <td> Watch Youtube Video + Like</td>
+      <td class="fw-bold" style="color: #1abc9c;">0.0200</td>
+      <td class="fw-bold"><span class="badge badge badge-light text-muted shadow">500/200</span></td>
+      <td class="fw-bold"><button class="btn btn-sm text-white" style="background-color:#1abc9c;">95%</button></td>
+       <td class="fw-bold"><button class="btn btn-sm text-white" style="background-color:#6658dd;">Done</button></td>
     </tr>
   </tbody>
 </table>
-		</div>
+         </div>
 	</div>
 </div>
 <footer class="mt-5 footer-section">
