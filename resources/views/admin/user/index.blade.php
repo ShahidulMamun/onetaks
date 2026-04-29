@@ -219,8 +219,8 @@ tr:last-child td{border-bottom:none}
                          <div class="form-group">
                               <label><strong>Status</strong></label>
                             <select name="status" id="edit_status" class="form-control mb-2">
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
+                                <option value="1">Active</option>
+                                <option value="0">Inactive</option>
                             </select>
                           </div>
                          
