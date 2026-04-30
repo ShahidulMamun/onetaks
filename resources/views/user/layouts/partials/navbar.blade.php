@@ -355,22 +355,23 @@
   border-radius: 10px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.12);
   border: 1px solid #eee;
-  min-width: 180px;
+  min-width: 220px;
   padding: 8px 0;
 }
 
 .dropdown-item {
   font-weight: 600;
-  color: #444;
+  color: #6c757d;
   padding: 8px 18px;
   display: flex;
   align-items: center;
+  background-color: transparent;
   gap: 10px;
 }
 
 .dropdown-item:hover {
   background: #f5f5f5;
-  color: #222;
+  color: #006a4e;
 }
 
 .dropdown-item i {
@@ -388,8 +389,13 @@
   font-weight: 700;
   font-size: .97rem;
   cursor: pointer;
-  color: #222;
+  color: #006a4e;
 }
+
+.user-btn:hover{
+  color: #006a4e;
+}
+
 
 .user-btn img {
   width: 34px;
@@ -476,16 +482,19 @@
 <!-- ══ NAVBAR ══ -->
 <nav class="top-nav navbar navbar-expand-lg bg-white">
   <!-- Brand -->
-  <div class="nav-brand">
-    <div class="brand-box"></div>
-    <span class="brand-name">Onetaskmarket
-
-</span>
+  <div class="nav-brand mt-2">
+<!--     <div class="brand-box"></div> -->
+    <a class="footer-logo" href="#">
+          <div class="logo-icon">
+            <svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 2a5 5 0 110 10A5 5 0 018 3zm-1 2v2H5v2h2v2h2V9h2V7H9V5H7z"/></svg>
+          </div>
+          <span class="logo-gig">One</span><span class="logo-clickers">taskmarket</span>
+        </a>
   </div>
   <!-- Desktop Links (lg+) -->
-  <div class="nav-links">
-    <a href="{{ route('user.dashboard')}}"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
-    <a href="{{ route('user.find.jobs')}}" class="active"><i class="fa fa-search" aria-hidden="true"></i> Find Jobs</a>
+  <div class="nav-links fw-bold">
+    <a class="active" href="{{ route('user.dashboard')}}"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
+    <a href="{{ route('user.find.jobs')}}" class=""><i class="fa fa-search" aria-hidden="true"></i> Find Jobs</a>
     <a href="{{ route('user.my.jobs')}}"><i class="fa fa-shopping-bag" aria-hidden="true"></i> My Jobs</a>
     <a href="{{ route('user.finished.jobs')}}"><i class="fa fa-check-circle-o" aria-hidden="true"></i></i> Finished Jobs</a>
 
@@ -543,33 +552,82 @@
           </button>
           <ul class="dropdown-menu dropdown-menu-end">
             <li><span class="text-muted fw-bold p-3" style="font-size:.8rem;color:#999!important;">Welcome!</span></li>
-            <span class="text-muted fw-bold p-3" style="font-size:.8rem;color:#999!important;">{{Auth::user()->email}}</span>
+            <!-- <span class="text-muted fw-bold p-3" style="font-size:.8rem;color:#999!important;">{{Auth::user()->email}}</span> -->
             <li><hr class="dropdown-divider my-1"/></li>
-             <li>
-              <a class="dropdown-item" href="{{ route('user.dashboard')}}">
-                <i class="fa fa-home" aria-hidden="true"></i>Home
+            <li>
+              <a class="dropdown-item" href="">
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Article
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="">
+                <i class="fa fa-bell-o" aria-hidden="true"></i> Notification
               </a>
             </li>
             <li>
               <a class="dropdown-item" href="{{ route('user.find.jobs')}}">
-                <i class="fa fa-search-plus" aria-hidden="true"></i>Find job
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="{{ route('user.my.jobs')}}">
-                <i class="fa fa-shopping-bag" aria-hidden="true"></i> My Jobs
+                <i class="fa fa-search-plus" aria-hidden="true"></i> Find job
               </a>
             </li>
             <li>
               <a class="dropdown-item" href="#">
-                <i class="bi bi-cash-stack"></i> Withdraw
+                <i class="fa fa-gift" aria-hidden="true"></i> Refer & Earn
+              </a>
+            </li>
+              <li>
+              <a class="dropdown-item" href="">
+                <i class="fa fa-usd" aria-hidden="true"></i> Withdraw
               </a>
             </li>
             <li>
               <a class="dropdown-item" href="#">
-                <i class="bi bi-wallet2"></i> Deposit
+                <i class="fa fa-plus-circle" aria-hidden="true"></i> Deposit
               </a>
             </li>
+            <li>
+              <a class="dropdown-item" href="">
+                <i class="fa fa-info" aria-hidden="true"></i> Support
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="">
+                <i class="fa fa-file-image-o" aria-hidden="true"></i> My Banner
+              </a>
+            </li>
+             <li>
+              <a class="dropdown-item" href="">
+                <i class="fa fa-users" aria-hidden="true"></i> Top Freelancer
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="">
+                <i class="fa fa-lock" aria-hidden="true"></i> Privacy & Security
+              </a>
+            </li>
+             <li>
+              <a class="dropdown-item" href="{{route('user.profile')}}">
+                <i class="fa fa-cogs" aria-hidden="true"></i> Setting
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="">
+                <i class="fa fa-trash-o" aria-hidden="true"></i> Delete Account
+              </a>
+            </li>
+            <li><hr class="dropdown-divider my-0"/></li>
+            <!-- logout -->
+              <li>
+              <a class="dropdown-item" href="{{ route('logout') }}"
+              onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+              <button type="submit" class="btn btn-danger btn-sm w-100">
+             <i class="fa fa-sign-out text-white rounded" aria-hidden="true"></i> logout
+         </button> 
+           </a>
+           <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display: none;">
+              @csrf
+          </form>
+            </li>
+            <!-- end logout -->
           </ul>
         </div>
     <!--  only on mobile & tablet -->
