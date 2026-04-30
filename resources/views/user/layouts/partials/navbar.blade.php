@@ -561,7 +561,7 @@
               </a>
             </li>
             <li>
-              <a class="dropdown-item" href="#">
+              <a class="dropdown-item" href="{{route('user.withdraw')}}">
                 <i class="bi bi-cash-stack"></i> Withdraw
               </a>
             </li>
@@ -575,7 +575,7 @@
               <a class="dropdown-item" href="{{route('logout')}}">
               <form action="{{ route('logout') }}" method="POST">
                  @csrf
-                <button type="submit" class="btn btn-danger">
+                <button type="submit" class="btn btn-sm btn-danger">
                   Logout
                 </button>
               </form>

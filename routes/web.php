@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\User\UserWithdrawController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -82,10 +83,18 @@ Route::middleware(['auth', 'user'])
         //deposit route
         Route::get('/deposit',  [UserDepositController::class, 'create'])->name('deposit');
         Route::get('/deposit-history',  [UserDepositController::class, 'depositHistory'])->name('deposit.history');
+
+
         Route::get('continents/', [UserJobController::class, 'continents']);
         Route::get('continents/{id}/countries',[UserJobController::class, 'countries']);
         Route::get('job-categories',[UserJobController::class, 'categories']);
         Route::get('job-categories/{id}/subcategories',[UserJobController::class, 'subcategories']);
+        //withdraw route
+
+          //deposit route
+        Route::get('/withdraw',  [UserWithdrawController::class, 'index'])->name('withdraw');
+        Route::get('/withdraw-create',  [UserWithdrawController::class, 'create'])->name('withdraw.create');
+        Route::get('/withdraw-history',  [UserWithdrawController::class, 'withdrawHistory'])->name('withdraw.history');
 
 
   });

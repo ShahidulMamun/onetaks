@@ -3,13 +3,13 @@
  <div class="container mt-5">
      <div class="row">
 <div class="filter-bar px-0">
-  <span class="text-dark fw-bold">Deposit </span>| <span><a class="fw-bold text-decoration-none text-dark" href="{{ route('user.deposit.history')}}" role="button">Transaction History</a></span>
+  <span class="text-dark fw-bold">Withdraw </span>| <span><a class="fw-bold text-decoration-none text-dark" href="{{ route('user.deposit.history')}}" role="button">Withdraw History</a></span>
   <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
   </div>
 </div>
 <div class="col-12 mt-3 px-0 card border-0 shadow">
   <div class="card-body">
-    <h5 class="text-dark">Manual Deposit</h5>
+    <h5 class="text-dark">Withdraw</h5>
     <!-- Deposit -->
       <div class="row">
   <div class="col-12 col-xsm-12 col-sm-6 col-md-4 col-lg-4 col-xl-4 col-xxl-4 mt-2">
@@ -40,14 +40,14 @@
     <div class="modal-content">
       
       <div class="modal-header">
-        <h5 class="modal-title">Deposit</h5>
+        <h5 class="modal-title">Widtdraw</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
       <div class="modal-body">
         <form method="post" action=""> 
         <div class="row">
-           <img id="logoPreview" src="" width="100%">
+          <!--  <img id="logoPreview" src="" width="100%"> -->
           <div class="col-md-6">
               <div class="form-group">
                 <label>Method</label>
@@ -71,29 +71,15 @@
           </div>
           <div class="col-md-6">
               <div class="form-group">
-                <label>Amount</label>
+                <label>Withraw Amount</label>
                  <input type="text" name="amound" class="form-control mb-2" placeholder="1">
               </div>
             
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-md-6">
-              <div class="form-group">
-                <label>Transaction ID</label>
-                 <input type="text" name="transaction_id" class="form-control mb-2" placeholder="LKHSTGFHKK">
-              </div>
-          </div>
-          <div class="col-md-6">
-              <div class="form-group">
-                <label>Enter Payment Number</label>
-                 <input type="text" name="number" class="form-control mb-2" placeholder="01985XXXXXX">
-              </div>
-            
-          </div>
-        </div>
-        <button class="btn btn-sm btn-success">Submit</button>
+      
+        <button class="btn btn-sm btn-success">Sent Request</button>
        </form>
       </div>
 
