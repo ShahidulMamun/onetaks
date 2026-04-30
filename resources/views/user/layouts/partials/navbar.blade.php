@@ -570,6 +570,18 @@
                 <i class="bi bi-wallet2"></i> Deposit
               </a>
             </li>
+
+             <li>
+              <a class="dropdown-item" href="{{route('logout')}}">
+              <form action="{{ route('logout') }}" method="POST">
+                 @csrf
+                <button type="submit" class="btn btn-danger">
+                  Logout
+                </button>
+              </form>
+              </a>
+            </li>
+
           </ul>
         </div>
     <!--  only on mobile & tablet -->
