@@ -28,4 +28,16 @@ class UserController extends Controller
      return back()->with('message', 'User Status Updated');
 
     }
+
+    public function delete($id){
+
+    	 $user = User::findOrFail($id);
+        //delete logo
+	     if ($user->logo && Storage::disk('public')->exists($user->logo)) {
+	     Storage::disk('public')->delete($user->logo);
+	     }
+         $user->delete();
+
+         return back()->with('message', 'User deleted successfully');
+    }
 }

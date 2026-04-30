@@ -171,7 +171,7 @@ tr:last-child td{border-bottom:none}
                         <td>
                         
                         <!-- delete button -->
-                        <a href=""
+                        <a href="{{route('admin.user-delete',$user->id)}}"
                            onclick="return confirm('Are you sure to delete user?')">
                            <button class="btn btn-sm btn-danger">Delete</button>
                         </a>
