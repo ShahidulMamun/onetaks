@@ -144,6 +144,8 @@ Route::middleware(['auth', 'admin'])
        //user route(for admin)
        Route::get('/users/', [UserController::class, 'index'])->name('users');
        Route::post('/user-status-update/', [UserController::class, 'userActiveInactive'])->name('update-user-status');
+      
+      Route::get('/user-delete/{id}', [UserController::class, 'delete'])->name('user-delete');
    
 
 
