@@ -4,12 +4,15 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\PaymentMethod;
 
 class UserDepositController extends Controller
 {
     // add deposit
 	public function create(){
-	    return view('user.deposit'); 
+        
+        $methods = PaymentMethod::where('status','active')->get();
+	    return view('user.deposit.index',compact('methods')); 
 	}
 
     // user submit deposit
@@ -36,6 +39,6 @@ class UserDepositController extends Controller
 
 	// deposithistory
 	public function depositHistory(){
-	    return view('user.deposit_history'); 
+	    return view('user.deposit.history'); 
 	}
 }
