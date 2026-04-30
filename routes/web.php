@@ -6,6 +6,7 @@ use App\Http\Controllers\User\UserProfileController;
 use App\Http\Controllers\User\UserJobController;
 use App\Http\Controllers\User\UserDepositController;
 use App\Http\Controllers\User\UserDealController;
+use App\Http\Controllers\User\UserWithdrawController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\ContinentController;
 use App\Http\Controllers\Admin\CountryController;
@@ -14,8 +15,7 @@ use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\User\UserWithdrawController;
-
+use App\Http\Controllers\Admin\JobController;
 use Illuminate\Support\Facades\Route;
 
 // web pages
@@ -144,8 +144,14 @@ Route::middleware(['auth', 'admin'])
        //user route(for admin)
        Route::get('/users/', [UserController::class, 'index'])->name('users');
        Route::post('/user-status-update/', [UserController::class, 'userActiveInactive'])->name('update-user-status');
-      
       Route::get('/user-delete/{id}', [UserController::class, 'delete'])->name('user-delete');
+      
+      //jobs route
+      Route::get('/active-jobs', [JobController::class, 'activeJobs'])->name('active-jobs');
+      Route::get('/pending-jobs', [JobController::class, 'pendingJobs'])->name('pending-jobs');
+      Route::get('/rejected-jobs', [JobController::class, 'rejectedJobs'])->name('rejected-jobs');
+      Route::get('/completed-jobs', [JobController::class, 'completedJobs'])->name('completed-jobs');
+
    
 
 

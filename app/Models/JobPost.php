@@ -59,4 +59,9 @@ class JobPost extends Model
     {
      return $this->belongsTo(Subcategory::class,'subcategory_id'); 
     }
+
+    public function user() 
+    {
+     return $this->belongsTo(User::class); 
+    }
 }
