@@ -165,14 +165,14 @@
 
 /* ═════════ PROFILE ═════════ */
 .oc-top {
-  background: var(--brand);
+  background: #006a4e;
   padding: 18px;
 }
 
 .oc-avatar {
   width: 54px;
   height: 54px;
-  background: #4ade80;
+  background: #fff;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -478,17 +478,17 @@
 }
 
   </style>
-
 <!-- ══ NAVBAR ══ -->
 <nav class="top-nav navbar navbar-expand-lg bg-white">
   <!-- Brand -->
   <div class="nav-brand mt-2">
-<!--     <div class="brand-box"></div> -->
-    <a class="footer-logo" href="#">
+   <!--  <div class="brand-box"></div> -->
+    <a class="footer-logo" href="{{ route('user.dashboard')}}">
           <div class="logo-icon">
             <svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 2a5 5 0 110 10A5 5 0 018 3zm-1 2v2H5v2h2v2h2V9h2V7H9V5H7z"/></svg>
           </div>
-          <span class="logo-gig">One</span><span class="logo-clickers">taskmarket</span>
+          <span class="logo-gig d-none d-md-inline">One</span>
+<span class="logo-clickers d-none d-md-inline">taskmarket</span>
         </a>
   </div>
   <!-- Desktop Links (lg+) -->
@@ -642,75 +642,88 @@
     <button type="button"
       class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
       data-bs-dismiss="offcanvas"></button>
-    <div class="oc-avatar">
-      <i class="bi bi-person-fill" style="font-size:26px;"></i>
-    </div>
-    <div class="oc-name">User Name</div>
-    <div class="oc-email">user@example.com</div>
-    <div class="oc-stats">
-      <div><div class="oc-stat-val">$0.00</div><div class="oc-stat-lbl">Earned</div></div>
-      <div><div class="oc-stat-val">$0.00</div><div class="oc-stat-lbl">Pending</div></div>
-      <div><div class="oc-stat-val">12</div><div class="oc-stat-lbl">Jobs Done</div></div>
-    </div>
+     <div class="text-center mt-3">
+  <img src="{{ asset('storage/' . Auth::user()->photo) }}" class="rounded" alt="not found">
+</div>
+    <div class="oc-name text-center mt-2">{{Auth::user()->name}}</div>
+    <div class="oc-email text-center">{{Auth::user()->email}}</div>
   </div>
 
   <div class="offcanvas-body">
-    <div class="sec-lbl">Main Menu</div>
-
-    <button class="oc-item" data-bs-dismiss="offcanvas">
-      <div class="oc-ico"><i class="bi bi-house-fill"></i></div>
-      <span class="oc-lbl">Home</span>
-    </button>
-    <button class="oc-item active" data-bs-dismiss="offcanvas">
-      <div class="oc-ico"><i class="bi bi-search"></i></div>
-      <span class="oc-lbl">Find Jobs</span>
-      <span class="badge-new">83</span>
-    </button>
-    <button class="oc-item" data-bs-dismiss="offcanvas">
-      <div class="oc-ico"><i class="bi bi-bag-fill"></i></div>
-      <span class="oc-lbl">My Jobs</span>
-    </button>
-    <button class="oc-item" data-bs-dismiss="offcanvas">
-      <div class="oc-ico"><i class="bi bi-check2-circle"></i></div>
-      <span class="oc-lbl">Finished Jobs</span>
-    </button>
-    <button class="oc-item" data-bs-dismiss="offcanvas">
-      <div class="oc-ico"><i class="bi bi-people-fill"></i></div>
-      <span class="oc-lbl">Freelancers</span>
-    </button>
-    <button class="oc-item" data-bs-dismiss="offcanvas">
-      <div class="oc-ico"><i class="bi bi-gift-fill"></i></div>
-      <span class="oc-lbl">Refer & Earn</span>
-      <span class="badge-new">New</span>
-    </button>
-
+   <a href="{{route('user.dashboard')}}" class="oc-item" data-bs-dismiss="">
+    <div class="oc-ico">
+      <i class="fa fa-home text-danger" aria-hidden="true"></i>
+    </div>
+    <span class="oc-lbl">Home</span>
+   </a>
+   <a href="{{ route('user.find.jobs')}}" class="oc-item" data-bs-dismiss="">
+    <div class="oc-ico">
+      <i class="fa fa-search text-danger" aria-hidden="true"></i>
+    </div>
+    <span class="oc-lbl">Find Jobs</span>
+   </a>
+   <a href="{{route('user.my.jobs')}}" class="oc-item" data-bs-dismiss="">
+    <div class="oc-ico">
+    <i class="fa fa-shopping-bag text-danger" aria-hidden="true"></i>
+    </div>
+    <span class="oc-lbl">My Jobs</span>
+   </a>
+   <a href="{{ route('user.finished.jobs')}}" class="oc-item" data-bs-dismiss="">
+    <div class="oc-ico">
+   <i class="fa fa-check-circle-o text-danger" aria-hidden="true"></i>
+    </div>
+    <span class="oc-lbl">Finished Jobs</span>
+   </a>
+<!-- Browse Deal -->
     <div class="oc-divider"></div>
-    <div class="sec-lbl">Account</div>
+     <a href="{{ route('user.browse.deal')}}" class="oc-item" data-bs-dismiss="">
+    <div class="oc-ico">
+   <i class="fa fa-check-circle-o text-danger" aria-hidden="true"></i>
+    </div>
+    <span class="oc-lbl">Browse Deal</span>
+   </a>
+    <a href="{{ route('user.deal.create')}}" class="oc-item" data-bs-dismiss="">
+    <div class="oc-ico">
+   <i class="fa fa-cart-plus text-danger" aria-hidden="true"></i>
+    </div>
+    <span class="oc-lbl">Deal Create</span>
+   </a>
+    <a href="{{ route('user.my.deal.post')}}" class="oc-item" data-bs-dismiss="">
+    <div class="oc-ico">
+  <i class="fa fa-briefcase text-danger" aria-hidden="true"></i>
+    </div>
+    <span class="oc-lbl">My Deal Post</span>
+   </a>
 
-    <button class="oc-item" data-bs-dismiss="offcanvas">
-      <div class="oc-ico"><i class="bi bi-bell-fill"></i></div>
-      <span class="oc-lbl">Notifications</span>
-      <span class="badge-num">1</span>
-    </button>
-    <button class="oc-item" data-bs-dismiss="offcanvas">
-      <div class="oc-ico"><i class="bi bi-cash-stack"></i></div>
-      <span class="oc-lbl">Withdraw</span>
-    </button>
-    <button class="oc-item" data-bs-dismiss="offcanvas">
-      <div class="oc-ico"><i class="bi bi-plus-circle-fill"></i></div>
-      <span class="oc-lbl">Deposit</span>
-    </button>
-    <button class="oc-item" data-bs-dismiss="offcanvas">
-      <div class="oc-ico"><i class="bi bi-wallet2"></i></div>
-      <span class="oc-lbl">Wallet Report</span>
-    </button>
+    <a href="{{ route('user.deal.order')}}" class="oc-item" data-bs-dismiss="">
+    <div class="oc-ico">
+  <i class="fa fa-briefcase text-danger" aria-hidden="true"></i>
+    </div>
+    <span class="oc-lbl">My Order</span>
+   </a>
 
+    <a href="{{ route('user.deposit')}}" class="oc-item" data-bs-dismiss="">
+    <div class="oc-ico">
+    <i class="fa fa-usd text-danger" aria-hidden="true"></i>
+    </div>
+    <span class="oc-lbl">Deposit</span>
+   </a>
     <div class="oc-divider"></div>
-
-    <button class="oc-item danger" data-bs-dismiss="offcanvas">
+          <!-- logout -->
+    <a class="dropdown-item" href="{{ route('logout') }}"
+              onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="hover: none;">
+              <button type="submit" class="btn btn-danger btn-sm w-100">
+             <i class="fa fa-sign-out text-white rounded" aria-hidden="true" style="hover: none;"></i> logout
+         </button> 
+           </a>
+           <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display: none;">
+              @csrf
+          </form>
+         
+    <!-- <button class="oc-item danger" data-bs-dismiss="offcanvas">
       <div class="oc-ico"><i class="bi bi-box-arrow-right"></i></div>
       <span class="oc-lbl">Logout</span>
-    </button>
+    </button> -->
 
   </div>
 </div>
