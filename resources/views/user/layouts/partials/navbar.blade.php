@@ -471,7 +471,6 @@
   border: 1px solid #006a4e;
 }
 
-
   </style>
 
 <!-- ══ NAVBAR ══ -->

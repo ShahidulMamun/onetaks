@@ -1,4 +1,4 @@
-<!-- ================= HEADER ================= -->
+
 <header>
 <nav class="navbar navbar-expand-lg bg-light fixed-top py-3 px-4">
   <a class="navbar-brand d-flex align-items-center" href="{{asset('/')}}">
@@ -19,8 +19,8 @@
       <li class="nav-item"><a class="nav-link" href="#">Article</a></li>
     </ul>
     <div class="d-flex gap-2 mt-2 mt-lg-0">
-      <a class="btn btn-login" href="{{asset('/login')}}">Login</a>
-      <a class="btn btn-signup text-white" href="{{asset('/register')}}">Sign Up</a>
+      <a class="btn btn-login" href="{{asset('/login')}}"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
+      <a class="btn btn-signup text-white" href="{{asset('/register')}}"><i class="fa fa-user-o" aria-hidden="true"></i> Sign Up</a>
     </div>
   </div>
 </nav>

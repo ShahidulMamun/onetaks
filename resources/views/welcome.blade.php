@@ -6,7 +6,7 @@
       <div class="col-lg-6 col-md-7">
         <h1 class="hero-title">Location Of Small And<br>Large Jobs</h1>
         <p class="hero-subtitle">GigClickers is an open online marketplace that connects employers and skilled workers.</p>
-        <a href="{{route('register')}}"><button class="btn-cta">Get Sign Up</button></a>
+        <a href="{{route('register')}}"><button class="btn-cta"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Get Sign Up</button></a>
       </div>
       <div class="col-lg-6 col-md-5 d-flex justify-content-center align-items-end pt-4 pt-md-0">
         
@@ -55,7 +55,7 @@
         </li>
       </ul>
        <a href="{{route('login')}}"><button class="cta-btn">
-        GET STARTED
+        <i class="fa fa-long-arrow-right" aria-hidden="true"></i> GET STARTED
         <span class="btn-arrow">
           <svg viewBox="0 0 10 10"><path d="M2 5h6M5 2l3 3-3 3"/></svg>
         </span>
@@ -66,7 +66,7 @@
 <br><br><br><br>
 <!-- market places -->
  <div class="container mt-5">
-  <h2 class="deal-title mt-5">Deal <span class="text-dark">Marketplace</span></h2>
+  <h2 class="deal-title mt-5">Deal <span class="">Marketplace</span></h2>
   <div class="row g-3">
     <div class="col-6 col-sm-4 col-md-3 col-lg-2">
       <div class="cat-card">
@@ -263,7 +263,7 @@
         </li>
       </ul>
       <button class="cta-btn">
-        GET STARTED
+        <i class="fa fa-long-arrow-right" aria-hidden="true"></i> GET STARTED
         <span class="btn-arrow">
           <svg viewBox="0 0 10 10"><path d="M2 5h6M5 2l3 3-3 3"/></svg>
         </span>
@@ -279,7 +279,7 @@
 <!-- empolye -->
 
  <div class="container mt-5">
-  <h2 class="employe-title text-center text-dark">Employers</h2>
+  <h2 class="employe-title text-center">Employers</h2>
   <div class="row g-4 justify-content-center">
     <!-- Card 1 — Select Country -->
     <div class="col-12 col-sm-6 col-lg-3 emp-col">
@@ -351,7 +351,7 @@
 <br><br><br><br>
 <!-- worker -->
   <div class="container mt-5">
-  <h2 class="worker-title text-center mt-5 text-dark">Workers</h2>
+  <h2 class="worker-title text-center mt-5">Workers</h2>
   <div class="row g-4 justify-content-center">
     <!-- Card 1 — Submit Job -->
     <div class="col-12 col-sm-6 col-lg-3 wrk-col">
@@ -424,7 +424,7 @@
 <br><br><br><br>
 <!-- share-earn -->
   <div class="container mt-5" id="share_earn">
-  <h2 class="share-title text-center mt-5 text-dark">Share &amp; Earn</h2>
+  <h2 class="share-title text-center mt-5">Share &amp; Earn</h2>
   <div class="row align-items-center g-5">
     <!-- Left: Illustration -->
     <div class="col-12 col-md-5">
@@ -574,7 +574,7 @@
 <hr class="mt-5">
 <!-- fuq -->
   <div class="container" id="faq">
-  <h2 class="fuq-title text-center text-dark">Frequently asked Questions</h2>
+  <h2 class="fuq-title text-center">Frequently asked Questions</h2>
   <div class="row g-3 faq-row">
 
     <!-- Q1 -->
