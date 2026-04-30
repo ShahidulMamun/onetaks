@@ -55,5 +55,5 @@
     </div>
 
     <hr class="footer-divider"/>
-    <p class="footer-bottom">Made with ❤️ by <span>Onetaskmarket</span> — Empowering freelancers worldwide.</p>
+    <p class="footer-bottom">Made by <span>Onetaskmarket</span> — Empowering freelancers worldwide.</p>
   </div>
