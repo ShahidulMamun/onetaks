@@ -31,6 +31,37 @@
         </main>
     </div>
  @stack('scripts')
+
+      <!--  sweet alert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- script sweet alert success show -->
+@if(session('success'))
+<script>
+Swal.fire({
+    toast: true,
+    position: 'top-end',
+    icon: 'success',
+    showConfirmButton: false,
+    timer: 3000,
+    text: '{{ session('success') }}'
+});
+</script>
+@endif
+
+<!-- script sweet alert error show -->
+@if ($errors->any())
+<script>
+Swal.fire({
+    toast: true,
+    position: 'top-end',
+    icon: 'error',
+    // title: 'Validation Error',
+    timer: 5000,
+    showConfirmButton: false,
+    html: `{!! implode('<br>', $errors->all()) !!}`
+});
+</script>
+@endif
 </body>
 </html>
 

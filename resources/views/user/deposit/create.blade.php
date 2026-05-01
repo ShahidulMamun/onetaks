@@ -94,6 +94,16 @@
   </div>
 </div>
      <!-- deposit modal end -->
+
+      @if(session('success'))
+    <script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: '{{ session('success') }}',
+    });
+    </script>
+    @endif
  </div>
 <footer class="mt-5 footer-section">
     @include('user.layouts.partials.footer')
