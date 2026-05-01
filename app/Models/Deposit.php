@@ -18,4 +18,19 @@ class Deposit extends Model
     'approved_at'
     
     ];
+
+    protected $casts = [
+    'approved_at' => 'datetime',
+    'updated_at' => 'datetime',
+   ];
+
+    public function method(){
+
+        return $this->belongsTo(PaymentMethod::class,'payment_method_id');
+    }
+
+    public function user(){
+
+        return $this->belongsTo(User::class,'user_id');
+    }
 }

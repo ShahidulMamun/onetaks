@@ -52,11 +52,12 @@ class UserDepositController extends Controller
    
         return back()->with('success', 'Deposit request sent successfully!');
 
-       
     }
 
-	// deposithistory
+	// deposit history
 	public function depositHistory(){
-	    return view('user.deposit.history'); 
+         $deposits = Deposit::where('user_id',Auth::user()->id)->with(['method','user'])->get();
+         $count = count($deposits);
+	    return view('user.deposit.history',compact('deposits','count')); 
 	}
 }
