@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Deposit extends Model
 {
-    protected $fillable =[
+    protected $fillable = [
     'user_id',
     'payment_method_id',
     'amount',
@@ -15,7 +15,22 @@ class Deposit extends Model
     'screenshot',
     'status',
     'reason',
-    'approved_at',
+    'approved_at'
     
-    ]
+    ];
+
+    protected $casts = [
+    'approved_at' => 'datetime',
+    'updated_at' => 'datetime',
+   ];
+
+    public function method(){
+
+        return $this->belongsTo(PaymentMethod::class,'payment_method_id');
+    }
+
+    public function user(){
+
+        return $this->belongsTo(User::class,'user_id');
+    }
 }
