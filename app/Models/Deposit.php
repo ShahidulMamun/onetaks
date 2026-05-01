@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Deposit extends Model
 {
-    protected $fillable =[
+    protected $fillable = [
     'user_id',
     'payment_method_id',
     'amount',
@@ -15,7 +15,7 @@ class Deposit extends Model
     'screenshot',
     'status',
     'reason',
-    'approved_at',
+    'approved_at'
     
-    ]
+    ];
 }

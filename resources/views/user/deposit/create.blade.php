@@ -19,12 +19,13 @@
         class="btn editBtn btn-sm p-2"
         data-bs-toggle="modal" 
         data-bs-target="#editModal"
+        data-id="{{ $method->id }}"
         data-name="{{ $method->name }}"
         data-type="{{ $method->type }}"
         data-number="{{ $method->number }}"
         data-logo="{{asset('storage/'.$method->logo)}}"
       >
-        <img src="{{asset('storage/'.$method->logo)}}" width="150px" height="80px">
+        <img src="{{asset('storage/'.$method->logo)}}" width="150px" style="height: 50px;">
       </button>
       @endforeach
          
@@ -45,34 +46,26 @@
       </div>
 
       <div class="modal-body">
-        <form method="post" action=""> 
+        <form method="post" action="{{route('user.deposit-store')}}"> 
+          @csrf
         <div class="row">
-           <img id="logoPreview" src="" width="100%">
-          <div class="col-md-6">
-              <div class="form-group">
-                <label>Method</label>
-                <input type="text" id="name" class="form-control mb-2" placeholder="Name">
-              </div>
-          </div>
-          <div class="col-md-6">
-              <div class="form-group">
-                <label>Method Type</label>
-              </div>
-              <input type="text" id="type" class="form-control mb-2" placeholder="Type">
-          </div>
+           <img id="logoPreview" src="" width="100%" style="height: 150px">
+         <input type="hidden" name="" id="name" >
+
+         <input type="hidden" name="payment_method_id" id="method" class="form-control mb-2">
         </div>
 
         <div class="row">
           <div class="col-md-6">
               <div class="form-group">
-                <label>AC/Number</label>
-                 <input type="text" id="number" class="form-control mb-2" placeholder="Number">
+                <label id="name_type"></label>
+                 <input type="text" id="number" class="form-control mb-2">
               </div>
           </div>
           <div class="col-md-6">
               <div class="form-group">
                 <label>Amount</label>
-                 <input type="text" name="amound" class="form-control mb-2" placeholder="1">
+                 <input type="text" name="amount" class="form-control mb-2" placeholder="1" min="1">
               </div>
             
           </div>
@@ -88,12 +81,12 @@
           <div class="col-md-6">
               <div class="form-group">
                 <label>Enter Payment Number</label>
-                 <input type="text" name="number" class="form-control mb-2" placeholder="01985XXXXXX">
+                 <input type="text" name="sender_number" class="form-control mb-2" placeholder="01985XXXXXX">
               </div>
             
           </div>
         </div>
-        <button class="btn btn-sm btn-success">Submit</button>
+        <button type="submit" style="float: right;" class="btn btn-sm btn-success">Submit</button>
        </form>
       </div>
 
@@ -116,14 +109,17 @@ document.addEventListener('DOMContentLoaded', function () {
     editButtons.forEach(button => {
         button.addEventListener('click', function () {
 
+            let method = this.getAttribute('data-id');
             let name = this.getAttribute('data-name');
             let type = this.getAttribute('data-type');
             let number = this.getAttribute('data-number');
             let logo = this.getAttribute('data-logo');
 
-            document.getElementById('name').value = name;
-            document.getElementById('type').value = type;
+            document.getElementById('method').value = method;
             document.getElementById('number').value = number;
+            document.getElementById('name').value = name;
+
+            document.getElementById('name_type').innerHTML = name + ' (' + type + ')' +' Number ';
 
             document.getElementById('logoPreview').src =logo;
         });
@@ -131,3 +127,4 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 </script>
+

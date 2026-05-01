@@ -82,7 +82,9 @@ Route::middleware(['auth', 'user'])
 
         //deposit route
         Route::get('/deposit',  [UserDepositController::class, 'create'])->name('deposit');
+         Route::post('/deposit-store',  [UserDepositController::class, 'store'])->name('deposit-store');
         Route::get('/deposit-history',  [UserDepositController::class, 'depositHistory'])->name('deposit.history');
+
 
 
         Route::get('continents/', [UserJobController::class, 'continents']);
