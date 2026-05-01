@@ -173,6 +173,12 @@ class UserJobController extends Controller
     public function findjobs(){
         return view('user.find_jobs');
     }
+
+    // job details
+  public function details(){
+        return view('user.jobs.details');
+    }
+
    // finished jobs
     public function finishedjobs(){
         return view('user.finished_job');
