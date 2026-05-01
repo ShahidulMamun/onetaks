@@ -70,15 +70,28 @@
       </div>
 
 
-      <div class="sec-label">Management</div>
+      <div class="sec-label">Deposit Manage</div>
       <div class="ni" onclick="navClick(this,'Disputes')">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 2"/></svg>
-        Disputes <span class="nbadge red">5</span>
+        
+        <a class="link text-success" style="text-decoration: none;" href="{{route('admin.pending-deposit')}}">Pending Deposit</a>
+         <span class="nbadge red">5</span>
       </div>
-      <div class="ni" onclick="navClick(this,'Categories')">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 2h5v5H2zM9 2h5v5H9zM2 9h5v5H2zM9 9h5v5H9z"/></svg>
-        Categories
+
+       <div class="ni" onclick="navClick(this,'Disputes')">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 2"/></svg>
+        
+        <a class="link text-success" style="text-decoration: none;" href="{{route('admin.approved-deposit')}}">Approved Deposit</a>
+         <span class="nbadge red">5</span>
       </div>
+
+       <div class="ni" onclick="navClick(this,'Disputes')">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 2"/></svg>
+        
+        <a class="link text-success" style="text-decoration: none;" href="{{route('admin.rejected-deposit')}}">Rejected Deposit</a>
+         <span class="nbadge red">5</span>
+      </div>
+     
       <div class="ni" onclick="navClick(this,'Reviews')">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 2l1.7 3.4 3.8.5-2.7 2.7.6 3.8L8 10.6l-3.4 1.8.6-3.8L2.5 5.9l3.8-.5z"/></svg>
         Reviews

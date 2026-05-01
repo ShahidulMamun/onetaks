@@ -16,6 +16,8 @@ use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\JobController;
+use App\Http\Controllers\Admin\DepositController;
+
 use Illuminate\Support\Facades\Route;
 
 // web pages
@@ -81,7 +83,7 @@ Route::middleware(['auth', 'user'])
         Route::get('/deal-order',  [UserDealController::class, 'dealorder'])->name('deal.order');
 
 
-        //deposit route
+        //deposit route for user
         Route::get('/deposit',  [UserDepositController::class, 'create'])->name('deposit');
          Route::post('/deposit-store',  [UserDepositController::class, 'store'])->name('deposit-store');
         Route::get('/deposit-history',  [UserDepositController::class, 'depositHistory'])->name('deposit.history');
@@ -139,6 +141,12 @@ Route::middleware(['auth', 'admin'])
             ->name('payment-method.store');   
         Route::post('/payment-method/update', [PaymentMethodController::class, 'update'])->name('payment-method.update');
        Route::delete('/payment-method/delete/{id}', [PaymentMethodController::class, 'delete'])->name('payment-method.delete');
+
+       //deposit route for admin
+       Route::get('/deposit-pending', [DepositController::class, 'pendingDeposit'])->name('pending-deposit');
+       Route::get('/deposit-approved', [DepositController::class, 'approvedDeposit'])->name('approved-deposit'); 
+       Route::get('/deposit-rejected', [DepositController::class, 'rejectedDeposit'])->name('rejected-deposit');    
+    
 
        //site setting route
        Route::get('/website-setting/', [SettingController::class, 'index'])->name('setting');
