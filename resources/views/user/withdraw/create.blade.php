@@ -18,7 +18,7 @@
     <div class="method-card" data-method="nagad" data-label="Nagad" data-icon="" onclick="selectMethod(this)">
       <img class="method-logo" src="{{ asset('images/icons/nagad.webp') }}" alt="Nagad" onerror="this.src=''"/>
       <div class="withdraw-text">Withdraw</div>
-      <div class="method-balance">0.000</div>
+      <div class="method-balance">100.00</div>
     </div>
 
     <!-- Binance -->
