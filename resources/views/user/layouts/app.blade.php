@@ -7,16 +7,19 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
    <title>Onetaskmarket</title>
-   
-
      <!-- font-awesome -->
      <link rel="stylesheet" type="text/css" href="{{ asset('assets/font-awesome/css/font-awesome.css')}}">
      <link rel="stylesheet" type="text/css" href="{{ asset('assets/font-awesome/css/font-awesome.min.css')}}">
      <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.css') }}">
-     <!-- <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}"> -->
-    <!-- css -->
+     <!-- for widthdrow -->
+     <!-- Then plugins -->
+      <script src="{{ asset('assets/js/toastr.min.js') }}"></script>
+     <!-- End widthdrow -->
+     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <!-- Custom Styles -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/main.css')}}">
+    <!-- widthdrow css -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/withdraw.css')}}">
     @stack('styles')
 </head>
 
@@ -27,12 +30,6 @@
             @yield('content')
         </main>
     </div>
-     <!-- Scripts -->
-   <!--  <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap.bundle.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery-3.6.3.min.js') }}"></script> -->
  @stack('scripts')
 </body>
 </html>
