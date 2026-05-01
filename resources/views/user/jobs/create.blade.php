@@ -1,7 +1,5 @@
 @extends('user.layouts.app')
-
 @section('title', 'Post a Job')
-
 @push('styles')
 <style>
     .wizard-card {
