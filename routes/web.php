@@ -7,6 +7,7 @@ use App\Http\Controllers\User\UserJobController;
 use App\Http\Controllers\User\UserDepositController;
 use App\Http\Controllers\User\UserDealController;
 use App\Http\Controllers\User\UserWithdrawController;
+use App\Http\Controllers\User\UserNotificationController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\ContinentController;
 use App\Http\Controllers\Admin\CountryController;
@@ -96,12 +97,16 @@ Route::middleware(['auth', 'user'])
         Route::get('continents/{id}/countries',[UserJobController::class, 'countries']);
         Route::get('job-categories',[UserJobController::class, 'categories']);
         Route::get('job-categories/{id}/subcategories',[UserJobController::class, 'subcategories']);
-        //withdraw route
+        
 
-          //deposit route
+        //withdraw route
         Route::get('/withdraw',  [UserWithdrawController::class, 'index'])->name('withdraw');
         Route::get('/withdraw-create',  [UserWithdrawController::class, 'create'])->name('withdraw.create');
         Route::get('/withdraw-history',  [UserWithdrawController::class, 'withdrawHistory'])->name('withdraw.history');
+
+        //notification route
+        Route::get('/unseen-notifications',  [UserNotificationController::class, 'unSeenNotification'])->name('unseen-notifications');
+        Route::get('/seen-notifications',  [UserNotificationController::class, 'SeenNotification'])->name('seen-notifications');
 
 
   });

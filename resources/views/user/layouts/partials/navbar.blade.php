@@ -563,10 +563,11 @@
           <i class="fa fa-search" aria-hidden="true"></i> Find Jobs
         </a>
         <!-- notifaction -->
-    <button class="nav-icon-btn d-none d-sm-block">
+   <a href="{{route('user.unseen-notifications')}}"> <button class="nav-icon-btn d-none d-sm-block">
      <i class="fa fa-bell-o text-dark" aria-hidden="true"></i>
-      <span class="nbadge bg-danger">1</span>
+      <span class="nbadge bg-danger">{{App\Models\UserNotification::where('user_id',Auth::user()->id)->count()}}</span>
     </button>
+  </a>
     <!-- profile -->
     <button class="nav-icon-btn d-none d-lg-flex">
       <i class="bi bi-person-circle" style="font-size:150px;"></i>
