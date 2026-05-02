@@ -168,10 +168,16 @@ tr:last-child td{border-bottom:none}
                         
                         <td>
                          @if($deposit->status=="pending")
-                        <a href="{{route('admin.user-delete',$deposit->id)}}"
-                           onclick="return confirm('Are you sure to delete?')">
-                           <button class="btn btn-sm btn-danger">Reject</button>
-                        </a>
+                        
+                      <form action="{{ route('admin.deposit-reject', $deposit->id) }}" method="POST" 
+                            onsubmit="return confirm('Are you sure to reject?')">
+                          @csrf
+                          @method('PATCH')
+
+                          <button type="submit" class="btn btn-danger">Reject</button>
+                      </form>
+
+
 
                         <a href="{{route('admin.user-delete',$deposit->id)}}"
                            onclick="return confirm('Are you sure to approve?')">

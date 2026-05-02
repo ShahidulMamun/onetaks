@@ -147,7 +147,8 @@ Route::middleware(['auth', 'admin'])
        //deposit route for admin
        Route::get('/deposit-pending', [DepositController::class, 'pendingDeposit'])->name('pending-deposit');
        Route::get('/deposit-approved', [DepositController::class, 'approvedDeposit'])->name('approved-deposit'); 
-       Route::get('/deposit-rejected', [DepositController::class, 'rejectedDeposit'])->name('rejected-deposit');    
+       Route::get('/deposit-rejected', [DepositController::class, 'rejectedDeposit'])->name('rejected-deposit');  
+       Route::patch('/deposit/{id}/reject', [DepositController::class, 'rejectDeposit'])->name('deposit-reject');  
     
 
        //site setting route
