@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Deposit;
 use App\Models\UserNotification;
+use App\Models\User;
 
 class DepositController extends Controller
 {
@@ -45,7 +46,7 @@ class DepositController extends Controller
 
 	        UserNotification::create([
 	            'user_id' => $deposit->user_id,
-	            'message' => "Your $".$deposit->amount ."deposit has been rejected.",
+	            'message' => "Your $".$deposit->amount ." deposit has been rejected.",
 	            'status'  => 'pending',
 	        ]);
 
@@ -59,5 +60,47 @@ class DepositController extends Controller
 	        return back()->with('error', 'Something went wrong');
 	    }
 	}
+
+	public function approveDeposit($id)
+    {
+  
+    $deposit = Deposit::findOrFail($id);
+
+    // already processed check
+    if ($deposit->status !== 'pending') {
+        return back()->with('error', 'Already processed');
+    }
+
+    DB::beginTransaction();
+
+    try {
+
+        // update deposit status
+        $deposit->status = 'approved';
+        $deposit->approved_at = now();
+        $deposit->save();
+
+        //  user balance increment
+        $user = User::findOrFail($deposit->user_id);
+        $user->current_deposit += $deposit->amount;
+        $user->total_deposit += $deposit->amount;
+        $user->save();
+
+        // 3. notification create
+        UserNotification::create([
+            'user_id' => $deposit->user_id,
+            'message' => "Your deposit of $" .$deposit->amount ."has been approved.",
+            'status'  => 'pending',
+        ]);
+
+        DB::commit();
+
+        return back()->with('success', 'Deposit approved successfully');
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return back()->with('error', 'Something went wrong');
+    }
+   }
    
 }

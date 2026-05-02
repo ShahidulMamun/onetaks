@@ -174,15 +174,18 @@ tr:last-child td{border-bottom:none}
                           @csrf
                           @method('PATCH')
 
-                          <button type="submit" class="btn btn-danger">Reject</button>
+                          <button type="submit" class="btn btn-sm btn-danger">× Reject</button>
+                      </form>
+                   
+                     <form action="{{ route('admin.deposit-approve', $deposit->id) }}" method="POST" 
+                            onsubmit="return confirm('Are you sure to approve?')">
+                          @csrf
+                          @method('PATCH')
+
+                          <button type="submit" class="btn btn-sm btn-success">Approve</button>
                       </form>
 
 
-
-                        <a href="{{route('admin.user-delete',$deposit->id)}}"
-                           onclick="return confirm('Are you sure to approve?')">
-                           <button class="btn btn-sm btn-success">Approve</button>
-                        </a>
                           @elseif($deposit->status=="approved")
                           <strong class="badge badge-success mt-2">
                           Approved {{ $deposit->approved_at->format('d M Y, h:i A')}}
