@@ -10,14 +10,13 @@
 		</div>
 		<!-- job titles -->
 		<div class="col-9 col-xsm-9 col-md-9 col-lg-9 col-xl-9 colxx-9 mt-3">
-			<h4 class="text-dark fw-bold">Watch Youtube Video + Like</h4>
-			<span class="text-muted h6">International- Worldwide</span>
+			<h4 class="text-dark fw-bold">{{$job->title}}</h4>
+			<span class="text-muted h6">{{$job->continent->name}}- {{$job->category->name}}</span>
 		</div>
 		<!-- job price -->
 		<div class="col-3 col-xsm-3 col-md-3 col-lg-3 col-xl-3 col-xx-3 text-end">
-		  <a href="" class="text-decoration-none btn btn-sm btn-post pb-0" role="button">
-				<i class="fa fa-usd text-white h5" aria-hidden="true"></i>
-				<samp class="text-white fw-bold h5">0.032</samp></a>
+		  <a href="" class="text-decoration-none btn btn-sm btn-post pb-0" role="button" disabled>
+				<samp class="text-white fw-bold h5">${{$job->worker_earn}}</samp></a>
 		</div>
 		<!-- job toster report,hide -->
 		<div class="col-12 col-xsm-7 col-md-8 col-lg-8 col-xl-6 colxx-6 mt-3">
@@ -105,21 +104,20 @@
 		             <div class="row">
 		             	<!-- job 1-->
 		              <div class="col-6 mt-3 pb-4">
-		              	<h5 class="text-dark fw-medium">Excluded countries</h5>
+		              	<h5 class="text-dark fw-medium">Excluded Countries</h5>
 		              	-
 		              	<h5 class="text-dark fw-medium">Employer</h5>
-		              	<a href="" class="text-decoration-none text-dark">Dipu1357 <i class="fa fa-external-link fw-medium" aria-hidden="true"></i></a>
+		              	<a href="" class="text-decoration-none text-dark">{{$job->user->name}} <i class="fa fa-external-link fw-medium" aria-hidden="true"></i></a>
 		              	<h5 class="text-dark fw-medium mt-3">Job ID</h5>
-		              	<h6>KSHhDI1774200590941109</h6>
+		              	<h6>{{$job->code}}</h6>
 		              </div>
 		              <!-- job 2  -->
 		               <div class="col-6 mt-3 pb-4">
 		              	<h5 class="text-dark fw-medium">Done</h5>
-		              	<p class="text-muted">120 of 126</p>
-		              	<h5 class="text-dark fw-medium">Duration</h5>
-		              	<p class="text-muted">30 day</p>
+		              	<p class="text-muted">{{$job->worker_done}} of {{$job->worker_need}}</p>
+	
 		              	<h5 class="text-dark fw-medium mt-3">Category</h5>
-		              	<h6>inkedin Follow</h6>
+		              	<h6>{{$job->category->name}} -> {{$job->subcategory->name}}</h6>
 		              </div>
 		             </div>
 		            </div>

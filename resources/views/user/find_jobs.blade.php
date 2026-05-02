@@ -50,7 +50,7 @@
       <td class="fw-bold" style="color: #1abc9c;">0.0200</td>
       <td class="fw-bold"><span class="badge badge badge-light text-muted shadow">500/200</span></td>
       <td class="fw-bold"><button class="btn btn-sm text-white" style="background-color:#1abc9c;">95%</button></td>
-       <td class="fw-bold"><a href="{{ route('user.jobs.details')}}" class="btn btn-sm text-white" style="background-color:#6658dd;">Apply Job</a></td>
+       <td class="fw-bold"><a href="{{ route('user.job-details','code')}}" class="btn btn-sm text-white" style="background-color:#6658dd;">Apply Job</a></td>
     </tr>
   </tbody>
 </table>

@@ -552,7 +552,7 @@
             </li>
           </ul>
         </div>
-        <a href="{{ route('user.deposit')}}"><i class="fa fa-usd" aria-hidden="true"></i> Deposit</a>
+        <a href="{{ route('user.deposit')}}"><i class="fa fa-usd" aria-hidden="true"></i>Deposit</a>
   </div>
   <!-- Right side icons -->
   <div class="nav-right">

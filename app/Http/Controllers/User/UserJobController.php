@@ -175,8 +175,23 @@ class UserJobController extends Controller
     }
 
     // job details
-  public function details(){
-        return view('user.jobs.details');
+  public function details($code){
+        
+        $job = JobPost::where('code',$code)->first();
+
+        //status check
+        $status = $job->status;
+        if ($status !== 'active') {
+
+           return back()->with('error','This job not active');
+        }
+
+        //remaining worker check
+        if ($job->worker_remaining==0) {
+           return back()->with('error','This job is already complete');
+        }
+
+        return view('user.jobs.details',compact('job'));
     }
 
    // finished jobs
