@@ -16,7 +16,7 @@
     <ul class="navbar-nav mx-auto">
       <li class="nav-item"><a class="nav-link" href="{{ url('/') }}#faq">Faq</a></li>
       <li class="nav-item"><a class="nav-link" href="{{ url('/') }}#share_earn">Share &amp; Earn</a></li>
-      <li class="nav-item"><a class="nav-link" href="#">Article</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{asset('/article')}}">Article</a></li>
     </ul>
     <div class="d-flex gap-2 mt-2 mt-lg-0">
       <a class="btn btn-login" href="{{asset('/login')}}"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>

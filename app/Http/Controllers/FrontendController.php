@@ -36,5 +36,12 @@ public function terms(){
       return view('deal_marketplace');
    }
 
-
+// article
+    public function article(){
+      return view('article');
+   }
+// article details
+    public function articledetails(){
+      return view('article_details');
+   }
 }

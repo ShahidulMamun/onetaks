@@ -26,6 +26,8 @@ Route::get('/', function () {
 });
 
 Route::get('about-us', [FrontendController::class, 'aboutUs'])->name('about');
+Route::get('article', [FrontendController::class, 'article'])->name('article');
+Route::get('article-details', [FrontendController::class, 'articledetails'])->name('article.details');
 Route::get('privacy-policy', [FrontendController::class, 'policy'])->name('policy');
 Route::get('terms-conditions', [FrontendController::class, 'terms'])->name('terms'); 
 Route::get('microjob-marketplace', [FrontendController::class, 'marketplace'])->name('marketplace'); 
