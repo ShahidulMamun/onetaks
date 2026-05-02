@@ -169,12 +169,12 @@ tr:last-child td{border-bottom:none}
                         <td>
                          @if($deposit->status=="pending")
                         <a href="{{route('admin.user-delete',$deposit->id)}}"
-                           onclick="return confirm('Are you sure to delete user?')">
+                           onclick="return confirm('Are you sure to delete?')">
                            <button class="btn btn-sm btn-danger">Reject</button>
                         </a>
 
                         <a href="{{route('admin.user-delete',$deposit->id)}}"
-                           onclick="return confirm('Are you sure to delete user?')">
+                           onclick="return confirm('Are you sure to approve?')">
                            <button class="btn btn-sm btn-success">Approve</button>
                         </a>
                           @elseif($deposit->status=="approved")

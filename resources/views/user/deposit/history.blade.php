@@ -12,7 +12,6 @@
     <table class="table table-striped table-responsive">
   <thead class="table-light">
     <tr class="">
-      <th scope="col">UserName</th>
       <th scope="col">Method</th>
       <th scope="col">TrnxID</th>
       <th scope="col">Amount</th>
@@ -24,7 +23,6 @@
   <tbody>
     @foreach($deposits as $deposit)
     <tr>
-      <td><a href="">{{$deposit->user->name}}</a></td>
       <td>{{$deposit->method->name}}</td>
       <td>{{$deposit->transaction_id}}</td>
       <td><strong class="text-success">${{$deposit->amount}}</strong></td>
