@@ -306,11 +306,13 @@
   display: flex;
   align-items: center;
   gap: 7px;
-  padding: 7px 18px;
+  padding: 7px 15px;
   border-radius: 20px;
-  font-weight: 700;
+  font-weight: 500;
   font-size: .95rem;
 }
+
+
 
 /* Pills */
 .stat-pending {
@@ -329,6 +331,31 @@
   background: #e3f2fd;
   color: #1565c0;
   border: 1px solid #90caf9;
+}
+
+
+@media (max-width: 400px) {
+/* Stats Bar */
+.stats-bar {
+  background: #F2F0F6;
+  padding: 10px 24px;
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.stat-pill {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    padding: 6px 6px;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: .85rem;
+}
+
+  
 }
 
 /* Jobs Section */
@@ -731,13 +758,13 @@
 
 <div class="stats-bar justify-content-center">
   <span class="stat-pill stat-pending">
-    <i class="bi bi-clock"></i> Pending: $0.00
+    <i class="bi bi-clock"></i> Pending: ${{Auth::user()->current_earning}}
   </span>
   <span class="stat-pill stat-earned">
-    <i class="bi bi-currency-dollar"></i> Earned: $0.00
+    <i class="bi bi-currency-dollar"></i> Earned: ${{Auth::user()->total_earning}}
   </span>
   <span class="stat-pill stat-deposit">
-    <i class="bi bi-briefcase"></i> Deposit: $0.00
+    <i class="bi bi-briefcase"></i> Deposit: ${{Auth::user()->current_deposit}}
   </span>
 </div>
 
