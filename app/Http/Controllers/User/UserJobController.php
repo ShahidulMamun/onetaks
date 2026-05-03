@@ -8,6 +8,8 @@ use App\Models\Category;
 use App\Models\SubCategory;
 use App\Models\JobPost;
 use App\Models\WebsiteSetting;
+use App\Models\UserNotification;
+use App\Models\UserTransaction;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -20,7 +22,8 @@ class UserJobController extends Controller
     // ── GET /user/create-job ──────────────────────────────────────────
     public function create()
     {
-        return view('user.jobs.create');
+        $setting = WebsiteSetting::first();
+        return view('user.jobs.create',compact('setting'));
     }
 
     // ── GET /user/continents ──────────────────────────────────────────
@@ -86,10 +89,10 @@ class UserJobController extends Controller
         return response()->json($subs);
     }
 
-      public function store(Request $request)
+    public function store(Request $request)
     {
         
-        // return $request->all();
+         // return $request->all();
         $validator = Validator::make($request->all(), [
             'continent_id'   => 'required|exists:continents,id',
             'country_id'     => 'required|exists:countries,id',
@@ -98,16 +101,26 @@ class UserJobController extends Controller
             'title'          => 'required|string|max:255',
             'description'    => 'required|string',
             'worker_need'    => 'required|integer|min:1',
-            'thumbnail'      => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'thumbnail'      => 'nullable|image|mimes:jpeg,png,jpg,webp|max:1024',
             'has_secret_code'=> 'boolean',
-            'secret_code'    => 'required_if:has_secret_code,1|nullable|string|max:100',
+            'secret_code'    => 'required_if:has_secret_code,1|nullable|string|max:20',
             'proofs'         => 'required|array|min:1',
-            'proofs.*.type'  => 'required|in:text,image',
+            'proofs.*.type'  => 'required|in:text,file',
             'proofs.*.label' => 'required|string|max:255',
         ]);
         
+        //validation fail message error
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
         //fetch subcategory price
-        $subcategory = SubCategory::where('id',$request->subcategory_id)->first();
+        $subcategory = SubCategory::findOrFail($request->subcategory_id);
+
+        if (!$subcategory) {
+          return  back()->with('error','Invalid Category');
+        }
+
         $each_work_price = $subcategory->minimum_cost;
         
         $worker_need = $request->worker_need;
@@ -118,22 +131,23 @@ class UserJobController extends Controller
         $charge = $setting->jobpost_charge;
         $total_charge = ($cost*$charge)/100;
 
-        $total_cost_with_charge = $cost+$total_charge;
+         $total_cost_with_charge = $cost+$total_charge;
 
-        
+         $user = Auth::user();
+
+         $deposit = $user->current_deposit;
+
+         if ($total_cost_with_charge>$deposit){
+            return  back()->with('error','You have not enough deposit');
+         }
 
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
 
         $thumbnailPath = null;
         if ($request->hasFile('thumbnail')) {
             $thumbnailPath = $request->file('thumbnail')
                 ->store('job-thumbnails', 'public');
         }
-        
-        $user = auth::user();
 
         $job = JobPost::create([
             'user_id'        => $user->id,
@@ -142,26 +156,44 @@ class UserJobController extends Controller
             'category_id'    => $request->category_id,
             'subcategory_id' => $request->subcategory_id,
             'title'          => $request->title,
-            'code'          =>  strtoupper(Str::random(8)),
+            'code'           =>  strtoupper(Str::random(10)),
             'slug'           => str_replace(' ', '-', $request->title),
             'description'    => $request->description,
             'thumbnail'      => $thumbnailPath,
             'worker_need'    => $request->worker_need,
+            'worker_remaining'=> $request->worker_need,
             'budget'         => $cost,
             'worker_earn'    => $each_work_price,
             'has_secret_code'=> $request->boolean('has_secret_code'),
             'secret_code'    => $request->boolean('has_secret_code') ? $request->secret_code : null,
             'proofs'         => $request->proofs,
-            'status'         => 'active',
         ]);
+
+        if($job){
+          $user->decrement('current_deposit', $total_cost_with_charge);
+            
+            $message = "$".$total_cost_with_charge." has been deducted for job posting (including charge).";
+            UserNotification::create([
+                'user_id' => $user->id,
+                'message' => $message,
+                'status'  => 'pending',
+            ]);
+
+
+             UserTransaction::create([
+            'user_id' => $user->id,
+            'transaction_id' => strtoupper(uniqid()),
+            'type' => "charge",
+            'amount' => $total_cost_with_charge,
+            'description' => "Job post cost(including charge)",
+            'reference_id' => $job->id,
+            'status' => 'success',
+           ]);
+         }
 
 
         return back()->with('message','Job posted successfully and pendign for approval');
 
-        // return response()->json([
-        //     'message' => 'Job posted successfully!',
-        //     'job'     => $job->load(['continent', 'country', 'category', 'subcategory']),
-        // ], 201);
     }
 
     // my jobs

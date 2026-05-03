@@ -479,7 +479,7 @@ function renderStep3() {
 
         <div id="secretBox" style="display:${form.secretOn ? 'block' : 'none'}">
             <label class="form-label">Secret code</label>
-            <input type="password" class="form-control" id="fSecret"
+            <input type="text" class="form-control" id="fSecret"
                    placeholder="Enter secret code"
                    value="${escHtml(form.secretCode)}">
         </div>
@@ -498,7 +498,8 @@ function renderStep3() {
 function calcBudget(val) {
     const workers = parseInt(val) || 0;
     const budget  = workers * state.minCost;
-    const charge  = budget * 0.1;
+    const jobPostCharge = Number(@json($setting->jobpost_charge));
+    const charge  = (budget * jobPostCharge)/100;
     const total   = budget + charge;
 
     const box = document.getElementById('budgetBox');
@@ -518,7 +519,7 @@ function proofRowHtml(p) {
         <div class="proof-row">
             <select onchange="updateProofType(${p.id}, this.value)">
                 <option value="text"${p.type === 'text'   ? ' selected' : ''}>Text</option>
-                <option value="image"${p.type === 'image' ? ' selected' : ''}>Image</option>
+                <option value="file"${p.type === 'image' ? ' selected' : ''}>Image</option>
             </select>
             <input type="text"
                    placeholder="${p.type === 'text' ? 'Describe what text proof is needed' : 'Image proof label e.g. Certificate photo'}"
