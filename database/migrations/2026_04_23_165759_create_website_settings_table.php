@@ -27,8 +27,9 @@ return new class extends Migration
             $table->string('telegram')->nullable();
             $table->decimal('min_withdraw', 10, 2)->nullable();
             $table->decimal('min_deposit', 10, 2)->nullable();
-            $table->decimal('withdraw_charge', 5, 2)->nullable();
-            $table->decimal('jobpost_charge', 5, 2)->nullable();
+            $table->decimal('withdraw_charge', 10, 2)->nullable();
+            $table->decimal('jobpost_charge', 10, 2)->nullable();
+            $table->decimal('dolar_rate', 10, 2)->nullable();
             $table->decimal('deposit_bonus')->nullable();
             $table->boolean('maintenance_mode')->default(false);
             $table->string('meta_title')->nullable();

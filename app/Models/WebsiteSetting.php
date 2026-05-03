@@ -28,5 +28,6 @@ class WebsiteSetting extends Model
         'meta_title',
         'meta_description',
         'meta_keywords',
+        'dolar_rate',
     ];
 }

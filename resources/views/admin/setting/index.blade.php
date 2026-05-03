@@ -238,6 +238,13 @@ tr:last-child td{border-bottom:none}
                             value="{{ old('withdraw_charge', $setting->withdraw_charge) }}">
                     </div>
 
+                    <div class="col-md-4">
+                        <label class="form-label">Dolar Rate in TK</label>
+                        <input type="number" step="0.01" name="dolar_rate" class="form-control"
+                            value="{{ old('dolar_rate', $setting->dolar_rate) }}">
+                    </div>
+
+
                     <div class="col-md-6">
                         <label class="form-label">Job Post Charge</label>
                         <input type="number" step="0.01" name="jobpost_charge" class="form-control"

@@ -40,17 +40,14 @@ class SettingController extends Controller
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
             'meta_keywords' => 'nullable|string',
+            'dolar_rate'    =>'required|numeric' 
         ]);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
 
-
-
         $data = $validator->validated();
-
-
 
         // ✅ Sanitize
         $data = collect($data)->map(function ($value) {
