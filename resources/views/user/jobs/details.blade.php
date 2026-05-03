@@ -139,9 +139,7 @@
 		            </div>
 		            <div class="col-lg-12">
 		              	<p class="p-4">
-		              		কাজ করার শর্ত আপনার নিজের LinkedIn profile থাকতে হবে। নিচের দেওয়া লিংকে গিয়ে follow দিবেন।ভুয়া কাজ জমা দিলে এডমিন কে বলে ব্লক করবো। 
-                            লিংক :
-                            https://www.linkedin.com/in/dipu-mondol-475207330
+		              		{{$job->description}}
 		              	</p>
 		              </div>
 		       </div>
@@ -150,7 +148,40 @@
  </div>
 
   <div class="container mt-5">
-	 <div class="row">
+    
+    <!-- row for secret code -->
+    @if($job->has_secret_code==1)
+      
+       <div class="row">
+
+         <div class="col-12 col-md-6 col-sm-6">
+          <div class="form-group">
+            <label class="secret-code-name"><i class="fa fa-question-circle text-danger" aria-hidden="true"></i> Type Secret Code</label>
+
+              <input type="text" name="secret_code" class="form-control mt-2" required="">
+          </div>
+        
+        </div>
+
+       </div>
+  
+    
+   @endif
+
+   <!-- row for secretcode -->
+
+	 <div class="row mt-3">
+
+
+
+@foreach($job->proofs as $proof)
+ 
+  <div class="form-group">
+    <label>{{ $proof['label'] }}</label>
+    <input type="{{ $proof['type'] }}" name="screenshot">
+  </div>
+  
+@endforeach
 		 <div class="col-lg-12">
 		           <div class="row">
 		            <div class="col-lg-12 bg-light">
