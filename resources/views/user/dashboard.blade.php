@@ -46,7 +46,7 @@
   </thead>
   <tbody>
 
-      @foreach($jobs as $job)
+  @foreach($jobs as $job)
    <a href="">
      
    </a> <tr>

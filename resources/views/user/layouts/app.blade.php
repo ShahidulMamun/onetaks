@@ -49,7 +49,20 @@ Swal.fire({
 @endif
 
 <!-- script sweet alert error show -->
-@if ($errors->any())
+
+@if (session('error'))
+<script>
+Swal.fire({
+    toast: true,
+    position: 'top-end',
+    icon: 'error',
+    timer: 5000,
+    showConfirmButton: false,
+    title: "{{ session('error') }}"
+});
+</script>
+@endif
+<!-- @if ($errors->any())
 <script>
 Swal.fire({
     toast: true,
@@ -61,7 +74,7 @@ Swal.fire({
     html: `{!! implode('<br>', $errors->all()) !!}`
 });
 </script>
-@endif
+@endif -->
 </body>
 </html>
 

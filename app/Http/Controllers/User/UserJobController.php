@@ -192,7 +192,7 @@ class UserJobController extends Controller
          }
 
 
-        return back()->with('message','Job posted successfully and pendign for approval');
+        return back()->with('success','Job posted successfully and pending for approval');
 
     }
 
