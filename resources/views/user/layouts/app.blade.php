@@ -62,7 +62,7 @@ Swal.fire({
 });
 </script>
 @endif
-<!-- @if ($errors->any())
+@if ($errors->any())
 <script>
 Swal.fire({
     toast: true,
@@ -74,7 +74,7 @@ Swal.fire({
     html: `{!! implode('<br>', $errors->all()) !!}`
 });
 </script>
-@endif -->
+@endif
 </body>
 </html>
 

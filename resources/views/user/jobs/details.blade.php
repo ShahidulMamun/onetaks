@@ -148,7 +148,9 @@
  </div>
 
   <div class="container mt-5">
-    
+    <form action="{{route('user.submit-job',[$job->code,$job->slug])}}" method="post" enctype="multipart/form-data">
+      @csrf
+ 
     <!-- row for secret code -->
     @if($job->has_secret_code==1)
       
@@ -178,7 +180,11 @@
  
   <div class="form-group">
     <label>{{ $proof['label'] }}</label>
-    <input type="{{ $proof['type'] }}" name="screenshot">
+    @if($proof['type'] == 'file')
+        <input type="file" name="images[]" class="form-control">
+    @else
+        <input type="text" name="texts[]" class="form-control">
+    @endif
   </div>
   
 @endforeach
@@ -193,33 +199,32 @@
 		            </div>
 		            <div class="col-lg-12 p-5">
 		              	<!-- form -->
-		              	<form>
+		      
 		              		<!-- Example Screenshot images-->
-		              		<div class="text-center">
-						  <h6 class="text-dark fw-bold">Example Screenshot</h6>
+      		        <div class="text-center">
+      						<!--   <h6 class="text-dark fw-bold">Example Screenshot</h6> -->
 
-						  <!-- Image -->
-						  <img src="{{asset('images/jobs.png')}}"
-						       class="img-thumbnail rounded mx-auto d-block w-25 h-25"
-						       style="cursor:pointer;"
-						       data-bs-toggle="modal"
-						       data-bs-target="#imageModal"
-						       alt="not found">
-						</div>
+      						  <!-- Image -->
+      						  <!-- <img src="{{asset('images/jobs.png')}}"
+      						       class="img-thumbnail rounded mx-auto d-block w-25 h-25"
+      						       style="cursor:pointer;"
+      						       data-bs-toggle="modal"
+      						       data-bs-target="#imageModal"
+      						       alt="not found"> -->
+      						</div>
              <!-- button -->
-             <div class="d-flex justify-content-end gap-2 mt-5">
-               <button type="button" class="btn btn-danger btn-sm mt-5">
-                Cancel
-               </button>
-               <button type="submit" class="btn btn-success btn-sm mt-5">
-              Submit
-               </button>
-               </div>
-             </form>
-		              </div>
+                 <div class="d-flex justify-content-end gap-2 mt-5">
+                 
+                 <button type="submit" class="btn btn-success btn-sm mt-5">
+                  Submit
+                 </button>
+                 </div>
+            
+		        </div>
 		       </div>
 		 </div>
 	 </div>
+  </form>
 	 <!-- modal images -->
 	 <!-- Modal -->
 <div class="modal fade" id="imageModal" tabindex="-1">

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('job_submits', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('job_id')->constrained('jobs')->cascadeOnDelete();
+            $table->foreignId('job_id')->constrained('job_posts')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('job_owner_user_id')->constrained('users')->cascadeOnDelete();
             $table->text('proof_text')->nullable(); 

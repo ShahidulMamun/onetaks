@@ -8,6 +8,7 @@ use App\Http\Controllers\User\UserDepositController;
 use App\Http\Controllers\User\UserDealController;
 use App\Http\Controllers\User\UserWithdrawController;
 use App\Http\Controllers\User\UserNotificationController;
+use App\Http\Controllers\User\UserSubmitJobController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\ContinentController;
 use App\Http\Controllers\Admin\CountryController;
@@ -78,6 +79,11 @@ Route::middleware(['auth', 'user'])
         Route::get('/my-jobs',  [UserJobController::class, 'myjobs'])->name('my.jobs');
         Route::get('/find-jobs',  [UserJobController::class, 'findjobs'])->name('find.jobs'); 
         Route::get('/finished-job',  [UserJobController::class, 'finishedjobs'])->name('finished.jobs'); 
+
+        //submit job route
+        Route::post('/submit-job/{code}/{slug}',  [UserSubmitJobController::class, 'storeSubmitjob'])->name('submit-job'); 
+
+        
 
 
         //deal route
