@@ -6,7 +6,7 @@
         <img src="{{ asset('images/logo.jpeg') }}" class="logo" alt="logo">
     </span>
     <span>
-     Onetaskmarket
+     OneTaskMarket
     </span>
   </a>
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">

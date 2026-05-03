@@ -4,8 +4,8 @@
   <div class="container">
     <div class="row align-items-center">
       <div class="col-lg-6 col-md-7">
-        <h1 class="hero-title">Location Of Small And<br>Large Jobs</h1>
-        <p class="hero-subtitle">GigClickers is an open online marketplace that connects employers and skilled workers.</p>
+        <h4 class="hero-title" style="font-size:30px">Onetaskmarket is a<br>Large jobs market place</h4>
+        <p class="hero-subtitle">OneTaskMarket is an open online marketplace that connects employers and skilled workers.</p>
         <a href="{{route('register')}}"><button class="btn-cta"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Get Sign Up</button></a>
       </div>
       <div class="col-lg-6 col-md-5 d-flex justify-content-center align-items-end pt-4 pt-md-0">
