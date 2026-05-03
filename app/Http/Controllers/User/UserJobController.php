@@ -198,7 +198,8 @@ class UserJobController extends Controller
 
     // my jobs
     public function myjobs(){
-        return view('user.my_jobs');
+        $jobs =  JobPost::where('user_id',Auth::user()->id)->get();
+        return view('user.my_jobs',compact('jobs'));
     }
 
     // find jobs
