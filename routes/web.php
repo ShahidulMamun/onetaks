@@ -150,6 +150,10 @@ Route::middleware(['auth', 'admin'])
             ->name('category');
         Route::post('/category-store', [CategoryController::class, 'store'])
             ->name('category.store');
+        Route::get('/category-delete/{id}', [CategoryController::class, 'delete'])
+            ->name('category.delete');
+
+        //sub category
         Route::get('/subcategory-add', [SubCategoryController::class, 'index'])
             ->name('subcategory');
         Route::post('/subcategory-store', [SubCategoryController::class, 'store'])

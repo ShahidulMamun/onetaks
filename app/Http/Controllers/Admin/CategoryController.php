@@ -30,4 +30,18 @@ class CategoryController extends Controller
 
     return back()->with('success', 'Category added successfully');
    }
+
+
+   public function delete($id)
+    {
+
+      $category = Category::findOrFail($id);
+
+      if ($category->jobs()->exists()) {
+        return back()->with('error','This category Cannot delete because jobs exist under it');
+      }
+         $category->delete();
+ 
+        return back()->with('success', 'Category deleted successfully');
+    }
 }

@@ -132,6 +132,16 @@ tr:last-child td{border-bottom:none}
     </div>
 
     <div class="card-body">
+       @if(session()->has('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+        @if(session()->has('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
         <form action="{{ route('admin.category.store') }}" method="POST">
             @csrf
 
@@ -172,11 +182,16 @@ tr:last-child td{border-bottom:none}
 			      	@if($cat->is_active==true)
 			      	  Active
 			      	@else
-                      Deactivate
+                 Inactive
 			      	@endif
 
 			      </td>
-			      <td><button class="btn btn-sm btn-danger">Delete</button></td>
+			      <td>
+            <a href="{{ route('admin.category.delete', $cat->id) }}"
+                           onclick="return confirm('Are you sure to delete category?')">
+              <button class="btn btn-sm btn-danger">Delete</button>
+          </a>   
+            </td>
 			    </tr>
 			  @endforeach
 			   

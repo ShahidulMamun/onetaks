@@ -17,4 +17,8 @@ class Category extends Model
 
     	return $this->hasMany(SubCategory::class);
     }
+
+    public function jobs(){
+    	return $this->hasMany(JobPost::class);
+    }
 }
