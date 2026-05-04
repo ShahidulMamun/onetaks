@@ -150,12 +150,15 @@ tr:last-child td{border-bottom:none}
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Icon</label>
-                <input type="text" name="icon" class="form-control" placeholder="ⓕ" required>
+                <label class="form-label">Price in($)</label>
+                <input type="text" name="minimum_cost" class="form-control" placeholder="0.02" required>
             </div>
 
+          
+
+
             <button type="submit" class="btn btn-success w-100">
-                 Save Category
+                 Save SubCategory
             </button>
         </form>
     </div>
@@ -167,6 +170,7 @@ tr:last-child td{border-bottom:none}
 			    <tr>
 			      <th scope="col">#</th>
 			      <th scope="col">Name</th>
+            <th scope="col">Price</th>
 			      <th scope="col">Status</th>
 			      <th scope="col">Action</th>
 			    </tr>
@@ -176,7 +180,8 @@ tr:last-child td{border-bottom:none}
 			  @foreach($subcategories as $subcat)
 			    <tr>
 			      <th scope="row">{{$i++}}</th>
-			      <td>{!!$subcat->name!!}</td>
+			      <td>{{$subcat->name}}</td>
+            <td class="text-success">${{$subcat->minimum_cost}}</td>
 			      <td>
 			      	@if($subcat->is_active==true)
 			      	  Active

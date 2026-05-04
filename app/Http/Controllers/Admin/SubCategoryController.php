@@ -22,12 +22,14 @@ class SubCategoryController extends Controller
     $request->validate([
         'category_id' => 'required',
         'subcategory' => 'required',
+        'minimum_cost'       => 'required',
     ]);
 
      SubCategory::create([
         'category_id' => $request->category_id,
         'name' => $request->subcategory,
         'slug' => strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $request->subcategory))),
+        'minimum_cost'=>$request->minimum_cost,
     ]);
 
     return back()->with('success', 'SubCategory added successfully');
