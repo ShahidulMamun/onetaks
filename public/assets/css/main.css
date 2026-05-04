@@ -1859,3 +1859,37 @@ img, svg {
      background: #E8F3F8;
      margin-bottom: 0px;
 }
+
+
+/*custom respnsove desing*/
+@media (max-width: 400px) {
+
+  .filter-bar .d-flex.justify-content-between {
+    flex-direction: column; /* vertical stack */
+    align-items: center;
+  }
+
+  /* Available Jobs center */
+  .result-count {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  /* filter section full width */
+  .filter-bar .d-flex.align-items-center.gap-2 {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: nowrap; /* ek line e rakhbe */
+  }
+
+  /* 3 ta field equal width */
+  .filter-bar .filter-select,
+  .filter-bar .filter-input,
+  .filter-bar .filter-sort {
+    width: 100% !important; /* 3 column */
+    font-size: 10px;
+    padding: 1px;
+  }
+
+}
