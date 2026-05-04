@@ -23,6 +23,7 @@ class JobPost extends Model
         'worker_remaining',
         'budget',
         'worker_earn',
+        'charge_percentage',
         'max_reject',
         'reject_done',
         'has_secret_code',
@@ -63,5 +64,10 @@ class JobPost extends Model
     public function user() 
     {
      return $this->belongsTo(User::class); 
+    }
+
+    public function submitjobs() 
+    {
+     return $this->hasMany(JobSubmit::class,'job_id'); 
     }
 }

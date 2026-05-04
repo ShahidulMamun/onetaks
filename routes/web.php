@@ -192,6 +192,8 @@ Route::middleware(['auth', 'admin'])
       Route::get('/rejected-jobs', [JobController::class, 'rejectedJobs'])->name('rejected-jobs');
       Route::get('/completed-jobs', [JobController::class, 'completedJobs'])->name('completed-jobs');
 
+      Route::get('/delete-jobs/{id}', [JobController::class, 'deleteJob'])->name('delete-job');
+
    
 
 

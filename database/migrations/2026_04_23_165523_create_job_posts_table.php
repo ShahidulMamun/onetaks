@@ -28,6 +28,8 @@ return new class extends Migration
             $table->integer('worker_remaining')->default(0);
             $table->decimal('budget', 12, 2)->default(0);
             $table->decimal('worker_earn', 10, 2)->default(0);
+            $table->decimal('charge_percentage', 5, 2)->default(0)
+            ->comment('Charge percentage');
             $table->integer('max_reject')->default(0);
             $table->integer('reject_done')->default(0);
             $table->boolean('has_secret_code')->default(false);

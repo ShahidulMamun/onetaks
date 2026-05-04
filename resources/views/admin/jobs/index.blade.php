@@ -126,8 +126,20 @@ tr:last-child td{border-bottom:none}
     <main class="main">
       <div class="row"> 
          <div class="col-md-12">
+
                <div class="card shadow-sm border-0 rounded-3 mt-3">
                    <div class="card-body">{{$pageTitle}}
+
+               @if(session()->has('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+                @if(session()->has('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
                    <table class="table table-striped  table-responsive">
                     <thead>
                       <tr>
@@ -159,18 +171,17 @@ tr:last-child td{border-bottom:none}
                           <img src="{{asset('storage/'.$job->thumbnail)}}" style="width: 80px; height: 40px">
                         </td>
                         <td>
-                          @if($job->status==true)
-                           <strong class="badge badge-success mt-2">Active</strong>
-                          @else
-                           <strong class="badge badge-danger mt-2">Inactive</strong>
-                          @endif
-
+                        
+                           <strong class="badge badge-info mt-2">
+                             {{$job->status}}
+                           </strong>
+                        
                         </td>
                         <td>
                         
                         <!-- delete button -->
-                        <a href="{{route('admin.user-delete',$job->id)}}"
-                           onclick="return confirm('Are you sure to delete user?')">
+                        <a href="{{route('admin.delete-job',$job->id)}}"
+                           onclick="return confirm('Are you sure to delete job?')">
                            <button class="btn btn-sm btn-danger">Delete</button>
                         </a>
 

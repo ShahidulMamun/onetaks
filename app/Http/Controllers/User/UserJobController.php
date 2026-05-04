@@ -165,6 +165,7 @@ class UserJobController extends Controller
             'worker_remaining'=> $request->worker_need,
             'budget'         => $cost,
             'worker_earn'    => $each_work_price,
+            'charge_percentage'=>$charge,
             'has_secret_code'=> $request->boolean('has_secret_code'),
             'secret_code'    => $request->boolean('has_secret_code') ? $request->secret_code : null,
             'proofs'         => $request->proofs,
