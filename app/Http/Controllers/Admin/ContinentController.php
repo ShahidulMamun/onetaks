@@ -23,11 +23,25 @@ class ContinentController extends Controller
     ]);
 
     Continent::create([
-    'name' => Purifier::clean(trim($request->name)),
-    'code' => strtoupper(Purifier::clean(trim($request->code))),
-    'emoji' => Purifier::clean(trim($request->emoji)),
+    'name'  => trim(strip_tags($request->name)),
+    'code'  => strtoupper(trim($request->code)),
+    'emoji' => trim($request->emoji),
     ]);
 
     return back()->with('success', 'Continent added successfully');
    }
+
+
+    public function delete($id)
+    {
+
+      $continent = Continent::findOrFail($id);
+
+      if ($continent->countries()->whereHas('jobPosts')->exists()) {
+        return back()->with('error','This continent Cannot delete because countries exist under it');
+      }
+         $continent->delete();
+ 
+        return back()->with('success', 'Continent deleted successfully');
+    }
 }

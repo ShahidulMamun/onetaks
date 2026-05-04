@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,sans-serif;background:#f1f5f9;color:#0f172a;font-size:14px}
@@ -121,58 +121,52 @@ tr:last-child td{border-bottom:none}
   <div class="body">
     <div class="overlay" id="overlay" onclick="closeSB()"></div>
 
-   @include('admin.layouts.sidebar')
+   @include('admin.layouts.sidebar');
 
     <main class="main">
-      <div class="row">
+        <div class="card shadow-sm border-0 rounded-3">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">🌍 Add Continent</h5>
+    </div>
 
-              <div class="col-md-4">
-            <div class="card shadow-sm border-0 rounded-3 mt-3">
-              <div class="card-header bg-success text-white">
-                  <h5 class="mb-0">Add Continent</h5>
-              </div>
+    <div class="card-body">
+        <form action="{{ route('admin.continent.store') }}" method="POST">
+            @csrf
 
-				     <div class="card-body">
-				        <form action="{{ route('admin.continent.store') }}" method="POST">
-				            @csrf
+            <div class="mb-3">
+                <label class="form-label">Continent Name</label>
+                <input type="text" name="name" class="form-control" placeholder="Asia, Europe" required>
+            </div>
 
-				            <div class="mb-3">
-				                <label class="form-label">Continent Name</label>
-				                <input type="text" name="name" class="form-control" placeholder="Asia, Europe" required>
-				            </div>
+            <div class="mb-3">
+                <label class="form-label">Code</label>
+                <input type="text" name="code" class="form-control" placeholder="AS, EU" required>
+            </div>
 
-				            <div class="mb-3">
-				                <label class="form-label">Code</label>
-				                <input type="text" name="code" class="form-control" placeholder="AS, EU" required>
-				            </div>
+            <div class="mb-3">
+                <label class="form-label">Emoji</label>
+                <input type="text" name="emoji" class="form-control" placeholder="🌍">
+            </div>
 
-				            <div class="mb-3">
-				                <label class="form-label">Emoji</label>
-				                <input type="text" name="emoji" class="form-control" placeholder="🌍">
-				            </div>
+            <button type="submit" class="btn btn-primary w-100">
+                 Save Continent
+            </button>
+        </form>
+    </div>
 
-				            <button type="submit" class="btn btn-success w-100">
-				                 Save Continent
-				            </button>
-				        </form>
-				    </div>
-          </div>
-         </div>
-         <div class="col-md-8">
-               <div class="card shadow-sm border-0 rounded-3 mt-3">
-                   <div class="card-body">
-                   <table class="table table-striped  table-responsive">
-                    <thead>
-                      <tr>
-		                  <th scope="col">#</th>
-					      <th scope="col">Name</th>
-					      <th scope="col">Code</th>
-					      <th scope="col">Status</th>
-					      <th scope="col">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                @foreach($continents as $continent)
+       <div class="card-body">
+		   <table class="table">
+			  <thead>
+			    <tr>
+			      <th scope="col">#</th>
+			      <th scope="col">Name</th>
+			      <th scope="col">Code</th>
+			      <th scope="col">Status</th>
+			      <th scope="col">Action</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			  @foreach($continents as $continent)
 			    <tr>
 			      <th scope="row">1</th>
 			      <td>{!!$continent->name!!}</td>
@@ -185,83 +179,14 @@ tr:last-child td{border-bottom:none}
 			      	@endif
 
 			      </td>
-			      <td>
-			      	
-			      	 <!-- delete button -->
-                        <a href="{{ route('admin.continent.delete', $continent->id) }}"
-                           onclick="return confirm('Are you sure to delete method?')">
-                           <button class="btn btn-sm btn-danger">Delete</button>
-                        </a>
-
-                        <!-- edit button -->
-                         <button class="editBtn btn btn-sm btn-success"
-
-                              data-id="{{ $continent->id }}"
-                              data-name="{{ $continent->name }}"
-                              data-type="{{ $continent->code }}"
-                              data-status="{{ $continent->status }}">
-                              Edit
-                        </button>
-			      </td>
+			      <td><button class="btn btn-sm btn-danger">Delete</button></td>
 			    </tr>
 			  @endforeach
-                        
-                       
-                          
-
-                     
-                    </tbody>
-                  </table>
-                  </div>
-            </div>
-         </div>
-    
+			   
+			  </tbody>
+			</table>
       </div>
-       <!-- =======edit modal start======= -->
-          <div class="modal fade" id="editModal">
-            <div class="modal-dialog">
-                <form id="editForm" action="{{route('admin.payment-method.update')}}" method="POST" enctype="multipart/form-data">
-                    @csrf
-
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5>Edit Payment Method</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-
-
-                        <div class="modal-body">
-
-                            <input type="hidden" name="id" id="edit_id">
-                            
-                            <div class="form-group">
-                              <label><strong>Name</strong></label>
-                               <input type="text" name="name" id="edit_name" class="form-control mb-2">
-                            <span class="text-danger" id="name_error"></span>
-                            </div>
-                           
-
-                          <div class="form-group">
-                              <label><strong>Status</strong></label>
-                            <select name="status" id="edit_status" class="form-control mb-2">
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                            </select>
-                          </div>
-                        
-
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-success">Update</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-      <!--  ========edit modal end======== -->
+</div>
     </main>
   </div>
 </div>
@@ -336,67 +261,4 @@ var acts=[
 document.getElementById('afeed').innerHTML=acts.map(function(a){
   return '<div class="fi"><div class="fd" style="background:'+a.bg+'"><svg viewBox="0 0 12 12" fill="none" stroke="'+a.ic+'" stroke-width="1.6" width="12" height="12"><circle cx="6" cy="4" r="2"/><path d="M2 10a4 4 0 0 1 8 0"/></svg></div><div><div class="ft">'+a.t+'</div><div class="fti">'+a.ti+'</div></div></div>';
 }).join('');
-</script>
-
-<!-- script for edit modal open and data set -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  
-  $(document).on('click', '.editBtn', function () {
-
-    let id = $(this).data('id');
-    $('#edit_id').val(id);
-    $('#edit_name').val($(this).data('name'));
-    $('#edit_type').val($(this).data('type'));
-    $('#edit_number').val($(this).data('number'));
-    $('#edit_status').val($(this).data('status'));
-
-    let logo = $(this).data('logo');
-
-    if (logo) {
-        $('#edit_preview').attr('src', '/storage/' + logo);
-    } else {
-        $('#edit_preview').attr('src', '');
-    }
-
-    // // dynamic form action
-    // $('#editForm').attr('action', '/admin/payment-method/update/');
-
-    $('#editModal').modal('show');
-});
-</script>
-
-<!-- script validation error handling -->
-<script>
-$('#editForm').on('submit', function (e) {
-
-    let form = $(this);
-
-    e.preventDefault(); // temporarily stop
-
-    $.ajax({
-        url: form.attr('action'),
-        type: 'POST',
-        data: new FormData(this),
-        processData: false,
-        contentType: false,
-
-        success: function () {
-            form.off('submit'); // remove handler
-            form.submit(); // real submit
-        },
-        error: function (xhr) {
-
-            if (xhr.status === 422) {
-                let errors = xhr.responseJSON.errors;
-
-                $('#name_error').text(errors.name ? errors.name[0] : '');
-                $('#number_error').text(errors.number ? errors.number[0] : '');
-                $('#type_error').text(errors.type ? errors.type[0] : '');
-            }
-        }
-    });
-
-});
 </script>

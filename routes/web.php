@@ -131,6 +131,9 @@ Route::middleware(['auth', 'admin'])
         //continents route
         Route::get('/continent-add', [ContinentController::class, 'index'])->name('continent');
         Route::post('/continent-store', [ContinentController::class, 'store'])->name('continent.store');
+        Route::get('/continent-delete/{id}', [ContinentController::class, 'delete'])->name('continent.delete');
+
+
 
         //country route
         Route::get('/country-add', [CountryController::class, 'index'])

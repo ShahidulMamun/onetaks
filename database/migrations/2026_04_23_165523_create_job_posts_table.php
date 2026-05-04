@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('job_posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('continent_id')->constrained('continents');
-            $table->foreignId('country_id')->constrained('countries');
-            $table->foreignId('category_id')->constrained('categories');
-            $table->foreignId('subcategory_id')->constrained('sub_categories');
+            $table->foreignId('user_id')->constrained('users')->restrictOnDelete();
+            $table->foreignId('continent_id')->constrained('continents')->restrictOnDelete();
+            $table->foreignId('country_id')->constrained('countries')->restrictOnDelete();
+            $table->foreignId('category_id')->constrained('categories')->restrictOnDelete();
+            $table->foreignId('subcategory_id')->constrained('sub_categories')->restrictOnDelete();
             $table->string('title');
             $table->string('code')->unique();
             $table->string('slug')->unique();
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->integer('worker_need')->default(0);
             $table->integer('worker_done')->default(0);
             $table->integer('worker_remaining')->default(0);
-            $table->decimal('budget', 12, 2)->nullable();
+            $table->decimal('budget', 12, 2)->default(0);
             $table->decimal('worker_earn', 10, 2)->default(0);
             $table->integer('max_reject')->default(0);
             $table->integer('reject_done')->default(0);

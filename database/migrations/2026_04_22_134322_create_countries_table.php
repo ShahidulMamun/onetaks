@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');        // Bangladesh
             $table->string('code', 5)->unique(); // BD, US
             $table->string('phone_code', 10)->nullable(); // +880
-            $table->foreignId('continent_id')->constrained('continents')->cascadeOnDelete();
+            $table->foreignId('continent_id')->constrained('continents')->restrictOnDelete();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
