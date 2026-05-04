@@ -158,6 +158,8 @@ Route::middleware(['auth', 'admin'])
             ->name('subcategory');
         Route::post('/subcategory-store', [SubCategoryController::class, 'store'])
             ->name('subcategory.store');
+        Route::get('/subcategory-delete/{id}', [SubCategoryController::class, 'delete'])
+            ->name('subcategory.delete');
 
         //method method route
         Route::get('/payment-method', [PaymentMethodController::class, 'index'])

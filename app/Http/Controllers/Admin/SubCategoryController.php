@@ -34,4 +34,17 @@ class SubCategoryController extends Controller
 
     return back()->with('success', 'SubCategory added successfully');
    }
+
+    public function delete($id)
+    {
+
+       $subcategory = SubCategory::findOrFail($id);
+
+       if($subcategory->jobs()->exists()) {
+        return back()->with('error','This category Cannot delete because jobs exist under it');
+      }
+         $subcategory->delete();
+ 
+        return back()->with('success', 'SubCategory deleted successfully');
+    }
 }

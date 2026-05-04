@@ -129,8 +129,18 @@ tr:last-child td{border-bottom:none}
               <div class="col-md-4">
             <div class="card shadow-sm border-0 rounded-3 mt-3">
               <div class="card-header bg-success text-white">
-                  <h5 class="mb-0">Add Method</h5>
+                  <h5 class="mb-2">Add Method</h5>
               </div>
+              @if(session()->has('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+            @endif
+            @if(session()->has('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
 
               <div class="card-body">
                   <form action="{{ route('admin.payment-method.store') }}" method="POST" enctype="multipart/form-data">
