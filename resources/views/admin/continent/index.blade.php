@@ -128,10 +128,19 @@ tr:last-child td{border-bottom:none}
 
               <div class="col-md-4">
             <div class="card shadow-sm border-0 rounded-3 mt-3">
-              <div class="card-header bg-success text-white">
+              <div class="card-header bg-success text-white mb-2">
                   <h5 class="mb-0">Add Continent</h5>
               </div>
-
+				@if(session()->has('success'))
+				    <div class="alert alert-success">
+				        {{ session('success') }}
+				    </div>
+				@endif
+				@if(session()->has('error'))
+				    <div class="alert alert-danger">
+				        {{ session('error') }}
+				    </div>
+				@endif
 				     <div class="card-body">
 				        <form action="{{ route('admin.continent.store') }}" method="POST">
 				            @csrf
@@ -220,7 +229,7 @@ tr:last-child td{border-bottom:none}
        <!-- =======edit modal start======= -->
           <div class="modal fade" id="editModal">
             <div class="modal-dialog">
-                <form id="editForm" action="{{route('admin.payment-method.update')}}" method="POST" enctype="multipart/form-data">
+                <form id="editForm" action="{{route('admin.continent.update')}}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <div class="modal-content">
@@ -246,9 +255,10 @@ tr:last-child td{border-bottom:none}
                           <div class="form-group">
                               <label><strong>Status</strong></label>
                             <select name="status" id="edit_status" class="form-control mb-2">
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
+                                <option value="1">Active</option>
+                                <option value="0">Inactive</option>
                             </select>
+                            <span class="text-danger" id="status_error"></span>
                           </div>
                         
 
@@ -348,17 +358,8 @@ document.getElementById('afeed').innerHTML=acts.map(function(a){
     let id = $(this).data('id');
     $('#edit_id').val(id);
     $('#edit_name').val($(this).data('name'));
-    $('#edit_type').val($(this).data('type'));
-    $('#edit_number').val($(this).data('number'));
     $('#edit_status').val($(this).data('status'));
 
-    let logo = $(this).data('logo');
-
-    if (logo) {
-        $('#edit_preview').attr('src', '/storage/' + logo);
-    } else {
-        $('#edit_preview').attr('src', '');
-    }
 
     // // dynamic form action
     // $('#editForm').attr('action', '/admin/payment-method/update/');
@@ -390,10 +391,8 @@ $('#editForm').on('submit', function (e) {
 
             if (xhr.status === 422) {
                 let errors = xhr.responseJSON.errors;
-
                 $('#name_error').text(errors.name ? errors.name[0] : '');
-                $('#number_error').text(errors.number ? errors.number[0] : '');
-                $('#type_error').text(errors.type ? errors.type[0] : '');
+                $('#status_error').text(errors.status ? errors.status[0] : '');
             }
         }
     });
