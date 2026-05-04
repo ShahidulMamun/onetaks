@@ -205,7 +205,9 @@ class UserJobController extends Controller
 
     // find jobs
     public function findjobs(){
-        return view('user.find_jobs');
+
+        $jobs = JobPost::where('status','active')->orderBy('created_at','desc')->get();
+        return view('user.dashboard',compact('jobs'));
     }
 
     // job details
