@@ -127,9 +127,21 @@ tr:last-child td{border-bottom:none}
        <div class="card shadow-sm border-0 rounded-3">
    
     <div class="card shadow-sm border-0 rounded-3 mt-4">
-    <div class="card-header bg-success text-white">
+    <div class="card-header bg-success text-white mb-3">
         <h5 class="mb-0">🌎 Add Country</h5>
+
     </div>
+
+       @if(session()->has('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+        @if(session()->has('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
 
     <div class="card-body">
         <form action="{{ route('admin.country.store') }}" method="POST">
@@ -187,14 +199,20 @@ tr:last-child td{border-bottom:none}
 			      <td>{!!$country->name!!}</td>
 			      <td>{!!$country->code!!}</td>
 			      <td>
-			      	@if($continent->is_active==true)
+			      	@if($country->is_active==true)
 			      	  Active
 			      	@else
-                      Deactivate
+                  Inactive
 			      	@endif
 
 			      </td>
-			      <td><button class="btn btn-sm btn-danger">Delete</button></td>
+			      <td>
+            <!-- delete button -->
+                        <a href="{{ route('admin.country.delete', $country->id) }}"
+                           onclick="return confirm('Are you sure to delete country?')">
+                           <button class="btn btn-sm btn-danger">Delete</button>
+                        </a>   
+            </td>
 			    </tr>
 			  @endforeach
 			   

@@ -198,7 +198,7 @@ tr:last-child td{border-bottom:none}
 			      	
 			      	 <!-- delete button -->
                         <a href="{{ route('admin.continent.delete', $continent->id) }}"
-                           onclick="return confirm('Are you sure to delete method?')">
+                           onclick="return confirm('Are you sure to delete continent?')">
                            <button class="btn btn-sm btn-danger">Delete</button>
                         </a>
 

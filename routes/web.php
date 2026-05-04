@@ -142,6 +142,8 @@ Route::middleware(['auth', 'admin'])
             ->name('country');
         Route::post('/country-store', [CountryController::class, 'store'])
             ->name('country.store');
+        Route::get('/country-delete/{id}', [CountryController::class, 'delete'])
+            ->name('country.delete');
 
         //category route
         Route::get('/category-add', [CategoryController::class, 'index'])

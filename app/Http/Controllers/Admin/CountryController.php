@@ -34,4 +34,19 @@ class CountryController extends Controller
 
     return back()->with('success', 'Country added successfully');
    }
+
+    public function delete($id)
+    {
+
+      $country = Country::findOrFail($id);
+
+      if ($country->jobPosts()->exists()) {
+        return back()->with('error','This country Cannot delete because jobs exist under it');
+      }
+         $country->delete();
+ 
+        return back()->with('success', 'Country deleted successfully');
+    }
+
+
 }
