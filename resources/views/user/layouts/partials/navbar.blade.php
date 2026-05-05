@@ -769,6 +769,14 @@
   </span>
 </div>
 
+<div class="stats-bar justify-content-center">
+  <span class="stat-pill stat-pending">
+    <i class="fa fa-bell" aria-hidden="true"></i>{{App\Models\BreakingNotice::first()->description}}
+  </span>
+ 
+ 
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 <script>
 function toggleHello() {

@@ -19,7 +19,7 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\DepositController;
-
+use App\Http\Controllers\Admin\BreakingNoticeController;
 use Illuminate\Support\Facades\Route;
 
 // web pages
@@ -197,15 +197,19 @@ Route::middleware(['auth', 'admin'])
       Route::get('/delete-job/{id}', [JobController::class, 'deleteJob'])->name('delete-job');
       Route::get('/approve-job/{id}', [JobController::class, 'approveJob'])->name('approve-job');
       Route::get('/details-job/{id}', [JobController::class, 'detailsJob'])->name('job-datails');
-    Route::post('reject-job/{id}',  [JobController::class, 'rejectJob'])->name('reject-job');
+      Route::post('reject-job/{id}',  [JobController::class, 'rejectJob'])->name('reject-job');
 
      Route::get('pause-job/{id}',    [JobController::class, 'pauseJob'])->name('make-pause-job');
      Route::get('/live-job/{id}',     [JobController::class, 'liveJob'])->name('make-un-pause-job');
 
 
 
-      // ===========================
-   
+    //notice route
+     Route::get('/notice-create',     [BreakingNoticeController::class, 'index'])->name('notice-create');
+     Route::post('/notice-store',     [BreakingNoticeController::class, 'store'])->name('notice-store');
+     Route::get('/notice-delete/{id}',     [BreakingNoticeController::class, 'destroy'])->name('notice.delete');
+    Route::post('/notice-update/',     [BreakingNoticeController::class, 'update'])->name('notice-update');
+
 
 
     });

@@ -108,25 +108,20 @@
         <a class="link text-success" style="text-decoration: none;" href="{{route('admin.rejected-deposit')}}">Rejected Deposit</a>
          <span class="nbadge red">5</span>
       </div>
-     
-      <div class="ni" onclick="navClick(this,'Reviews')">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 2l1.7 3.4 3.8.5-2.7 2.7.6 3.8L8 10.6l-3.4 1.8.6-3.8L2.5 5.9l3.8-.5z"/></svg>
-        Reviews
-      </div>
-      <div class="ni" onclick="navClick(this,'Payments')">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1.5" y="4" width="13" height="9" rx="1.5"/><path d="M1.5 7h13"/></svg>
-        Payments
-      </div>
 
-      <div class="sec-label">Analytics</div>
-      <div class="ni" onclick="navClick(this,'Reports')">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12l4-4 3 3 5-6"/></svg>
-        Reports
+       <div class="sec-label">Notice Manage</div>
+      
+      <div class="ni" onclick="navClick(this,'Disputes')">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 2"/></svg>
+        
+        <a class="link text-success" style="text-decoration: none;" href="{{route('admin.notice-create')}}">Notice</a>
+         <span class="nbadge red">5</span>
       </div>
-      <div class="ni" onclick="navClick(this,'Fraud Detection')">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 1.5L2 4v5c0 3 2.7 5.5 6 6.5 3.3-1 6-3.5 6-6.5V4l-6-2.5z"/></svg>
-        Fraud Detection
-      </div>
+     
+
+     
+     
+     
 
       <div class="sec-label">System</div>
       <div class="ni" onclick="navClick(this,'Settings')">
