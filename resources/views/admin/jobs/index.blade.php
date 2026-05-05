@@ -163,8 +163,8 @@ tr:last-child td{border-bottom:none}
                         <td>{{ $job->title}}</td>
                         <td>{{ $job->user->name}}</td>
                         <td>{{ $job->worker_need}}</td>
-                        <td>{{ $job->worker_earn}}</td>
-                        <td>{{ $job->budget}}</td>
+                        <td class="text-success">${{ $job->worker_earn}}</td>
+                        <td class="text-success">${{ $job->budget}}</td>
 
                      
                         <td>
@@ -178,19 +178,28 @@ tr:last-child td{border-bottom:none}
                         
                         </td>
                         <td>
-                        
+                        @if($job->status=='pending')
                         <!-- delete button -->
                         <a href="{{route('admin.delete-job',$job->id)}}"
                            onclick="return confirm('Are you sure to delete job?')">
                            <button class="btn btn-sm btn-danger">Delete</button>
                         </a>
 
-                        <!-- edit button -->
-                         <button class="editBtn btn btn-sm btn-success"
-                              data-id="{{ $job->id }}"
-                              data-status="{{ $job->status }}">
-                              Change Status
-                        </button>
+                        <!-- approve button -->
+                        <a href="{{route('admin.approve-job',$job->id)}}"
+                           onclick="return confirm('Are you sure to approbe job?')">
+                           <button class="btn btn-sm btn-success">Approve</button>
+                        </a>
+
+                        <a href="">
+                           <button class="btn btn-sm btn-info">Details</button>
+                        </a>
+                        @else
+                 
+                          <a href="">
+                           <button class="btn btn-sm btn-info">Details</button>
+                        </a>
+                        @endif
                           
 
                         </td>

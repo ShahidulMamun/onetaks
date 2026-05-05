@@ -32,6 +32,28 @@ class JobController extends Controller
     }
 
 
+    public function approveJob($id){
+
+       $job = JobPost::findOrFail($id);
+
+      if ($job->status !== 'pending') {
+        return back()->with('error','Something went wrong');
+      }
+
+     
+      $job->status = 'active';
+      $job->save();
+
+      $message = $job->code." job has been approve";
+      UserNotification::create([
+                'user_id' => $job->user_id,
+                'message' => $message,
+                'status'  => 'pending',
+            ]);
+
+    }
+
+
     public function deletejob($id)
     {
 
@@ -53,7 +75,7 @@ class JobController extends Controller
 
        UserNotification::create([
                 'user_id' => $job->user_id,
-                'message' => $job->code ." job has been rejected. and $". $total_with_charge . " has ben refund",
+                'message' => $job->code ." job has been deleted. and $". $total_with_charge . " has ben refund",
                 'status'  => 'pending',
             ]);
           
