@@ -351,8 +351,8 @@
     gap: 1px;
     padding: 6px 6px;
     border-radius: 20px;
-    font-weight: 500;
-    font-size: .85rem;
+    font-weight: 400;
+    font-size: 12px;
 }
 
   
@@ -508,7 +508,7 @@
 .breaking-wrapper {
     display: flex;
     align-items: center;
-    background: #FF4433;
+    background: #006A4E;
     color: #fff;
     padding: 8px 10px;
     overflow: hidden;
@@ -601,10 +601,10 @@
   </div>
   <!-- Right side icons -->
   <div class="nav-right">
-    <a class="btn btn-post me-2 d-none d-sm-block" href="{{route('user.create.job')}}">
+    <a class="btn btn-post me-2 d-sm-block" href="{{route('user.create.job')}}">
           <i class="fa fa-plus-circle" aria-hidden="true"></i> Post a Job
         </a>
-        <a class="btn-job btn-sm px-3 shadow-sm d-none d-sm-block d-lg-none d-xxl-none" href="#">
+        <a class="btn-job btn-sm px-3 shadow-sm d-sm-block d-lg-none d-xxl-none" href="{{route('user.find.jobs')}}">
           <i class="fa fa-search" aria-hidden="true"></i> Find Jobs
         </a>
         <!-- notifaction -->
@@ -781,6 +781,15 @@
     </div>
     <span class="oc-lbl">Deposit</span>
    </a>
+
+    <a href="{{ route('user.profile')}}" class="oc-item" data-bs-dismiss="">
+    <div class="oc-ico">
+    <i class="fa fa-people text-danger" aria-hidden="true"></i>
+    </div>
+    <span class="oc-lbl">profile</span>
+   </a>
+
+   
     <div class="oc-divider"></div>
           <!-- logout -->
     <a class="dropdown-item" href="{{ route('logout') }}"
