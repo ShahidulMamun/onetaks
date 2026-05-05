@@ -550,14 +550,17 @@
 <!-- ══ NAVBAR ══ -->
 <nav class="top-nav navbar navbar-expand-lg bg-white">
   <!-- Brand -->
+  @php 
+  $setting = App\Models\WebsiteSetting::first();
+  @endphp
   <div class="nav-brand mt-2">
    <!--  <div class="brand-box"></div> -->
     <a class="footer-logo" href="{{ route('user.dashboard')}}">
-          <div class="logo-icon">
-            <svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 2a5 5 0 110 10A5 5 0 018 3zm-1 2v2H5v2h2v2h2V9h2V7H9V5H7z"/></svg>
+          <div class="logo-icon" style="background: none">
+           <img src="{{asset('storage/'.$setting->site_logo)}}">
           </div>
-          <span class="logo-gig d-none d-md-inline">One</span>
-<span class="logo-clickers d-none d-md-inline">taskMarket</span>
+        
+<span class="logo-clickers d-none d-md-inline">{{$setting->site_title}}</span>
         </a>
   </div>
   <!-- Desktop Links (lg+) -->

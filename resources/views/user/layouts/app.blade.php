@@ -20,6 +20,10 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/main.css')}}">
     <!-- widthdrow css -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/withdraw.css')}}">
+  @php 
+  $setting = App\Models\WebsiteSetting::first();
+  @endphp
+    <link rel="icon" type="image/png" href="{{asset('storage/'.$setting->site_logo)}}">
     @stack('styles')
 </head>
 
