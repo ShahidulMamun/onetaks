@@ -504,6 +504,48 @@
   border: 1px solid #006a4e;
 }
 
+/*style for breaking notice*/
+.breaking-wrapper {
+    display: flex;
+    align-items: center;
+    background: #FF4433;
+    color: #fff;
+    padding: 8px 10px;
+    overflow: hidden;
+}
+
+.label {
+    color: #fff;
+    font-weight: bold;
+    margin-right: 15px;
+    white-space: nowrap;
+}
+
+.scroll-container {
+    overflow: hidden;
+    flex: 1;
+}
+
+.scroll-content {
+    display: inline-block;
+    white-space: nowrap;
+    animation: scroll-left 20s linear infinite;
+}
+
+.notice-item {
+    margin-right: 50px;
+    display: inline-block;
+}
+
+@keyframes scroll-left {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+/*style end for breaking news */
   </style>
 <!-- ══ NAVBAR ══ -->
 <nav class="top-nav navbar navbar-expand-lg bg-white">
@@ -770,11 +812,31 @@
 </div>
 
 <div class="stats-bar justify-content-center">
-  <span class="stat-pill stat-pending">
-    <i class="fa fa-bell" aria-hidden="true"></i>{{App\Models\BreakingNotice::first()->description}}
-  </span>
+  
+    @php
+
+     $notices = App\Models\BreakingNotice::where('status','active')->get();
+     @endphp
+
  
- 
+ @if($notices->count())
+<div class="breaking-wrapper">
+    
+    <div class="label">Breaking:</div>
+
+    <div class="scroll-container">
+        <div class="scroll-content">
+            @foreach($notices as $notice)
+                <span class="notice-item">
+                    <i class="fa fa-bell" aria-hidden="true"></i>
+                    🔥 {{ $notice->description }}
+                </span>
+            @endforeach
+        </div>
+    </div>
+
+</div>
+@endif
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
