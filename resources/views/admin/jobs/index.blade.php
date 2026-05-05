@@ -1,3 +1,5 @@
+{{-- resources/views/admin/jobs/index.blade.php --}}
+
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -19,16 +21,9 @@ body{font-family:system-ui,sans-serif;background:#f1f5f9;color:#0f172a;font-size
 .notif svg{width:14px;height:14px;opacity:.6}
 .ndot{position:absolute;top:5px;right:5px;width:6px;height:6px;background:#ef4444;border-radius:50%;border:1.5px solid #fff}
 .ava{width:30px;height:30px;border-radius:50%;background:#2563eb;color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer}
-
-/* BODY = sidebar + main side by side */
 .body{display:flex;flex:1;overflow:hidden}
-
-/* SIDEBAR — always visible, 210px wide */
 .sidebar{width:210px;min-width:210px;background:#fff;border-right:1px solid #e2e8f0;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;flex-shrink:0}
-
-/* On mobile: sidebar becomes overlay */
 .overlay{display:none;position:fixed;inset:0;top:52px;background:rgba(0,0,0,.45);z-index:40}
-
 .sec-label{padding:14px 14px 4px;font-size:10px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.7px}
 .ni{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;margin:1px 8px;cursor:pointer;font-size:13px;color:#64748b;transition:background .15s;white-space:nowrap}
 .ni:hover{background:#f1f5f9;color:#0f172a}
@@ -39,67 +34,88 @@ body{font-family:system-ui,sans-serif;background:#f1f5f9;color:#0f172a;font-size
 .nbadge.red{background:#fee2e2;color:#991b1b}
 .nbadge.amber{background:#fef3c7;color:#92400e}
 .sb-bottom{margin-top:auto;padding:10px 8px;border-top:1px solid #e2e8f0}
+.main{flex:1;overflow-y:auto;padding:20px;min-width:0}
+.tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:.3px}
+.tg{background:#dcfce7;color:#15803d}
+.ta{background:#fef9c3;color:#854d0e}
+.tr{background:#fee2e2;color:#991b1b}
+.tb{background:#dbeafe;color:#1d4ed8}
+.tpurple{background:#f3e8ff;color:#7e22ce}
 
-.main{flex:1;overflow-y:auto;padding:16px;min-width:0}
-
-.pg-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:16px}
-.pg-title{font-size:17px;font-weight:700;letter-spacing:-.3px}
+/* Page header */
+.pg-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.pg-title{font-size:18px;font-weight:700;letter-spacing:-.4px}
 .pg-sub{font-size:12px;color:#64748b;margin-top:2px}
-.pills{display:flex;gap:6px}
-.pill{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;background:#f8fafc;color:#64748b;border:1px solid #e2e8f0;cursor:pointer}
-.pill.on{background:#eff6ff;color:#2563eb;border-color:#bfdbfe}
 
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
-.sc{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:13px}
-.sc .ic{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:9px}
-.sc .ic svg{width:15px;height:15px}
-.sc .lbl{font-size:11px;color:#64748b;margin-bottom:2px}
-.sc .val{font-size:18px;font-weight:700;letter-spacing:-.3px}
-.sc .dl{font-size:11px;margin-top:3px}
-.up{color:#16a34a}.dn{color:#dc2626}
+/* Stats row */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+.sc{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px}
+.sc-ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sc-ico svg{width:17px;height:17px}
+.sc-lbl{font-size:11px;color:#64748b;margin-bottom:2px}
+.sc-val{font-size:20px;font-weight:700;letter-spacing:-.5px;line-height:1}
 
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin-bottom:14px}
-.card-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.card-t{font-size:13px;font-weight:600}
-.card-s{font-size:11px;color:#64748b}
+/* Filter bar */
+.filter-bar{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.filter-bar input{padding:6px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:12px;outline:none;background:#fff;width:200px}
+.filter-bar input:focus{border-color:#2563eb}
+.filter-bar select{padding:6px 10px;border:1px solid #e2e8f0;border-radius:8px;font-size:12px;outline:none;background:#fff;color:#0f172a;cursor:pointer}
+.filter-bar select:focus{border-color:#2563eb}
+.filter-bar label{font-size:12px;color:#64748b;font-weight:500}
 
-table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed}
-th{padding:7px 8px;text-align:left;font-size:10px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid #e2e8f0}
-td{padding:8px 8px;border-bottom:1px solid #f1f5f9;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-tr:last-child td{border-bottom:none}
-.tag{display:inline-block;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:500}
-.tg{background:#dcfce7;color:#15803d}.ta{background:#fef9c3;color:#854d0e}.tr{background:#fee2e2;color:#991b1b}.tb{background:#dbeafe;color:#1d4ed8}
-.uc{display:flex;align-items:center;gap:6px}
-.mav{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;flex-shrink:0}
+/* Table card */
+.tcard{background:#fff;border:1px solid #e2e8f0;border-radius:14px;overflow:hidden}
+.tcard-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #f1f5f9}
+.tcard-title{font-size:14px;font-weight:600}
+.tcard-count{font-size:12px;color:#64748b}
 
-.fi{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid #f1f5f9}
-.fi:last-child{border-bottom:none}
-.fd{width:26px;height:26px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.ft{font-size:12px;line-height:1.4}
-.fti{font-size:10px;color:#94a3b8;margin-top:2px}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+thead th{padding:10px 14px;text-align:left;font-size:10.5px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;background:#fafafa;border-bottom:1px solid #f1f5f9}
+tbody td{padding:11px 14px;border-bottom:1px solid #f8fafc;vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:#fafafe}
 
-/* MOBILE: sidebar hidden by default, slides in as overlay */
+.thumb-img{width:64px;height:36px;border-radius:6px;object-fit:cover;border:1px solid #e2e8f0}
+.thumb-placeholder{width:64px;height:36px;border-radius:6px;background:#f1f5f9;display:flex;align-items:center;justify-content:center}
+
+.job-title{font-weight:500;color:#0f172a;max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.job-code{font-size:10px;color:#94a3b8;margin-top:1px}
+
+.earn-badge{font-weight:600;color:#16a34a}
+.budget-badge{font-weight:600;color:#2563eb}
+
+/* Worker progress */
+.worker-prog{display:flex;flex-direction:column;gap:3px;min-width:90px}
+.worker-bar-bg{height:4px;background:#f1f5f9;border-radius:4px;overflow:hidden}
+.worker-bar-fill{height:100%;background:#2563eb;border-radius:4px;transition:width .3s}
+.worker-nums{font-size:10px;color:#64748b}
+
+/* Action buttons */
+.act-btns{display:flex;gap:5px;flex-wrap:wrap}
+.abtn{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:7px;font-size:11px;font-weight:500;border:none;cursor:pointer;text-decoration:none;transition:opacity .15s}
+.abtn:hover{opacity:.85;text-decoration:none}
+.abtn-info{background:#eff6ff;color:#2563eb}
+.abtn-success{background:#f0fdf4;color:#16a34a}
+.abtn-danger{background:#fff1f2;color:#e11d48}
+.abtn svg{width:11px;height:11px}
+
+/* Top badge */
+.top-crown{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:600;background:#fef3c7;color:#92400e}
+
+/* Pagination */
+.pg-wrap{padding:12px 18px;border-top:1px solid #f1f5f9;display:flex;justify-content:flex-end}
+
+@media(max-width:900px){.stats-row{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:640px){
-  .sidebar{
-    position:fixed;
-    top:52px;left:0;
-    height:calc(100% - 52px);
-    z-index:50;
-    transform:translateX(-100%);
-    transition:transform .25s ease;
-    min-width:200px;
-    width:200px;
-  }
+  .sidebar{position:fixed;top:52px;left:0;height:calc(100% - 52px);z-index:50;transform:translateX(-100%);transition:transform .25s ease;min-width:200px;width:200px}
   .sidebar.mob-open{transform:translateX(0)}
   .overlay.show{display:block}
-  .stats{grid-template-columns:repeat(2,1fr)}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
   .tb-search{display:none}
+  table{font-size:11px}
+  thead th,tbody td{padding:8px 10px}
 }
-/* DESKTOP: hamburger hidden, sidebar always visible */
-@media(min-width:641px){
-  .hbtn{display:none}
-  .overlay{display:none!important}
-}
+@media(min-width:641px){.hbtn{display:none}.overlay{display:none!important}}
 </style>
 
 <div class="app">
@@ -121,141 +137,256 @@ tr:last-child td{border-bottom:none}
   <div class="body">
     <div class="overlay" id="overlay" onclick="closeSB()"></div>
 
-   @include('admin.layouts.sidebar')
+    @include('admin.layouts.sidebar')
 
     <main class="main">
-      <div class="row"> 
-         <div class="col-md-12">
 
-               <div class="card shadow-sm border-0 rounded-3 mt-3">
-                   <div class="card-body">{{$pageTitle}}
-
-               @if(session()->has('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
-                @if(session()->has('error'))
-                    <div class="alert alert-danger">
-                        {{ session('error') }}
-                    </div>
-                @endif
-                   <table class="table table-striped  table-responsive">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>Title</th>
-                        <th>Buyer</th>
-                        <th>Worker</th>
-                        <th>Worker Earn</th>
-                        <th>Budget</th>
-                        <th>Thumbnail</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                    	
-                     @foreach($jobs as $job)
-                      <?php $i=1; ?>
-                      <tr>
-                        <td> <?php echo $i++ ?></td>
-                        <td>{{ $job->title}}</td>
-                        <td>{{ $job->user->name}}</td>
-                        <td>{{ $job->worker_need}}</td>
-                        <td class="text-success">${{ $job->worker_earn}}</td>
-                        <td class="text-success">${{ $job->budget}}</td>
-
-                     
-                        <td>
-                          <img src="{{asset('storage/'.$job->thumbnail)}}" style="width: 80px; height: 40px">
-                        </td>
-                        <td>
-                        
-                           <strong class="badge badge-info mt-2">
-                             {{$job->status}}
-                           </strong>
-                        
-                        </td>
-                        <td>
-                        @if($job->status=='pending')
-                        <!-- delete button -->
-                        <a href="{{route('admin.delete-job',$job->id)}}"
-                           onclick="return confirm('Are you sure to delete job?')">
-                           <button class="btn btn-sm btn-danger">Delete</button>
-                        </a>
-
-                        <!-- approve button -->
-                        <a href="{{route('admin.approve-job',$job->id)}}"
-                           onclick="return confirm('Are you sure to approbe job?')">
-                           <button class="btn btn-sm btn-success">Approve</button>
-                        </a>
-
-                        <a href="">
-                           <button class="btn btn-sm btn-info">Details</button>
-                        </a>
-                        @else
-                 
-                          <a href="">
-                           <button class="btn btn-sm btn-info">Details</button>
-                        </a>
-                        @endif
-                          
-
-                        </td>
-                      </tr>
-                    @endforeach
-                     
-                    </tbody>
-                  </table>
-                  </div>
-            </div>
-         </div>
-    
-      </div>
-       <!-- =======edit modal start======= -->
-          <div class="modal fade" id="editModal">
-            <div class="modal-dialog">
-                <form id="editForm" action="{{route('admin.update-user-status')}}" method="POST">
-                    @csrf
-
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5>Active or Inactive User</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-
-
-                        <div class="modal-body">
-
-                           <input type="hidden" name="id" id="edit_id">
-                         
-                        
-                         <div class="form-group">
-                              <label><strong>Status</strong></label>
-                            <select name="status" id="edit_status" class="form-control mb-2">
-                                <option value="1">Active</option>
-                                <option value="0">Inactive</option>
-                            </select>
-                          </div>
-                         
-
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-success">Update</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+      <!-- Page header -->
+      <div class="pg-head">
+        <div>
+          <div class="pg-title">{{ $pageTitle ?? 'All Jobs' }}</div>
+          <div class="pg-sub">Manage and review all posted jobs</div>
         </div>
-      <!--  ========edit modal end======== -->
+      </div>
+
+      <!-- Flash messages -->
+      @if(session()->has('success'))
+        <div class="alert alert-success mb-3" style="border-radius:10px;font-size:13px">
+          <strong>✓</strong> {{ session('success') }}
+        </div>
+      @endif
+      @if(session()->has('error'))
+        <div class="alert alert-danger mb-3" style="border-radius:10px;font-size:13px">
+          <strong>✕</strong> {{ session('error') }}
+        </div>
+      @endif
+
+      <!-- Stats Row -->
+      @php
+        $totalJobs    = $jobs->total() ?? count($jobs);
+        $pendingCount = $jobs->where('status','pending')->count();
+        $activeCount  = $jobs->where('status','active')->count();
+        $topCount     = $jobs->where('is_top',1)->count();
+      @endphp
+      <div class="stats-row">
+        <div class="sc">
+          <div class="sc-ico" style="background:#eff6ff">
+            <svg viewBox="0 0 16 16" fill="none" stroke="#2563eb" stroke-width="1.6"><rect x="2" y="3" width="12" height="10" rx="2"/><path d="M5 7h6M5 10h4"/></svg>
+          </div>
+          <div><div class="sc-lbl">Total Jobs</div><div class="sc-val">{{ $totalJobs }}</div></div>
+        </div>
+        <div class="sc">
+          <div class="sc-ico" style="background:#fef9c3">
+            <svg viewBox="0 0 16 16" fill="none" stroke="#854d0e" stroke-width="1.6"><circle cx="8" cy="8" r="5.5"/><path d="M8 5.5V8l1.5 1.5"/></svg>
+          </div>
+          <div><div class="sc-lbl">Pending</div><div class="sc-val">{{ $pendingCount }}</div></div>
+        </div>
+        <div class="sc">
+          <div class="sc-ico" style="background:#f0fdf4">
+            <svg viewBox="0 0 16 16" fill="none" stroke="#16a34a" stroke-width="1.6"><path d="M3 8.5l3.5 3.5L13 4"/></svg>
+          </div>
+          <div><div class="sc-lbl">Active</div><div class="sc-val">{{ $activeCount }}</div></div>
+        </div>
+        <div class="sc">
+          <div class="sc-ico" style="background:#fef3c7">
+            <svg viewBox="0 0 16 16" fill="none" stroke="#d97706" stroke-width="1.6"><path d="M8 2l1.6 3.4L13 6.1l-2.5 2.4.6 3.5L8 10.3 4.9 12l.6-3.5L3 6.1l3.4-.7z"/></svg>
+          </div>
+          <div><div class="sc-lbl">Top Jobs</div><div class="sc-val">{{ $topCount }}</div></div>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <label>Filter:</label>
+        <form method="GET" action="{{ route('admin.all-jobs') }}" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <input type="text" name="search" value="{{ request('search') }}" placeholder="Title, code...">
+          <select name="status">
+            <option value="">All Status</option>
+            <option value="pending"  {{ request('status')=='pending'  ? 'selected':'' }}>Pending</option>
+            <option value="active"   {{ request('status')=='active'   ? 'selected':'' }}>Active</option>
+            <option value="complete"{{ request('status')=='complete'? 'selected':'' }}>complete</option>
+            <option value="paused"   {{ request('status')=='paused'   ? 'selected':'' }}>Paused</option>
+            <option value="rejected" {{ request('status')=='rejected' ? 'selected':'' }}>Rejected</option>
+          </select>
+          <select name="is_top">
+            <option value="">All Type</option>
+            <option value="1" {{ request('is_top')=='1' ? 'selected':'' }}>Top Jobs</option>
+           
+          </select>
+          <button type="submit" class="abtn abtn-info" style="padding:6px 14px;font-size:12px">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" style="width:12px;height:12px"><circle cx="6.5" cy="6.5" r="4.5"/><path d="m10 10 3.5 3.5"/></svg>
+            Search
+          </button>
+          @if(request()->hasAny(['search','status','is_top']))
+            <a href="{{ route('admin.active-jobs') }}" class="abtn abtn-danger" style="padding:6px 14px;font-size:12px">Clear</a>
+          @endif
+        </form>
+      </div>
+
+      <!-- Jobs Table -->
+      <div class="tcard">
+        <div class="tcard-head">
+          <span class="tcard-title">Job Listings</span>
+          <span class="tcard-count">{{ $jobs->total() ?? count($jobs) }} jobs found</span>
+        </div>
+
+        <div style="overflow-x:auto">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:40px">#</th>
+                <th>Job Info</th>
+                <th>Buyer</th>
+                <th>Category</th>
+                <th>Workers</th>
+                <th>Budget</th>
+                <th>Earn / Worker</th>
+                <th>Thumbnail</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @forelse($jobs as $index => $job)
+              <tr>
+                <!-- # -->
+                <td style="color:#94a3b8;font-size:11px;font-weight:600">
+                  {{ ($jobs->currentPage() - 1) * $jobs->perPage() + $loop->iteration }}
+                </td>
+
+                <!-- Job Info -->
+                <td>
+                  <span class="job-title" title="{{ $job->title }}">
+                    {{ $job->title }}
+                    @if($job->is_top)
+                      <span class="top-crown" style="margin-left:4px">★ Top</span>
+                    @endif
+                  </span>
+                  <span class="job-code">Code: {{ $job->code }}</span>
+                  @if($job->has_secret_code)
+                    <span class="job-code" style="color:#9333ea">🔒 Secret Code</span>
+                  @endif
+                </td>
+
+                <!-- Buyer -->
+                <td>
+                  <div style="font-weight:500;font-size:12px">{{ $job->user->name ?? '—' }}</div>
+                  <div style="font-size:10px;color:#94a3b8">{{ $job->user->email ?? '' }}</div>
+                </td>
+
+                <!-- Category -->
+                <td>
+                  <div style="font-size:12px;font-weight:500">{{ $job->category->name ?? '—' }}</div>
+                  <div style="font-size:10px;color:#94a3b8">{{ $job->subcategory->name ?? '' }}</div>
+                </td>
+
+                <!-- Workers progress -->
+                <td>
+                  <div class="worker-prog">
+                    <div class="worker-nums">{{ $job->worker_done }} / {{ $job->worker_need }} done</div>
+                    <div class="worker-bar-bg">
+                      <div class="worker-bar-fill" style="width:{{ $job->worker_need > 0 ? round(($job->worker_done / $job->worker_need) * 100) : 0 }}%"></div>
+                    </div>
+                    <div class="worker-nums" style="color:#94a3b8">{{ $job->worker_remaining }} remaining</div>
+                  </div>
+                </td>
+
+                <!-- Budget -->
+                <td>
+                  <span class="budget-badge">${{ number_format($job->budget, 2) }}</span>
+                </td>
+
+                <!-- Earn per worker -->
+                <td>
+                  <span class="earn-badge">${{ number_format($job->worker_earn, 2) }}</span>
+                  @if($job->charge_percentage)
+                    <div style="font-size:10px;color:#94a3b8">Fee: {{ $job->charge_percentage }}%</div>
+                  @endif
+                </td>
+
+                <!-- Thumbnail -->
+                <td>
+                  @if($job->thumbnail)
+                    <img src="{{ asset('storage/'.$job->thumbnail) }}" class="thumb-img" alt="thumbnail">
+                  @else
+                    <div class="thumb-placeholder">
+                      <svg viewBox="0 0 16 16" fill="none" stroke="#cbd5e1" stroke-width="1.4" width="16" height="16"><rect x="2" y="4" width="12" height="9" rx="2"/><path d="M2 10l3-3 3 3 2-2 4 4"/></svg>
+                    </div>
+                  @endif
+                </td>
+
+                <!-- Status -->
+                <td>
+                  @php
+                    $stMap = [
+                      'pending'   => 'ta',
+                      'active'    => 'tb',
+                      'complete' => 'tg',
+                      'pause'    => 'tpurple',
+                      'rejecte'  => 'tr',
+                    ];
+                    $stClass = $stMap[$job->status] ?? 'ta';
+                  @endphp
+                  <span class="tag {{ $stClass }}">{{ ucfirst($job->status) }}</span>
+                  @if($job->reject_done > 0)
+                    <div style="font-size:10px;color:#94a3b8;margin-top:2px">Rejects: {{ $job->reject_done }}/{{ $job->max_reject }}</div>
+                  @endif
+                </td>
+
+                <!-- Actions -->
+                <td>
+                  <div class="act-btns">
+                    <!-- Details always visible -->
+                    <a href="{{ route('admin.job-datails', $job->id) }}" class="abtn abtn-info">
+                      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="8" r="5.5"/><path d="M8 7v4M8 5.5v.5"/></svg>
+                      Details
+                    </a>
+
+                    @if($job->status == 'pending')
+                      <!-- Approve -->
+                      <a href="{{ route('admin.approve-job', $job->id) }}"
+                         onclick="return confirm('Approve this job?')"
+                         class="abtn abtn-success">
+                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8.5l3.5 3.5L13 4"/></svg>
+                        Approve
+                      </a>
+                      <!-- Delete -->
+                      <a href="{{ route('admin.delete-job', $job->id) }}"
+                         onclick="return confirm('Delete this job permanently?')"
+                         class="abtn abtn-danger">
+                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 4.5h10M6 4.5V3h4v1.5M5 4.5v7a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-7"/></svg>
+                        Delete
+                      </a>
+                    @endif
+                  </div>
+                </td>
+              </tr>
+              @empty
+              <tr>
+                <td colspan="10" style="text-align:center;padding:40px;color:#94a3b8">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="#cbd5e1" stroke-width="1.4" width="32" height="32" style="display:block;margin:0 auto 8px"><rect x="2" y="3" width="12" height="10" rx="2"/><path d="M5 7h6M5 10h4"/></svg>
+                  No jobs found
+                </td>
+              </tr>
+              @endforelse
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        @if(method_exists($jobs, 'links'))
+        <div class="pg-wrap">
+          {{ $jobs->withQueryString()->links() }}
+        </div>
+        @endif
+      </div>
+
     </main>
   </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 var mobOpen=false;
 function toggleSB(){
@@ -272,75 +403,4 @@ function closeSB(){
   document.getElementById('overlay').classList.remove('show');
   document.getElementById('hbtn').classList.remove('open');
 }
-function navClick(el,name){
-  document.querySelectorAll('.ni').forEach(function(n){n.classList.remove('on')});
-  el.classList.add('on');
-  document.getElementById('pg-title').textContent=name;
-  if(window.innerWidth<=640) closeSB();
-}
-function setPill(el){
-  document.querySelectorAll('.pill').forEach(function(p){p.classList.remove('on')});
-  el.classList.add('on');
-  drawChart();
-}
-function drawChart(){
-  var days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-  var data=days.map(function(){return Math.round(5000+Math.random()*11000)});
-  var max=Math.max.apply(null,data);
-  var svg=document.getElementById('rchart');
-  var W=340,H=90,pad=18,gap=7;
-  var bw=Math.floor((W-pad*2-(days.length-1)*gap)/days.length);
-  var html='';
-  data.forEach(function(v,i){
-    var x=pad+i*(bw+gap);
-    var bh=Math.round((v/max)*(H-22));
-    var y=H-16-bh;
-    var clr=i===4?'#2563eb':'#bfdbfe';
-    html+='<rect x="'+x+'" y="'+y+'" width="'+bw+'" height="'+bh+'" rx="3" fill="'+clr+'"/>';
-    html+='<text x="'+(x+bw/2)+'" y="'+(H-2)+'" text-anchor="middle" font-size="9" fill="#94a3b8" font-family="system-ui">'+days[i]+'</text>';
-  });
-  svg.innerHTML=html;
-}
-drawChart();
-
-var orders=[
-  {u:'Sarah K.',av:'SK',c:'#2563eb',sv:'Logo Design',am:'$85',st:'completed'},
-  {u:'Mike T.',av:'MT',c:'#16a34a',sv:'SEO Article',am:'$45',st:'progress'},
-  {u:'Aisha B.',av:'AB',c:'#9333ea',sv:'Promo Video',am:'$220',st:'pending'},
-  {u:'James O.',av:'JO',c:'#d97706',sv:'WP Fix',am:'$60',st:'completed'},
-  {u:'Priya N.',av:'PN',c:'#e11d48',sv:'Data Entry',am:'$35',st:'disputed'},
-];
-var scls={completed:'tag tg',progress:'tag tb',pending:'tag ta',disputed:'tag tr'};
-var slbl={completed:'Done',progress:'Active',pending:'Pending',disputed:'Dispute'};
-document.getElementById('otb').innerHTML=orders.map(function(o){
-  return '<tr><td><div class="uc"><div class="mav" style="background:'+o.c+'20;color:'+o.c+'">'+o.av+'</div>'+o.u+'</div></td><td style="color:#64748b">'+o.sv+'</td><td style="font-weight:500">'+o.am+'</td><td><span class="'+scls[o.st]+'">'+slbl[o.st]+'</span></td></tr>';
-}).join('');
-
-var acts=[
-  {bg:'#eff6ff',ic:'#2563eb',t:'<strong>Alex M.</strong> registered as new seller',ti:'2 min ago'},
-  {bg:'#f0fdf4',ic:'#16a34a',t:'Order #4821 marked <strong>completed</strong>',ti:'8 min ago'},
-  {bg:'#fef9c3',ic:'#854d0e',t:'<strong>Dispute #204</strong> opened by buyer',ti:'15 min ago'},
-  {bg:'#fdf4ff',ic:'#9333ea',t:'<strong>$340</strong> withdrawal processed',ti:'28 min ago'},
-  {bg:'#fff7ed',ic:'#d97706',t:'New <strong>5-star review</strong> posted',ti:'42 min ago'},
-];
-document.getElementById('afeed').innerHTML=acts.map(function(a){
-  return '<div class="fi"><div class="fd" style="background:'+a.bg+'"><svg viewBox="0 0 12 12" fill="none" stroke="'+a.ic+'" stroke-width="1.6" width="12" height="12"><circle cx="6" cy="4" r="2"/><path d="M2 10a4 4 0 0 1 8 0"/></svg></div><div><div class="ft">'+a.t+'</div><div class="fti">'+a.ti+'</div></div></div>';
-}).join('');
 </script>
-
-<!-- script for edit modal open and data set -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  
-  $(document).on('click', '.editBtn', function () {
-
-    let id = $(this).data('id');
-    $('#edit_id').val(id);
-   
-    $('#edit_status').val($(this).data('status'));
-
-    $('#editModal').modal('show');
-});
-</script>
-

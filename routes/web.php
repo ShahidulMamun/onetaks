@@ -187,16 +187,24 @@ Route::middleware(['auth', 'admin'])
       Route::get('/user-delete/{id}', [UserController::class, 'delete'])->name('user-delete');
       
       //jobs route
+      Route::get('/all-jobs', [JobController::class, 'jobs'])->name('all-jobs');
+
       Route::get('/active-jobs', [JobController::class, 'activeJobs'])->name('active-jobs');
       Route::get('/pending-jobs', [JobController::class, 'pendingJobs'])->name('pending-jobs');
       Route::get('/rejected-jobs', [JobController::class, 'rejectedJobs'])->name('rejected-jobs');
       Route::get('/completed-jobs', [JobController::class, 'completedJobs'])->name('completed-jobs');
-
+      Route::get('/paused-jobs', [JobController::class, 'pausedJobs'])->name('paused-jobs');
       Route::get('/delete-job/{id}', [JobController::class, 'deleteJob'])->name('delete-job');
+      Route::get('/approve-job/{id}', [JobController::class, 'approveJob'])->name('approve-job');
+      Route::get('/details-job/{id}', [JobController::class, 'detailsJob'])->name('job-datails');
+    Route::post('reject-job/{id}',  [JobController::class, 'rejectJob'])->name('reject-job');
 
-       Route::get('/approve-job/{id}', [JobController::class, 'approveJob'])->name('approve-job');
+     Route::get('pause-job/{id}',    [JobController::class, 'pauseJob'])->name('make-pause-job');
+     Route::get('/live-job/{id}',     [JobController::class, 'liveJob'])->name('make-un-pause-job');
 
 
+
+      // ===========================
    
 
 

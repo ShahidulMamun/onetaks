@@ -21,14 +21,31 @@
          <span class="nbadge red">2.4k</span>
       </div>
       <div class="sec-label">Job Management</div>
+
+
+       <div class="ni" onclick="navClick(this,'Job Listings')">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="4" width="12" height="9" rx="1.5"/><path d="M5 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/></svg>
+        <a class="link text-success" style="text-decoration: none;" href="{{route('admin.all-jobs')}}">All Jobs</a>
+      </div>
+
+
+
+       <div class="ni" onclick="navClick(this,'Job Listings')">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="4" width="12" height="9" rx="1.5"/><path d="M5 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/></svg>
+        <a class="link text-success" style="text-decoration: none;" href="{{route('admin.pending-jobs')}}">Pending Jobs</a>
+      </div>
+
+
       <div class="ni" onclick="navClick(this,'Job Listings')">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="4" width="12" height="9" rx="1.5"/><path d="M5 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/></svg>
         <a class="link text-success" style="text-decoration: none;" href="{{route('admin.active-jobs')}}">Live Jobs</a>
       </div>
 
-      <div class="ni" onclick="navClick(this,'Job Listings')">
+     
+     
+       <div class="ni" onclick="navClick(this,'Job Listings')">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="4" width="12" height="9" rx="1.5"/><path d="M5 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"/></svg>
-        <a class="link text-success" style="text-decoration: none;" href="{{route('admin.pending-jobs')}}">Pending Jobs</a>
+        <a class="link text-success" style="text-decoration: none;" href="{{route('admin.paused-jobs')}}">Paused Jobs</a>
       </div>
 
        <div class="ni" onclick="navClick(this,'Job Listings')">
