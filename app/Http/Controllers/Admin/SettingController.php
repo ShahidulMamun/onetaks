@@ -40,7 +40,8 @@ class SettingController extends Controller
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
             'meta_keywords' => 'nullable|string',
-            'dolar_rate'    =>'required|numeric' 
+            'dolar_rate'    =>'required|numeric',
+            'topjob_charge' =>'required',
         ]);
 
         if ($validator->fails()) {

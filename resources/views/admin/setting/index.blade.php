@@ -253,14 +253,20 @@ tr:last-child td{border-bottom:none}
                             value="{{ old('dolar_rate', $setting->dolar_rate) }}">
                     </div>
 
+                    <div class="col-md-4">
+                        <label class="form-label">Top Job Charge $</label>
+                        <input type="number" step="0.01" name="topjob_charge" class="form-control"
+                            value="{{ old('topjob_charge', $setting->topjob_charge) }}">
+                    </div>
 
-                    <div class="col-md-6">
+
+                    <div class="col-md-4">
                         <label class="form-label">Job Post Charge</label>
                         <input type="number" step="0.01" name="jobpost_charge" class="form-control"
                             value="{{ old('jobpost_charge', $setting->jobpost_charge) }}">
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">Deposit Bonus (%)</label>
                         <input type="number" step="0.01" name="deposit_bonus" class="form-control"
                             value="{{ old('deposit_bonus', $setting->deposit_bonus) }}">

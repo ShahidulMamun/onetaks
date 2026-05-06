@@ -236,6 +236,9 @@ class UserJobController extends Controller
         $user->decrement('current_deposit', $totalCharge);
     });
 
+        $job->status='pending';
+        $job->save();
+
             $message = "$".$totalCharge." has been deducted for edit ".$job->code." job (including charge).";
             UserNotification::create([
                 'user_id' => $user->id,

@@ -29,5 +29,6 @@ class WebsiteSetting extends Model
         'meta_description',
         'meta_keywords',
         'dolar_rate',
+        'topjob_charge',
     ];
 }
