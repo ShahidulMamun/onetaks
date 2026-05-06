@@ -75,6 +75,7 @@ Route::middleware(['auth', 'user'])
         Route::get('/create-job',  [UserJobController::class, 'create'])->name('create.job');
         Route::post('/create-job', [UserJobController::class, 'store'])->name('create.job.store');
         Route::patch('/jobs/{id}/update-workers', [UserJobController::class, 'update']);
+        Route::patch('/jobs/{id}/make-top', [UserJobController::class, 'makeTopJob']);
 
         Route::delete('/delete-job/{id}/{code}', [UserJobController::class, 'delete'])->name('job.delete');
         Route::get('/job-details/{code}',  [UserJobController::class, 'details'])->name('job-details');

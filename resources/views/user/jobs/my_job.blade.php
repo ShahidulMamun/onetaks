@@ -342,7 +342,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header" style="background: linear-gradient(135deg,#f39c12,#e67e22);">
-                <h5 class="modal-title"><i class="bi bi-star-fill me-2"></i>Promote to Top Job</h5>
+                <h6 class="modal-title"><i class="bi bi-star-fill me-2"></i>Promote to Top Job</h6>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form id="topJobForm" method="POST">
@@ -351,9 +351,9 @@
                 <div class="modal-body p-4">
 
                     <div class="text-center mb-4">
-                        <div style="font-size:3rem;">⭐</div>
+                        <div style="font-size:1rem;">⭐</div>
                         <h6 class="fw-bold mt-2" id="top-job-title-display"></h6>
-                        <p class="text-muted" style="font-size:.85rem;">
+                        <p class="text-muted" style="font-size:12px;">
                             Top Jobs appear at the top of listings and attract more workers faster.
                         </p>
                     </div>
@@ -361,12 +361,12 @@
                     <div class="charge-preview">
                         <div class="cp-row">
                             <span>Top Job Promotion Fee</span>
-                            <span class="fw-bold text-warning">${{ $setting->top_job_charge ?? '0.00' }}</span>
+                            <span class="fw-bold text-warning">${{ $setting->topjob_charge ?? '0.00' }}</span>
                         </div>
-                        <div class="cp-row total">
+                      <!--   <div class="cp-row total">
                             <span>Total charge</span>
-                            <span>${{ $setting->top_job_charge ?? '0.00' }}</span>
-                        </div>
+                            <span>${{ $setting->topjob_charge ?? '0.00' }}</span>
+                        </div> -->
                     </div>
 
                     <div class="info-note mt-3">

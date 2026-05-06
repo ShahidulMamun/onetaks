@@ -263,6 +263,56 @@ class UserJobController extends Controller
     return back()->with('success', $extraWorkers . ' workers added successfully.');
    }
 
+   public function makeTopJob($id)
+   {
+    $job = JobPost::where('id', $id)
+                  ->where('user_id', Auth::id())
+                  ->firstOrFail();
+ 
+    if ($job->is_top) {
+        return back()->with('error', 'This job is already a Top Job.');
+    }
+ 
+    $setting   = Websitesetting::first();
+    $topCharge = (float) ($setting->topjob_charge ?? 0);
+ 
+    $user = Auth::user();
+    if ($user->current_deposit < $topCharge) {
+        return back()->with('error', 'Insufficient balance. Required: $' . number_format($topCharge, 2));
+    }
+ 
+    DB::transaction(function () use ($job, $topCharge, $user) {
+        $job->update([
+        'is_top' => 1,
+        'topped_at' => now(),
+        ]);
+        $user->decrement('current_deposit', $topCharge);
+    });
+
+      $message = "$".$topCharge." has been deducted for ".$job->code." make top job";
+            UserNotification::create([
+                'user_id' => $user->id,
+                'message' => $message,
+                'status'  => 'pending',
+            ]);
+
+
+             UserTransaction::create([
+            'user_id' => $user->id,
+            'transaction_id' => strtoupper(uniqid()),
+            'type' => "charge",
+            'amount' => $topCharge,
+            'description' => "Top job charge",
+            'reference_id' => $job->id,
+            'status' => 'success',
+           ]);
+
+
+
+ 
+    return back()->with('success', 'Job promoted to Top Job successfully!');
+   }
+
     // my jobs
     public function myjobs(){
         $pageTitle= "My Jobs";
