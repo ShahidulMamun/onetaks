@@ -139,7 +139,7 @@
 		            </div>
 		            <div class="col-lg-12">
 		              	<p class="p-4">
-		              		{{$job->description}}
+		              		{!! nl2br(e($job->description))!!}
 		              	</p>
 		              </div>
 		       </div>

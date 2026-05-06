@@ -198,11 +198,74 @@ class UserJobController extends Controller
 
     }
 
+
+
+    public function update(Request $request, $id)
+    {
+
+            // return $request->all();
+    $request->validate([
+         'extra_workers' => 'required|integer|min:1',
+         'job_title'       => 'required|string|max:255',
+         'job_description' => 'required|string',
+
+    ]);
+ 
+    $job = JobPost::where('id', $id)
+                  ->where('user_id', Auth::id())
+                  ->firstOrFail();
+ 
+    $setting      = Websitesetting::first();
+    $extraWorkers = (int) $request->extra_workers;
+    $workerEarn   = (float) $job->worker_earn;
+    $new_budget = $extraWorkers*$workerEarn;
+    $charge_parcantage   = (float) ($setting->jobpost_charge ?? 0);
+
+    $charge = (float)($new_budget*$charge_parcantage)/100;
+ 
+    $totalCharge  = $new_budget+$charge;
+ 
+    $user = Auth::user();
+    if ($user->current_deposit < $totalCharge) {
+        return back()->with('error', 'Insufficient deposit. Required: $' . number_format($totalCharge, 2));
+    }
+ 
+    DB::transaction(function () use ($job, $extraWorkers, $totalCharge, $user) {
+        $job->increment('worker_need', $extraWorkers);
+        $job->increment('worker_remaining', $extraWorkers);
+        $user->decrement('current_deposit', $totalCharge);
+    });
+
+            $message = "$".$totalCharge." has been deducted for edit ".$job->code." job (including charge).";
+            UserNotification::create([
+                'user_id' => $user->id,
+                'message' => $message,
+                'status'  => 'pending',
+            ]);
+
+
+             UserTransaction::create([
+            'user_id' => $user->id,
+            'transaction_id' => strtoupper(uniqid()),
+            'type' => "charge",
+            'amount' => $totalCharge,
+            'description' => "Job edit cost(including charge)",
+            'reference_id' => $job->id,
+            'status' => 'success',
+           ]);
+
+
+
+ 
+    return back()->with('success', $extraWorkers . ' workers added successfully.');
+   }
+
     // my jobs
     public function myjobs(){
         $pageTitle= "My Jobs";
+        $setting = WebsiteSetting::first();
         $jobs =  JobPost::where('user_id',Auth::user()->id)->get();
-        return view('user.jobs.my_job',compact('jobs','pageTitle'));
+        return view('user.jobs.my_job',compact('jobs','pageTitle','setting'));
     }
 
     // find jobs

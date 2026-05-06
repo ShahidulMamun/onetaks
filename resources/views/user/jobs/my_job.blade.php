@@ -99,9 +99,11 @@
 
     /* ── Modals ── */
     .modal-header {
-        background: linear-gradient(135deg, #1a1a2e, #0f3460);
-        color: #fff; border: none; border-radius: var(--radius) var(--radius) 0 0;
-    }
+    background: linear-gradient(135deg, #006A4E, #181c20);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius) var(--radius) 0 0;
+}
     .modal-header .modal-title { font-family:'Syne',sans-serif; font-weight:700; }
     .modal-header .btn-close { filter: invert(1) brightness(2); }
     .modal-content { border-radius: var(--radius); overflow:hidden; border:none; box-shadow:0 16px 48px rgba(0,0,0,.18); }
@@ -205,7 +207,7 @@
 
                                 <!-- Edit Workers -->
                                 <button class="btn btn-edit btn-sm"
-                                    onclick="openEditModal({{ $job->id }}, {{ $job->worker_need }}, {{ $job->worker_earn }})">
+                                    onclick='openEditModal({{ $job->id }},{{ $job->worker_need }},{{ $job->worker_earn }},@json($job->title),@json($job->description))'>
                                     <i class="bi bi-pencil me-1"></i>Edit
                                 </button>
 
@@ -251,7 +253,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Edit Workers</h5>
+                <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Edit Job</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form id="editWorkerForm" method="POST">
@@ -264,8 +266,28 @@
                         You can only <strong>increase</strong> the number of workers. Decreasing is not allowed.
                     </div>
 
+                      <div class="mb-3">
+                        <label class="form-label">Title</label>
+                        <div class="input-group">
+                            <input style="border-radius:10px" type="text" id="jobTitle" name="job_title" class="form-control">
+                        </div>
+                      
+                       </div>
+
+                        <div class="mb-3">
+                        <label class="form-label">Desciption</label>
+                        <div class="input-group">
+                            <textarea style="border-radius: 10px" id="jobDescription"name="job_description" class="form-control">
+                                
+                            </textarea>
+                           
+                        </div>
+                      
+                       </div>
+
+
                     <div class="mb-3">
-                        <label class="form-label">Add More Workers</label>
+                        <label class="form-label">Add Workers</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
                             <input type="number"
@@ -293,7 +315,7 @@
                         </div>
                         <div class="cp-row">
                             <span>Job post charge</span>
-                            <span id="prev-charge">${{ $setting->job_post_charge ?? '0.00' }}</span>
+                            <span id="prev-charge">{{ $setting->jobpost_charge ?? '0.00' }}%</span>
                         </div>
                         <div class="cp-row total">
                             <span>Total to pay</span>
@@ -305,7 +327,7 @@
                 <div class="modal-footer border-0 pt-0 pb-4 px-4">
                     <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-edit rounded-pill px-5 fw-bold">
-                        <i class="bi bi-check-circle me-1"></i>Update Workers
+                        <i class="bi bi-check-circle me-1"></i>Update Job
                     </button>
                 </div>
             </form>
@@ -369,14 +391,16 @@
 </footer>
 
 <script>
-    const JOB_POST_CHARGE = {{ $setting->job_post_charge ?? 0 }};
+    const JOB_POST_CHARGE = {{ $setting->jobpost_charge ?? 0 }};
 
     let _editEarn = 0;
 
-    function openEditModal(jobId, currentWorkers, workerEarn) {
+    function openEditModal(jobId, currentWorkers, workerEarn, jobTitle , jobDescription) {
         _editEarn = workerEarn;
         document.getElementById('editWorkerForm').action = '/user/jobs/' + jobId + '/update-workers';
         document.getElementById('current_total').textContent = currentWorkers;
+        document.getElementById('jobTitle').value = jobTitle;
+        document.getElementById('jobDescription').value = jobDescription;
         document.getElementById('extra_workers').value = '';
         document.getElementById('prev-earn').textContent = '$' + parseFloat(workerEarn).toFixed(2);
         recalcEdit();
