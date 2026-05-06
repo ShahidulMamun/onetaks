@@ -481,8 +481,8 @@
   background: #006a4e;
   color: #fff !important;
   border-radius: 80px 80px 80px 80px;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 12px !important
+  font-weight: 500;
   padding: 8px 18px;
   border: none;
   transition: 0.2s;
@@ -498,8 +498,8 @@
   text-decoration: none;
   color: #006a4e !important;
   border-radius: 40px 40px 40px 40px;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 12px !important
+  font-weight: 500;
   padding: 8px 18px;
   border: 1px solid #006a4e;
 }
@@ -546,6 +546,10 @@
     }
 }
 /*style end for breaking news */
+
+.nav-right{
+    gap: 6px !important;
+  }
   </style>
 <!-- ══ NAVBAR ══ -->
 <nav class="top-nav navbar navbar-expand-lg bg-white">
@@ -601,10 +605,10 @@
   </div>
   <!-- Right side icons -->
   <div class="nav-right">
-    <a class="btn btn-post me-2 d-sm-block" href="{{route('user.create.job')}}">
+    <a class="btn btn-post me-2 d-sm-block" href="{{route('user.create.job')}}" style="font-size: 12px !important;">
           <i class="fa fa-plus-circle" aria-hidden="true"></i> Post a Job
         </a>
-        <a class="btn-job btn-sm px-3 shadow-sm d-sm-block d-lg-none d-xxl-none" href="{{route('user.find.jobs')}}">
+        <a class="btn-job btn-sm px-3 shadow-sm d-sm-block d-lg-none d-xxl-none" href="{{route('user.find.jobs')}}" style="font-size: 12px !important;">
           <i class="fa fa-search" aria-hidden="true"></i> Find Jobs
         </a>
         <!-- notifaction -->

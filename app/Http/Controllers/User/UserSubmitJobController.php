@@ -115,4 +115,23 @@ class UserSubmitJobController extends Controller
     //     return back()->with('error', 'Something went wrong');
     // }
   }
+
+
+    public function proof($id,$code){
+      $job = JobPost::where('id',$id)->where('code',$code)->with('submitjobs')->first();
+
+     if(!$job) {
+       return back()->with('error','Job id or code is invalid');
+     }
+    
+     if ($job->user_id !== Auth::user()->id) {
+
+        abort(403, 'Unauthorized');
+     }
+
+
+     return view('user.submit_job.proof',compact('job'));
+
+    
+   }
 }

@@ -17,7 +17,7 @@
 		
 	<!-- table -->
 <div class="col-12 mt-5">
-     <table class="table table-striped">
+     <table class="table table-striped table-responsive">
   <thead class="table-light">
 
     <tr class="">
@@ -44,7 +44,21 @@
       </td>
        <td class="fw-bold">{{$job->status}}</td>
       <td class="fw-bold">
-        <a href="{{ route('user.job-details',$job->code)}}" class="btn btn-sm text-white" style="background-color:#6658dd;">Details</a>
+        <!-- <a href="{{ route('user.job-details',$job->code)}}" class="btn btn-sm text-white">Details</a> -->
+        <a href="{{ route('user.submit-job-proof',[$job->id,$job->code])}}" class="btn btn-sm btn-success text-white">Proof</a>
+
+      <form action="{{ route('user.job.delete', [$job->id,$job->code]) }}" method="POST" onsubmit="return confirm('Are you sure to delete job?')">
+          @csrf
+          @method('DELETE')
+          
+          <button type="submit" class="btn btn-danger btn-sm">
+              Delete
+          </button>
+      </form>
+
+        <button type="submit" class="btn btn-info btn-sm">
+              Edit
+          </button>
       </td>
     </tr>
     @endforeach

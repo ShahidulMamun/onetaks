@@ -74,14 +74,20 @@ Route::middleware(['auth', 'user'])
         //job route
         Route::get('/create-job',  [UserJobController::class, 'create'])->name('create.job');
         Route::post('/create-job', [UserJobController::class, 'store'])->name('create.job.store');
-        
+        Route::delete('/delete-job/{id}/{code}', [UserJobController::class, 'delete'])->name('job.delete');
         Route::get('/job-details/{code}',  [UserJobController::class, 'details'])->name('job-details');
         Route::get('/my-jobs',  [UserJobController::class, 'myjobs'])->name('my.jobs');
         Route::get('/find-jobs',  [UserJobController::class, 'findjobs'])->name('find.jobs'); 
         Route::get('/finished-job',  [UserJobController::class, 'finishedjobs'])->name('finished.jobs'); 
 
+        
+
         //submit job route
         Route::post('/submit-job/{code}/{slug}',  [UserSubmitJobController::class, 'storeSubmitjob'])->name('submit-job'); 
+
+
+         //submit job proof route
+        Route::get('/job-proof/{id}/{code}',  [UserSubmitJobController::class, 'proof'])->name('submit-job-proof');
 
         
 

@@ -229,7 +229,7 @@ img, svg {
 .btn-post {
   background: #8A80A3;
   color: #fff;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   border: none;
   padding: 8px 18px;
@@ -1893,7 +1893,7 @@ img, svg {
   }
 
   .nav-right{
-    gap: 2px !important;;
+    gap: 6px !important;
   }
 
 }

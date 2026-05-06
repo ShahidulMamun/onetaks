@@ -200,8 +200,9 @@ class UserJobController extends Controller
 
     // my jobs
     public function myjobs(){
+        $pageTitle= "My Jobs";
         $jobs =  JobPost::where('user_id',Auth::user()->id)->get();
-        return view('user.my_jobs',compact('jobs'));
+        return view('user.jobs.my_job',compact('jobs','pageTitle'));
     }
 
     // find jobs
@@ -230,6 +231,27 @@ class UserJobController extends Controller
 
         return view('user.jobs.details',compact('job'));
     }
+
+    public function delete($id,$code)
+    {
+     $job = JobPost::where('id',$id)->where('code',$code)->first();
+
+    if(!$job) {
+       return back()->with('error','Job id or code is invalid');
+    }
+    
+     if ($job->user_id !== Auth::user()->id) {
+
+        abort(403, 'Unauthorized');
+     }
+
+    if ($job->submitjobs()->exists()) {
+        return back()->with('error','This job Cannot delete because submit jobs exist under it');
+      }
+    $job->delete();
+
+    return redirect()->back()->with('success', 'Job deleted successfully!');
+   }
 
    // finished jobs
     public function finishedjobs(){
