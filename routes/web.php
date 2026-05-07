@@ -117,7 +117,7 @@ Route::middleware(['auth', 'user'])
 
         //withdraw route
         Route::get('/withdraw',  [UserWithdrawController::class, 'index'])->name('withdraw');
-        Route::get('/withdraw-create',  [UserWithdrawController::class, 'create'])->name('withdraw.create');
+        Route::post('/withdraw-create',  [UserWithdrawController::class, 'create'])->name('withdraw.create'); 
         Route::get('/withdraw-history',  [UserWithdrawController::class, 'withdrawHistory'])->name('withdraw.history');
 
         //notification route
