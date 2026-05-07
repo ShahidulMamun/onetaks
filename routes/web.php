@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\DepositController;
 use App\Http\Controllers\Admin\BreakingNoticeController;
+use App\Http\Controllers\Admin\WithdrawController;
 use Illuminate\Support\Facades\Route;
 
 // web pages
@@ -184,6 +185,12 @@ Route::middleware(['auth', 'admin'])
        Route::get('/deposit-rejected', [DepositController::class, 'rejectedDeposit'])->name('rejected-deposit');  
        Route::patch('/deposit/{id}/reject', [DepositController::class, 'rejectDeposit'])->name('deposit-reject');  
        Route::patch('/deposit/{id}/approve', [DepositController::class, 'approveDeposit'])->name('deposit-approve'); 
+
+       //withdraw route for admin
+    Route::get('/withdraw',          [WithdrawController::class, 'index'])   ->name('withdraw.index');
+    Route::get('/withdraw/{id}/approve', [WithdrawController::class, 'approve'])->name('withdraw.approve');
+    Route::post('/withdraw/{id}/reject', [WithdrawController::class, 'reject']) ->name('withdraw.reject');
+
     
 
        //site setting route

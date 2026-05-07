@@ -111,7 +111,7 @@ class UserWithdrawController extends Controller
             'account_no'    => $request->number,
             'amount'        => $amount,
             'charge'        => $charge,
-            'final_amount'  => $amount, // optional (use if needed)
+            // 'final_amount'  => $amount, // optional (use if needed)
             'status'        => 'pending',
         ]);
 

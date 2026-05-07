@@ -109,6 +109,15 @@
          <span class="nbadge red">5</span>
       </div>
 
+      <div class="sec-label">Withdraw Manage</div>
+      <div class="ni" onclick="navClick(this,'Disputes')">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 2"/></svg>
+        
+        <a class="link text-success" style="text-decoration: none;" href="{{route('admin.withdraw.index')}}">Withdraw</a>
+         <span class="nbadge red">5</span>
+      </div>
+
+
        <div class="sec-label">Notice Manage</div>
       
       <div class="ni" onclick="navClick(this,'Disputes')">

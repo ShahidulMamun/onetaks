@@ -15,4 +15,9 @@ class Withdraw extends Model
         'status',
         'reason',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
