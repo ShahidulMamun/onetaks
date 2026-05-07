@@ -182,7 +182,7 @@ tbody tr:hover{background:#fafafe}
 
       <!-- Stats Row -->
       @php
-        $dollarRate   = \App\Models\WebsiteSetting::first()->dollar_rate ?? 110;
+        $dollarRate   = \App\Models\WebsiteSetting::first()->dolar_rate ?? 100;
         $totalReqs    = $withdraw->count();
         $pendingReqs  = $withdraw->where('status','pending')->count();
         $approvedReqs = $withdraw->where('status','approved')->count();
@@ -272,9 +272,9 @@ tbody tr:hover{background:#fafafe}
                 <th style="width:40px">#</th>
                 <th>User</th>
                 <th>Account Info</th>
-                <th>Amount (BDT)</th>
+                <th>Amount ($)</th>
                 <th>Charge</th>
-                <th>Payable (USD)</th>
+                <th>Payable (BDT)</th>
                 <th>Status</th>
                 <th>Requested At</th>
                 <th>Actions</th>
@@ -283,7 +283,7 @@ tbody tr:hover{background:#fafafe}
             <tbody>
               @forelse($withdraw as $index => $w)
               @php
-                $payableUSD = $dollarRate > 0 ? round(($w->amount - $w->charge) / $dollarRate, 4) : 0;
+                $payableUSD = round($w->amount * $dollarRate, 4);
                 $netBDT     = $w->amount - $w->charge;
               @endphp
               <tr>
@@ -317,13 +317,13 @@ tbody tr:hover{background:#fafafe}
 
                 <!-- Amount BDT -->
                 <td>
-                  <div class="amount-main">৳{{ number_format($w->amount, 2) }}</div>
+                  <div class="amount-main">${{ number_format($w->amount, 2) }}</div>
                 </td>
 
                 <!-- Charge -->
                 <td>
                   @if($w->charge > 0)
-                    <span style="font-size:12px;font-weight:600;color:#ef4444">-৳{{ number_format($w->charge, 2) }}</span>
+                    <span style="font-size:12px;font-weight:600;color:#ef4444">${{ number_format($w->charge, 2) }}</span>
                   @else
                     <span style="font-size:11px;color:#94a3b8">No charge</span>
                   @endif
@@ -331,9 +331,9 @@ tbody tr:hover{background:#fafafe}
 
                 <!-- Payable USD -->
                 <td>
-                  <div style="font-weight:700;font-size:13px;color:#16a34a">${{ $payableUSD }}</div>
-                  <div style="font-size:10px;color:#94a3b8;margin-top:1px">৳{{ number_format($netBDT, 2) }} net</div>
-                  <div style="font-size:10px;color:#cbd5e1;margin-top:1px">@1$=৳{{ $dollarRate }}</div>
+                  <div style="font-weight:700;font-size:13px;color:#16a34a">৳{{ $payableUSD }}</div>
+                 
+                  <div style="font-size:10px;color:#000000;margin-top:1px">@1$=৳{{ $dollarRate }}</div>
                 </td>
 
                 <!-- Status -->
