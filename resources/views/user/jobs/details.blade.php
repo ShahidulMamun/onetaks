@@ -138,7 +138,7 @@
 		             </div>
 		            </div>
 		            <div class="col-lg-12">
-		              	<p class="p-4">
+		              	<p class="p-4" style="font-size: 12px;">
 		              		{!! nl2br(e($job->description))!!}
 		              	</p>
 		              </div>

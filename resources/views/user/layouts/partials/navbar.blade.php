@@ -632,12 +632,12 @@
             <!-- <span class="text-muted fw-bold p-3" style="font-size:.8rem;color:#999!important;">{{Auth::user()->email}}</span> -->
             <li><hr class="dropdown-divider my-1"/></li>
             <li>
-              <a class="dropdown-item" href="">
+              <a class="dropdown-item" href="{{route('article')}}">
                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Article
               </a>
             </li>
             <li>
-              <a class="dropdown-item" href="">
+              <a class="dropdown-item" href="{{route('user.unseen-notifications')}}">
                 <i class="fa fa-bell-o" aria-hidden="true"></i> Notification
               </a>
             </li>
@@ -652,12 +652,12 @@
               </a>
             </li>
               <li>
-              <a class="dropdown-item" href="">
+              <a class="dropdown-item" href="{{route('user.withdraw')}}">
                 <i class="fa fa-usd" aria-hidden="true"></i> Withdraw
               </a>
             </li>
             <li>
-              <a class="dropdown-item" href="#">
+              <a class="dropdown-item" href="{{route('user.deposit')}}">
                 <i class="fa fa-plus-circle" aria-hidden="true"></i> Deposit
               </a>
             </li>
@@ -751,6 +751,14 @@
     </div>
     <span class="oc-lbl">Finished Jobs</span>
    </a>
+
+   <a href="{{ route('article')}}" class="oc-item" data-bs-dismiss="">
+    <div class="oc-ico">
+   <i class="fa fa-check-circle-o text-danger" aria-hidden="true"></i>
+    </div>
+    <span class="oc-lbl">Article</span>
+   </a>
+
 <!-- Browse Deal -->
     <div class="oc-divider"></div>
      <a href="{{ route('user.browse.deal')}}" class="oc-item" data-bs-dismiss="">
@@ -774,7 +782,7 @@
 
     <a href="{{ route('user.deal.order')}}" class="oc-item" data-bs-dismiss="">
     <div class="oc-ico">
-  <i class="fa fa-briefcase text-danger" aria-hidden="true"></i>
+   <i class="fa fa-briefcase text-danger" aria-hidden="true"></i>
     </div>
     <span class="oc-lbl">My Order</span>
    </a>
@@ -784,6 +792,13 @@
     <i class="fa fa-usd text-danger" aria-hidden="true"></i>
     </div>
     <span class="oc-lbl">Deposit</span>
+   </a>
+
+    <a href="{{route('user.withdraw')}}" class="oc-item" data-bs-dismiss="">
+    <div class="oc-ico">
+    <i class="fa fa-usd text-danger" aria-hidden="true"></i>
+    </div>
+    <span class="oc-lbl">Withdraw</span>
    </a>
 
     <a href="{{ route('user.profile')}}" class="oc-item" data-bs-dismiss="">
