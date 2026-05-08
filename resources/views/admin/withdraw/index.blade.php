@@ -188,7 +188,7 @@ tbody tr:hover{background:#fafafe}
         $approvedReqs = $withdraw->where('status','approved')->count();
         $rejectedReqs = $withdraw->where('status','rejected')->count();
         $totalAmtBDT  = $withdraw->where('status','pending')->sum('amount');
-        $totalAmtUSD  = $dollarRate > 0 ? round($totalAmtBDT / $dollarRate, 2) : 0;
+        $totalAmtUSD  = $dollarRate > 0 ? round($totalAmtBDT * $dollarRate, 2) : 0;
       @endphp
       <div class="stats-row">
         <div class="sc">
@@ -282,10 +282,10 @@ tbody tr:hover{background:#fafafe}
             </thead>
             <tbody>
               @forelse($withdraw as $index => $w)
-              @php
+               @php
                 $payableUSD = round($w->amount * $dollarRate, 4);
                 $netBDT     = $w->amount - $w->charge;
-              @endphp
+               @endphp
               <tr>
                 <!-- # -->
                 <td style="color:#94a3b8;font-size:11px;font-weight:600">{{ $loop->iteration }}</td>

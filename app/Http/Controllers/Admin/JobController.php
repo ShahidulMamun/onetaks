@@ -86,7 +86,7 @@ class JobController extends Controller
       $message = $job->code." job has been approve";
       UserNotification::create([
                 'user_id' => $job->user_id,
-                'title'   =  $title;
+                'title'   =>  $title,
                 'message' => $message,
                 'status'  => 'pending',
             ]);

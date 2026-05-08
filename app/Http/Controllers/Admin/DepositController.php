@@ -93,7 +93,7 @@ class DepositController extends Controller
         $title = "Deposit approveed";
         UserNotification::create([
             'user_id' => $deposit->user_id,
-            'title'   =>$title;
+            'title'   =>$title,
             'message' => "Your deposit of $" .$deposit->amount ."has been approved.",
             'status'  => 'pending',
         ]);

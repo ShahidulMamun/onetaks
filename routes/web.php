@@ -190,7 +190,14 @@ Route::middleware(['auth', 'admin'])
        Route::patch('/deposit/{id}/approve', [DepositController::class, 'approveDeposit'])->name('deposit-approve'); 
 
        //withdraw route for admin
-    Route::get('/withdraw',          [WithdrawController::class, 'index'])   ->name('withdraw.index');
+     Route::get('/withdraw', [WithdrawController::class, 'index'])->name('withdraw.index');
+     Route::get('/pending-withdraw',  [WithdrawController::class, 'pendignWithdraw'])->name('pending.withdraw');
+     
+     Route::get('/approved-withdraw',[WithdrawController::class, 'approvedWithdraw'])->name('approved.withdraw');
+    
+     Route::get('/reject-withdraw',[WithdrawController::class, 'rejectedWithdraw'])->name('reject.withdraw');
+    
+    
     Route::get('/withdraw/{id}/approve', [WithdrawController::class, 'approve'])->name('withdraw.approve');
     Route::post('/withdraw/{id}/reject', [WithdrawController::class, 'reject']) ->name('withdraw.reject');
 

@@ -46,6 +46,28 @@ class WithdrawController extends Controller
  
         return view('admin.withdraw.index', compact('withdraw'));
     }
+
+
+    public function pendignWithdraw(){
+
+       $withdraw = Withdraw::where('status','pending')->with('user')->paginate(20);
+
+       return view('admin.withdraw.index', compact('withdraw'));
+    }
+
+     public function approvedWithdraw(){
+
+       $withdraw = Withdraw::where('status','approved')->with('user')->paginate(20);
+
+       return view('admin.withdraw.index', compact('withdraw'));
+    }
+
+     public function rejectedWithdraw(){
+
+       $withdraw = Withdraw::where('status','rejected')->with('user')->paginate(20);
+
+       return view('admin.withdraw.index', compact('withdraw'));
+    }
  
     /**
      * Approve a pending withdrawal.
