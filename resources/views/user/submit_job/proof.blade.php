@@ -247,7 +247,7 @@
                         <td class="text-muted fw-semibold">{{ $idx + 1 }}</td>
                         <td>
                             <div class="fw-semibold">{{ $sub->user->name ?? 'Worker #'.$sub->user_id }}</div>
-                            <div class="text-muted" style="font-size:.75rem;">{{ $sub->user->email ?? '' }}</div>
+                          
                         </td>
                         <td><code style="font-size:.8rem;">{{ $sub->submitted_code ?: '—' }}</code></td>
                         <td style="font-size:.8rem; color:var(--muted);">{{ $sub->created_at->format('d M Y') }}</td>

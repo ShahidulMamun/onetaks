@@ -17,7 +17,7 @@ class UserSubmitJobController extends Controller
 
        // return $request->all();
 
-	    // ✅ Validation
+	    // Validation
 	    $request->validate([
 
 	    	// 'job_id' => ['required','exists:job_posts,id'],
@@ -59,12 +59,9 @@ class UserSubmitJobController extends Controller
         $job->increment('worker_done',1);
         $job->decrement('worker_remaining',1);
 
-   
-
     // DB::beginTransaction();
 
     // try {
-
         
         $texts = [];
 		if ($request->filled('texts')) {
@@ -143,15 +140,65 @@ class UserSubmitJobController extends Controller
 
    public function submitReject(Request $request, $id)
    {
-    $request->validate([
-        'reject_reason' =>'required|string|max:500',
-    ]);
+      $request->validate([
+          'reject_reason' =>'required|string|max:500',
+      ]);
+
+      $submission = JobSubmit::with('job')->find($id);
+
+        if (!$submission) {
+
+            return back()->with('error', 'Submission not found.');
+        }
+
+       $job = $submission->job;
+
+        /* Security Check */
+        if ($job->user_id !== Auth::id()) {
+
+            abort(403);
+        }
+
+        /* Already Processed */
+        if ($submission->status !== 'pending') {
+
+            return back()->with('error', 'This submission is already processed.');
+        }
+
+        $submission->update([
+            'status' => 'rejected',
+            'reject_reason' => $request->reject_reason,
+            'rejected_at' => now(),
+
+        ]);
 
 
-     $submission = JobSubmit::with('job')->find($id);
+        /* worker calculation */
+        $job->decrement('worker_done');
+        $job->increment('worker_remaining');
 
+    
+        //notification for job owner
+        $title = "Submit job rejected";
+        $message = "Your Submission ".$job->code." this job has been rejected";
+        UserNotification::create([
+            'user_id' => $submission->user_id,
+            'title'   => $title,
+            'message' => $message,
+            'status'  => 'pending',
+        ]);
+
+    return back()->with(
+        'success',
+        'Submission rejected successfully.'
+    );
+   }
+
+   public function submitApprove($id)
+   {
+    
+    $submission = JobSubmit::with(['job', 'user'])->find($id);
     if (!$submission) {
-
         return back()->with('error', 'Submission not found.');
     }
 
@@ -159,7 +206,6 @@ class UserSubmitJobController extends Controller
 
     /* Security Check */
     if ($job->user_id !== Auth::id()) {
-
         abort(403);
     }
 
@@ -169,28 +215,46 @@ class UserSubmitJobController extends Controller
         return back()->with('error', 'This submission is already processed.');
     }
 
+    DB::transaction(function () use ($submission, $job) {
 
-    $submission->update([
-        'status' => 'rejected',
-        'reject_reason' => $request->reject_reason,
-        'rejected_at' => now(),
+        /* Approve Submission */
+        $submission->update([
+            'status' => 'approved',
+            'approved_at' => now(),
+        ]);
+        /* Worker Balance Add */
+        $submission->user->increment('total_earning',$job->worker_earn);
+        $submission->user->increment('total_earning',$job->worker_earn);
+        
+        /* Worker Remaining Decrease */
+        $job->decrement('worker_remaining');
+        $job->increment('worker_done');
+    });
 
-    ]);
+    /* Notification for Worker */
+    $title = "Submit job approved";
+    $message = "Congratulations! Your submission for job ".$job->code." has been approved.";
 
-    
-    //notification for job owner
-    $title = "Submit job rejected";
-    $message = "Your Submission ".$job->code." this job has been rejected";
     UserNotification::create([
         'user_id' => $submission->user_id,
         'title'   => $title,
         'message' => $message,
         'status'  => 'pending',
-    ]);
+     ]);
+
+      UserTransaction::create([
+          'user_id' => $submission->user_id,
+          'transaction_id' => strtoupper(uniqid()),
+          'type' => "earning",
+          'amount' => $job->worker_earn,
+          'description' => "Earning from job submit",
+          'reference_id' => $job->id,
+          'status' => 'success',
+        ]);
 
     return back()->with(
         'success',
-        'Submission rejected successfully.'
+        'Submission approved successfully.'
     );
-   }
+  }
 }
