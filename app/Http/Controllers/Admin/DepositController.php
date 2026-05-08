@@ -43,9 +43,12 @@ class DepositController extends Controller
 	    try {
 	        $deposit->status = 'rejected';
 	        $deposit->save();
-
+           
+            //user notification create
+            $title = "Deposit rejected";
 	        UserNotification::create([
 	            'user_id' => $deposit->user_id,
+                'title'   =>$title, 
 	            'message' => "Your $".$deposit->amount ." deposit has been rejected.",
 	            'status'  => 'pending',
 	        ]);
@@ -87,8 +90,10 @@ class DepositController extends Controller
         $user->save();
 
         // 3. notification create
+        $title = "Deposit approveed";
         UserNotification::create([
             'user_id' => $deposit->user_id,
+            'title'   =>$title;
             'message' => "Your deposit of $" .$deposit->amount ."has been approved.",
             'status'  => 'pending',
         ]);

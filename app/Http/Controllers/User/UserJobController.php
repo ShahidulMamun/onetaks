@@ -174,9 +174,12 @@ class UserJobController extends Controller
         if($job){
           $user->decrement('current_deposit', $total_cost_with_charge);
             
+            //user notification
+            $title = "Job posted";
             $message = "$".$total_cost_with_charge." has been deducted for job posting (including charge).";
             UserNotification::create([
                 'user_id' => $user->id,
+                'title'   =>$title,
                 'message' => $message,
                 'status'  => 'pending',
             ]);
@@ -238,10 +241,13 @@ class UserJobController extends Controller
 
         $job->status='pending';
         $job->save();
-
+           
+           //user notification 
+            $title = "Job update";
             $message = "$".$totalCharge." has been deducted for edit ".$job->code." job (including charge).";
             UserNotification::create([
                 'user_id' => $user->id,
+                'title'   =>$title,
                 'message' => $message,
                 'status'  => 'pending',
             ]);
@@ -288,10 +294,13 @@ class UserJobController extends Controller
         ]);
         $user->decrement('current_deposit', $topCharge);
     });
-
-      $message = "$".$topCharge." has been deducted for ".$job->code." make top job";
+            
+            //user notification
+            $title = "Job Top charge";
+            $message = "$".$topCharge." has been deducted for ".$job->code." make top job";
             UserNotification::create([
                 'user_id' => $user->id,
+                'title'   =>$title,
                 'message' => $message,
                 'status'  => 'pending',
             ]);

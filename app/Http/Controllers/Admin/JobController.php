@@ -81,9 +81,12 @@ class JobController extends Controller
       $job->status = 'active';
       $job->save();
 
+      //user notification create
+      $title = "Posted Job approveed";
       $message = $job->code." job has been approve";
       UserNotification::create([
                 'user_id' => $job->user_id,
+                'title'   =  $title;
                 'message' => $message,
                 'status'  => 'pending',
             ]);
@@ -111,9 +114,12 @@ class JobController extends Controller
 
       $user = User::where('id',$job->user_id)->first();
       $user->increment('current_deposit',$total_with_charge);
-
+       
+       //user notification create
+       $title = "Posted job deleted";
        UserNotification::create([
                 'user_id' => $job->user_id,
+                'title'   => $title,
                 'message' => $job->code ." job has been deleted. and $". $total_with_charge . " has ben refund",
                 'status'  => 'pending',
             ]);
@@ -147,9 +153,11 @@ class JobController extends Controller
         'reject_reason' => $request->reject_reason,
        ]);
 
-
+       //notification create
+       $title = "Posted job rejected";
        UserNotification::create([
                 'user_id' => $job->user_id,
+                'title'   =>$title,
                 'message' => $job->code ." job has been rejected. and $". $total_with_charge . " has ben refund",
                 'status'  => 'pending',
             ]);
