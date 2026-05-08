@@ -18,7 +18,7 @@
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M2 14a6 6 0 0 1 12 0"/></svg>
          <a class="link text-success" style="text-decoration: none;" href="{{route('admin.users')}}">Users</a>
 
-         <span class="nbadge red">2.4k</span>
+         <span class="nbadge text-success">{{App\Models\User::all()->count()}}</span>
       </div>
       <div class="sec-label">Job Management</div>
 
@@ -92,21 +92,23 @@
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 2"/></svg>
         
         <a class="link text-success" style="text-decoration: none;" href="{{route('admin.pending-deposit')}}">Pending Deposit</a>
-         <span class="nbadge red">5</span>
+         <span class="nbadge red">{{App\Models\Deposit::where('status','pending')->count()}}</span>
       </div>
 
        <div class="ni" onclick="navClick(this,'Disputes')">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 2"/></svg>
         
         <a class="link text-success" style="text-decoration: none;" href="{{route('admin.approved-deposit')}}">Approved Deposit</a>
-         <span class="nbadge red">5</span>
+         <span class="nbadge text-success">{{App\Models\Deposit::where('status','approved')->count()}}</span>
       </div>
 
        <div class="ni" onclick="navClick(this,'Disputes')">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 2"/></svg>
         
         <a class="link text-success" style="text-decoration: none;" href="{{route('admin.rejected-deposit')}}">Rejected Deposit</a>
-         <span class="nbadge red">5</span>
+         <span class="nbadge red">
+           {{App\Models\Deposit::where('status','rejected')->count()}}
+         </span>
       </div>
 
       <div class="sec-label">Withdraw Manage</div>
@@ -114,26 +116,34 @@
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 2"/></svg>
         
         <a class="link text-success" style="text-decoration: none;" href="{{route('admin.withdraw.index')}}">Withdraw</a>
-         <span class="nbadge red">5</span>
+         <span class="nbadge red">
+           {{App\Models\Withdraw::all()->count()}}
+         </span>
       </div>
 
        <div class="ni" onclick="navClick(this,'Disputes')">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 2"/></svg>
         
         <a class="link text-success" style="text-decoration: none;" href="{{route('admin.pending.withdraw')}}">Pending Withdraw</a>
-         <span class="nbadge red">5</span>
+         <span class="nbadge red">
+           {{App\Models\Withdraw::where('status','pending')->count()}}
+         </span>
       </div>
        <div class="ni" onclick="navClick(this,'Disputes')">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 2"/></svg>
         
         <a class="link text-success" style="text-decoration: none;" href="{{route('admin.approved.withdraw')}}">Approved Withdraw</a>
-         <span class="nbadge red">5</span>
+         <span class="nbadge red">
+           {{App\Models\Withdraw::where('status','approved')->count()}}
+         </span>
       </div>
        <div class="ni" onclick="navClick(this,'Disputes')">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 2"/></svg>
         
         <a class="link text-success" style="text-decoration: none;" href="{{route('admin.reject.withdraw')}}">Rejected Withdraw</a>
-         <span class="nbadge red">5</span>
+         <span class="nbadge red">
+           {{App\Models\Withdraw::where('status','rejected')->count()}}
+         </span>
       </div>
         
 
@@ -144,7 +154,7 @@
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 2"/></svg>
         
         <a class="link text-success" style="text-decoration: none;" href="{{route('admin.notice-create')}}">Notice</a>
-         <span class="nbadge red">5</span>
+       <!--   <span class="nbadge red">5</span> -->
       </div>
      
 
@@ -160,11 +170,17 @@
 
       <div class="sb-bottom">
         <div class="ni" style="color:#dc2626">
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 2H3a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3M10 11l3-3-3-3M13 8H6"/></svg>
+         
             <form action="{{ route('logout') }}" method="POST">
             @csrf
-            <button type="submit" class="btn btn-danger">
-              Logout
+            <button type="submit" class="btn btn-danger" 
+          style="background: #e52b2b;
+          padding: 8px 25px 7px 23px;
+          border: navajowhite;
+          color: #fff;
+          border-radius: 5px;
+          cursor: pointer">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 2H3a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3M10 11l3-3-3-3M13 8H6"/></svg> Logout
           </button>
           </form>
            
