@@ -8,6 +8,7 @@ class UserNotification extends Model
 {
     protected $fillable=[
     'user_id',
+    'title',
     'message',
     'status',
 

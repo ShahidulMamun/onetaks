@@ -547,9 +547,9 @@
 }
 /*style end for breaking news */
 
-.nav-right{
+/*.nav-right{
     gap: 6px !important;
-  }
+  }*/
   </style>
 <!-- ══ NAVBAR ══ -->
 <nav class="top-nav navbar navbar-expand-lg bg-white">
@@ -612,11 +612,67 @@
           <i class="fa fa-search" aria-hidden="true"></i> Find Jobs
         </a>
         <!-- notifaction -->
-   <a href="{{route('user.unseen-notifications')}}"> <button class="nav-icon-btn d-none d-sm-block">
+ <!--   <a href="{{route('user.unseen-notifications')}}"> <button class="nav-icon-btn d-sm-block">
      <i class="fa fa-bell-o text-dark" aria-hidden="true"></i>
       <span class="nbadge bg-danger">{{App\Models\UserNotification::where('user_id',Auth::user()->id)->count()}}</span>
     </button>
-  </a>
+  </a> -->
+  @php 
+   $notifications = App\Models\UserNotification::where('user_id',Auth::user()->id)
+   ->where('status','pending')->orderBy('id','desc')->get();
+  @endphp
+  <li class="nav-item dropdown" style="list-style: none;">
+    <a class="nav-link position-relative" href="#" id="notificationDropdown"
+       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+        <i class="fa fa-bell"></i>
+       
+        @if($notifications->count() > 0)
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {{ $notifications->count() }}
+            </span>
+        @endif
+    </a>
+
+        <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-2"
+            aria-labelledby="notificationDropdown"
+            style="width: 320px; max-height: 400px; overflow-y: auto;">
+
+            <li class="dropdown-header fw-bold">
+                Notifications
+            </li>
+
+            @forelse($notifications as $notification)
+
+                <li>
+                <a href="javascript:void(0)"
+                 class="dropdown-item notification-item {{ $notification->status == 'pending' ? 'bg-light' : '' }}"
+                 data-id="{{ $notification->id }}"
+                 data-title="{{ $notification->title }}"
+                 data-message="{{ $notification->message }}"
+                 data-time="{{ $notification->created_at->diffForHumans() }}"
+                 data-bs-toggle="modal"
+                 data-bs-target="#notificationModal">
+
+                  <div class="fw-bold">
+                      {{ Str::limit($notification->title, 35) }}
+                  </div>
+
+                  <small class="text-muted">
+                      {{ $notification->created_at->diffForHumans() }}
+                  </small>
+              </a>
+                </li>
+
+            @empty
+
+                <li class="text-center text-muted py-3">
+                    No notifications found
+                </li>
+
+            @endforelse
+        </ul>
+    </li>
     <!-- profile -->
     <button class="nav-icon-btn d-none d-lg-flex">
       <i class="bi bi-person-circle" style="font-size:150px;"></i>
@@ -870,6 +926,35 @@
 @endif
 </div>
 
+<!-- modal for notification  -->
+<div class="modal fade" id="notificationModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 id="notificationTitle"></h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <p id="notificationMessage"></p>
+
+                <small id="notificationTime"
+                       class="text-muted">
+                </small>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 <script>
 function toggleHello() {
@@ -892,5 +977,50 @@ document.addEventListener('click', function(e) {
   }
   updateLabel();
   window.addEventListener('resize', updateLabel);
+</script>
+
+<!-- script for notification modal -->
+
+<script>
+document.querySelectorAll('.notification-item').forEach(item => {
+
+    item.addEventListener('click', function () {
+
+        // modal data set
+        document.getElementById('notificationTitle').innerText =
+            this.dataset.title;
+
+        document.getElementById('notificationMessage').innerText =
+            this.dataset.message;
+
+        document.getElementById('notificationTime').innerText =
+            this.dataset.time;
+
+        // notification read update
+        fetch(`/user/notification/read/${this.dataset.id}`, {
+
+            method: 'POST',
+
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json',
+            }
+
+        })
+        .then(res => res.json())
+        .then(data => {
+
+            if (data.success) {
+
+                // remove unread highlight
+                this.classList.remove('bg-light');
+
+            }
+
+        });
+
+    });
+
+});
 </script>
 

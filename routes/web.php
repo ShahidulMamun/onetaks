@@ -124,6 +124,7 @@ Route::middleware(['auth', 'user'])
         //notification route
         Route::get('/unseen-notifications',  [UserNotificationController::class, 'unSeenNotification'])->name('unseen-notifications');
         Route::get('/seen-notifications',  [UserNotificationController::class, 'SeenNotification'])->name('seen-notifications');
+        Route::post('/notification/read/{id}', [UserNotificationController::class, 'markAsRead'])->name('notification.read');
 
 
   });

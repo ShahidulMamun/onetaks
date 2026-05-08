@@ -1893,7 +1893,7 @@ img, svg {
   }
 
   .nav-right{
-    gap: 6px !important;
+    gap: 1px !important;
   }
 
 }

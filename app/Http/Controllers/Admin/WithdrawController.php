@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Withdraw;
 use App\Models\UserNotification;
+use App\Models\User;
 
 class WithdrawController extends Controller
 {
@@ -96,8 +97,8 @@ class WithdrawController extends Controller
         $user->increment('current_earning', $total_amount);
 
         // User notification
-        $title = "Withdraw rejected";
-        $message = "Your $" . $amount . " withdraw request has been rejected and $" . $total_amount . " refunded to your balance.";
+         $title = "Withdraw rejected";
+         $message = "Your $" . $amount . " withdraw request has been rejected and $" . $total_amount . " refunded to your balance.";
 
         UserNotification::create([
             'user_id' => $user->id,
@@ -118,7 +119,7 @@ class WithdrawController extends Controller
       } catch (\Exception $e) {
 
         return redirect()->back()
-            ->with('error',. $e->getMessage());
+            ->with('error', $e->getMessage());
       }
    }
 }
