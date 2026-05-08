@@ -33,7 +33,7 @@
   </div>
 </div>
 <div class="col-12 mt-5">
-    <table class="table table-striped table-responsive">
+    <table class="table table-striped table-responsive" style="font-size: 12px;">
   <thead class="table-light">
 
     <tr class="">
@@ -48,7 +48,7 @@
 
   @foreach($jobs as $job)
    <a href="">
-    <tr class="clickable" onclick="window.location.href='{{ route('user.job-details',$job->code)}}'" style="cursor: pointer;">
+    <tr class="clickable" onclick="window.location.href='{{ route('user.job-details',$job->code)}}'" style="cursor: pointer;font-size: 12px;">
        <td><i class="fa fa-globe text-success"
    data-bs-toggle="tooltip"
    title="{{$job->continent->name}}">

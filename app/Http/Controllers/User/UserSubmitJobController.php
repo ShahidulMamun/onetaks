@@ -9,6 +9,7 @@ use App\Models\UserNotification;
 use App\Models\UserTransaction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Models\JobSubmit;
 
 class UserSubmitJobController extends Controller
 {
@@ -87,7 +88,7 @@ class UserSubmitJobController extends Controller
 
         // submit job
         DB::table('job_submits')->insert([
-        	'job_id'  => $job->id,
+        	  'job_id'  => $job->id,
             'user_id' => auth()->user()->id,
             'job_owner_user_id' => $job->user_id,
             'proof_text'  => !empty($texts) ? json_encode($texts) : null,
@@ -97,9 +98,11 @@ class UserSubmitJobController extends Controller
         ]);
 
             //notification for job owner
+            $title = "Job submitted";
             $message = $job->code." job has been submitted";
             UserNotification::create([
                 'user_id' => $job->user_id,
+                'title'   => $title,
                 'message' => $message,
                 'status'  => 'pending',
             ]);
@@ -118,7 +121,7 @@ class UserSubmitJobController extends Controller
 
 
     public function proof($id,$code){
-      $job = JobPost::where('id',$id)->where('code',$code)->with('submitjobs')->first();
+       $job = JobPost::where('id',$id)->where('code',$code)->with('submitjobs.user')->first();
 
      if(!$job) {
        return back()->with('error','Job id or code is invalid');
@@ -129,9 +132,65 @@ class UserSubmitJobController extends Controller
         abort(403, 'Unauthorized');
      }
 
-
      return view('user.submit_job.proof',compact('job'));
+   }
+
+
+   public function approve(){
+
+
+   }
+
+   public function submitReject(Request $request, $id)
+   {
+    $request->validate([
+        'reject_reason' =>'required|string|max:500',
+    ]);
+
+
+     $submission = JobSubmit::with('job')->find($id);
+
+    if (!$submission) {
+
+        return back()->with('error', 'Submission not found.');
+    }
+
+    $job = $submission->job;
+
+    /* Security Check */
+    if ($job->user_id !== Auth::id()) {
+
+        abort(403);
+    }
+
+    /* Already Processed */
+    if ($submission->status !== 'pending') {
+
+        return back()->with('error', 'This submission is already processed.');
+    }
+
+
+    $submission->update([
+        'status' => 'rejected',
+        'reject_reason' => $request->reject_reason,
+        'rejected_at' => now(),
+
+    ]);
 
     
+    //notification for job owner
+    $title = "Submit job rejected";
+    $message = "Your Submission ".$job->code." this job has been rejected";
+    UserNotification::create([
+        'user_id' => $submission->user_id,
+        'title'   => $title,
+        'message' => $message,
+        'status'  => 'pending',
+    ]);
+
+    return back()->with(
+        'success',
+        'Submission rejected successfully.'
+    );
    }
 }

@@ -92,6 +92,8 @@ Route::middleware(['auth', 'user'])
 
          //submit job proof route
         Route::get('/job-proof/{id}/{code}',  [UserSubmitJobController::class, 'proof'])->name('submit-job-proof');
+        Route::patch('/submit-jobs/{id}/approve', [UserSubmitJobController::class, 'approve'])->name('submit-job.approve');
+        Route::patch('/submit-jobs/{id}/reject',  [UserSubmitJobController::class, 'submitReject'])->name('submit-job.reject');
 
         
 
