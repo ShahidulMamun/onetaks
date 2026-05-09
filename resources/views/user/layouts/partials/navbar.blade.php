@@ -771,16 +771,24 @@
 
 <!-- ══ RIGHT OFFCANVAS MENU ══ -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="rightMenu">
-  <div class="oc-top">
+    <div class="oc-top">
     <button type="button"
       class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
       data-bs-dismiss="offcanvas"></button>
      <div class="text-center mt-3">
-  <img src="{{ asset('storage/' . Auth::user()->photo) }}" class="rounded" alt="not found">
+  
 </div>
-    <div class="oc-name text-center mt-2">{{Auth::user()->name}}</div>
-    <div class="oc-email text-center">{{Auth::user()->email}}</div>
+   
+    <div class="oc-name text-center mt-2"> <img src="{{ asset('storage/' . Auth::user()->photo) }}" style="    width: 50px;
+    height: 50px;
+    float: left;" class="rounded-circle" alt="not found">{{Auth::user()->name}}
+    </div>
+    <div class="oc-email text-center">
+        <!--{{Auth::user()->email}}-->
+         <i class="fa fa-dot-circle-o text-white" aria-hidden="true"></i> Online
+        </div>
   </div>
+
 
   <div class="offcanvas-body">
    <a href="{{route('user.dashboard')}}" class="oc-item" data-bs-dismiss="">

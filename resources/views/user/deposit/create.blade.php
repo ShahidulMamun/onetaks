@@ -59,7 +59,7 @@
           <div class="col-md-6">
               <div class="form-group">
                 <label id="name_type"></label>
-                 <input type="text" id="number" class="form-control mb-2">
+                 <input type="text" id="number" class="form-control mb-2" readonly="">
               </div>
           </div>
           <div class="col-md-6">
