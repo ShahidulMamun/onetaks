@@ -262,7 +262,7 @@
         <div>
           <label class="btn btn-change-photo mb-1 upload-btn">
             <i class="fa fa-camera"></i> Change Photo
-            <input type="file" id="imageInput" accept="image/*">
+            <input type="file" name="image" id="imageInput" accept="image/*">
           </label>
           <div class="text-muted" style="font-size:0.76rem;">Max 2MB (JPG, PNG, WebP)</div>
         </div>

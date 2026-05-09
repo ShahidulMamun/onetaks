@@ -21,6 +21,8 @@ use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\DepositController;
 use App\Http\Controllers\Admin\BreakingNoticeController;
 use App\Http\Controllers\Admin\WithdrawController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 
 // web pages
@@ -43,12 +45,29 @@ Route::middleware('guest.redirect')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::get('/register', [AuthController::class, 'registerForm'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
+
+    // Step 1: Show forgot password form
+    Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotForm'])
+        ->name('password.request');
+ 
+    // Step 2: Send reset email
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink'])
+        ->name('password.email');
+ 
+    // Step 3: Show reset form (via link in email)
+    Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])
+        ->name('password.reset');
+ 
+    // Step 4: Process new password
+    Route::post('/reset-password', [ResetPasswordController::class, 'resetPassword'])
+        ->name('password.update');
 });
+
+
 
 
 // Protected routes
 Route::middleware('auth')->group(function () {
-    
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 

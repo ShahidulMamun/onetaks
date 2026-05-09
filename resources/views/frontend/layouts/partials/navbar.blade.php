@@ -1,12 +1,15 @@
 
 <header>
 <nav class="navbar navbar-expand-lg bg-light fixed-top py-3 px-4">
+  @php 
+  $setting = App\Models\WebsiteSetting::first();
+  @endphp
   <a class="navbar-brand d-flex align-items-center" href="{{asset('/')}}">
-    <span class="logo-icon">
-        <img src="{{ asset('images/logo.jpeg') }}" class="logo" alt="logo">
+    <span class="logo-icon" style="background: none">
+        <img src="{{asset('storage/'.$setting->site_logo)}}" class="logo" alt="logo">
     </span>
     <span>
-     OneTaskMarket
+     {{$setting->site_title}}
     </span>
   </a>
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">

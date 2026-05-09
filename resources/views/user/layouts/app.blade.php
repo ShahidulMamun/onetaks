@@ -23,7 +23,7 @@
   @php 
   $setting = App\Models\WebsiteSetting::first();
   @endphp
-    <link rel="icon" type="image/png" href="{{asset('storage/'.$setting->site_logo)}}">
+    <link rel="icon" type="image/png" href="{{asset('storage/'.$setting->site_logo) }}">
     @stack('styles')
 </head>
 

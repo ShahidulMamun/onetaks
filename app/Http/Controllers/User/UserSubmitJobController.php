@@ -124,10 +124,9 @@ class UserSubmitJobController extends Controller
        return back()->with('error','Job id or code is invalid');
      }
     
-     if ($job->user_id !== Auth::user()->id) {
-
-        abort(403, 'Unauthorized');
-     }
+     if ($job->user_id != Auth::id()) {
+      abort(403);
+      }
 
      return view('user.submit_job.proof',compact('job'));
    }
@@ -154,10 +153,9 @@ class UserSubmitJobController extends Controller
        $job = $submission->job;
 
         /* Security Check */
-        if ($job->user_id !== Auth::id()) {
-
-            abort(403);
-        }
+        if ($job->user_id != Auth::id()) {
+          abort(403);
+         }
 
         /* Already Processed */
         if ($submission->status !== 'pending') {
