@@ -28,6 +28,7 @@ class JobPost extends Model
         'reject_done',
         'has_secret_code',
         'secret_code',
+        'secret_code_example',
         'proofs',
         'status',
         'reject_reason',

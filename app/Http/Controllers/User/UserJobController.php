@@ -93,8 +93,8 @@ class UserJobController extends Controller
     public function store(Request $request)
     {
         
-         // return $request->all();
-        $validator = Validator::make($request->all(), [
+          // return $request->all();
+       $request->validate([
             'continent_id'   => 'required|exists:continents,id',
             'country_id'     => 'required|exists:countries,id',
             'category_id'    => 'required|exists:categories,id',
@@ -105,15 +105,16 @@ class UserJobController extends Controller
             'thumbnail'      => 'nullable|image|mimes:jpeg,png,jpg,webp|max:1024',
             'has_secret_code'=> 'boolean',
             'secret_code'    => 'required_if:has_secret_code,1|nullable|string|max:20',
+            'secret_code_example'    => 'required_if:has_secret_code,1|nullable|string|max:20',
             'proofs'         => 'required|array|min:1',
             'proofs.*.type'  => 'required|in:text,file',
             'proofs.*.label' => 'required|string|max:255',
         ]);
         
-        //validation fail message error
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
+        // //validation fail message error
+        // if ($validator->fails()) {
+        //     return response()->json(['errors' => $validator->errors()], 422);
+        // }
 
         //fetch subcategory price
         $subcategory = SubCategory::findOrFail($request->subcategory_id);
@@ -168,6 +169,7 @@ class UserJobController extends Controller
             'charge_percentage'=>$charge,
             'has_secret_code'=> $request->boolean('has_secret_code'),
             'secret_code'    => $request->boolean('has_secret_code') ? $request->secret_code : null,
+            'secret_code_example'=>$request->secret_code_example ?? null,
             'proofs'         => $request->proofs,
         ]);
 

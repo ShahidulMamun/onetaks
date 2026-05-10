@@ -34,6 +34,7 @@ return new class extends Migration
             $table->integer('reject_done')->default(0);
             $table->boolean('has_secret_code')->default(false);
             $table->string('secret_code')->nullable();
+            $table->string('secret_code_example')->nullable();
             $table->json('proofs'); // [{type: 'text'|'image', label: '...'}]
             $table->enum('status', ['pending','pause','reject','active','complete',])->default('pending');
             $table->string('reject_reason')->nullable();
