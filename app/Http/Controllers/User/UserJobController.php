@@ -380,10 +380,6 @@ class UserJobController extends Controller
     return redirect()->back()->with('success', 'Job deleted successfully!');
    }
 
-   // finished jobs
-    public function finishedjobs(){
-        return view('user.finished_job');
-    }
-  
+   
 
 }

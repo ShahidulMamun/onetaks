@@ -32,4 +32,8 @@ class JobSubmit extends Model
     public function job(){
     	return $this->belongsTo(JobPost::class);
     }
+
+    public function jobowner(){
+        return $this->belongsTo(User::class,'job_owner_user_id');
+    }
 }

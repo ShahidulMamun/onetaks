@@ -200,7 +200,7 @@ let proofCounter = 2;
 let thumbDataUrl = null;
 let cache        = {};
 
-const TITLE_MAX = 30;
+const TITLE_MAX = 40;
 
 // ── Helpers ────────────────────────────────────────────────────────────
 async function apiFetch(url) {

@@ -14,14 +14,12 @@
     --radius:     10px;
   }
 
-  /* ── Prevent horizontal scroll ── */
   *, *::before, *::after { box-sizing: border-box; }
   html, body { overflow-x: hidden; max-width: 100%; }
   img { max-width: 100%; height: auto; }
 
   body { font-size: 12px; background: var(--bg-light); }
 
-  /* ── Cards ── */
   .section-card {
     background: #fff;
     border-radius: var(--radius);
@@ -35,8 +33,20 @@
     background: #fff;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    padding: 16px 18px;
+    padding: 0;
     margin-bottom: 14px;
+    overflow: hidden;
+  }
+
+  .job-thumbnail {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .job-header-body {
+    padding: 14px 18px;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -109,7 +119,6 @@
     line-height: 1.9;
   }
 
-  /* ── Action Buttons ── */
   .action-row {
     display: flex;
     gap: 8px;
@@ -160,12 +169,45 @@
 
   .section-header i { color: var(--danger); }
 
-  /* ── Description ── */
   .job-description {
     font-size: 12px;
     color: var(--text-dark);
     line-height: 1.8;
     word-break: break-word;
+  }
+
+  /* ── Secret Code Example ── */
+  .secret-example-box {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .secret-example-box i {
+    color: #d97706;
+    margin-top: 1px;
+    flex-shrink: 0;
+  }
+
+  .secret-example-box .ex-text {
+    font-size: 12px;
+    color: #92400e;
+    line-height: 1.6;
+  }
+
+  .secret-example-box .ex-label {
+    font-weight: 700;
+    display: block;
+    margin-bottom: 2px;
+    color: #78350f;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .4px;
   }
 
   /* ── Proof Fields ── */
@@ -197,7 +239,6 @@
     margin-top: 1px;
   }
 
-  /* ── Form Controls ── */
   .form-control {
     font-size: 12px;
     border-radius: 8px;
@@ -212,7 +253,6 @@
     outline: none;
   }
 
-  /* ── Secret Code ── */
   .secret-label {
     font-size: 12px;
     font-weight: 600;
@@ -225,7 +265,6 @@
 
   .secret-input { max-width: 320px; }
 
-  /* ── Submit Button ── */
   .btn-submit-job {
     background: var(--primary);
     color: #fff;
@@ -247,61 +286,40 @@
     margin-top: 20px;
   }
 
-  /* ════════════════════════════════
-     MOBILE  ≤ 575px
-  ════════════════════════════════ */
+  /* ════════════ MOBILE ≤575px ════════════ */
   @media (max-width: 575px) {
-    .container {
-      padding-left: 10px !important;
-      padding-right: 10px !important;
-    }
+    .container { padding-left: 10px !important; padding-right: 10px !important; }
 
-    .section-card,
-    .job-header {
-      padding: 12px 13px;
-      border-radius: 8px;
-    }
+    .section-card { padding: 12px 13px; border-radius: 8px; }
+    .job-header-body { padding: 12px 13px; flex-direction: column; gap: 8px; }
+    .job-thumbnail { max-height: 160px; }
+    .job-header h4 { font-size: 14px; }
+    .earn-badge    { font-size: 13px; padding: 5px 12px; }
 
-    /* Header stacks: title then badge */
-    .job-header        { flex-direction: column; gap: 8px; }
-    .job-header h4     { font-size: 14px; }
-    .earn-badge        { font-size: 13px; padding: 5px 12px; }
+    .rules-row     { flex-direction: column; align-items: flex-start; }
 
-    /* Rules label and button stack */
-    .rules-row         { flex-direction: column; align-items: flex-start; }
-
-    /* Action buttons fill row equally */
-    .action-row        { gap: 6px; }
-    .action-row .btn   {
+    .action-row .btn {
       flex: 1 1 calc(50% - 3px);
       text-align: center;
       font-size: 11px !important;
       padding: 6px 4px;
     }
 
-    /* Meta grid stays 2 cols but tighter */
-    .meta-grid { gap: 10px 8px; }
-
-    /* Secret code full width on mobile */
+    .meta-grid    { gap: 10px 8px; }
     .secret-input { max-width: 100%; }
 
-    /* Submit button full width */
     .submit-wrap        { justify-content: stretch; }
     .btn-submit-job     { width: 100%; padding: 11px; font-size: 13px; text-align: center; }
 
-    /* Modals fit screen */
     .modal-dialog       { margin: 8px; }
-
-    /* Modal dialog full width */
     .modal-dialog:not(.modal-sm) { max-width: calc(100vw - 16px); }
   }
 
-  /* ════════════════════════════════
-     TABLET  576–767px
-  ════════════════════════════════ */
+  /* ════════════ TABLET 576–767px ════════════ */
   @media (min-width: 576px) and (max-width: 767px) {
-    .job-header h4     { font-size: 15px; }
-    .secret-input      { max-width: 260px; }
+    .job-header h4 { font-size: 15px; }
+    .secret-input  { max-width: 260px; }
+    .job-thumbnail { max-height: 180px; }
   }
 </style>
 
@@ -313,13 +331,22 @@
     <span class="text-white fw-bold">Back</span>
   </a>
 
-  {{-- ── Job Header ── --}}
+  {{-- ── Job Header with Thumbnail ── --}}
   <div class="job-header">
-    <div class="job-header-info">
-      <h4>{{ $job->title }}</h4>
-      <span class="subtitle">{{ $job->continent->name }} &mdash; {{ $job->category->name }}</span>
+
+     <div class="job-header-body">
+      <div class="job-header-info">
+        <h4>{{ $job->title }}</h4>
+        <span class="subtitle">{{ $job->continent->name }} &mdash; {{ $job->category->name }}</span>
+      </div>
+      <div class="earn-badge">${{ $job->worker_earn }}</div>
     </div>
-    <div class="earn-badge">${{ $job->worker_earn }}</div>
+    @if($job->thumbnail)
+      <img src="{{ asset('storage/' . $job->thumbnail) }}"
+           alt="{{ $job->title }}"
+           class="job-thumbnail">
+    @endif
+   
   </div>
 
   {{-- ── Rules + Report/Hide ── --}}
@@ -401,10 +428,23 @@
       <div class="section-header">
         <i class="fa fa-key"></i> Secret Code
       </div>
-      <div class="secret-label">
+
+      {{-- Example hint --}}
+      @if(!empty($job->secret_code_example))
+      <div class="secret-example-box">
+        <i class="fa fa-lightbulb-o"></i>
+        <div class="ex-text">
+          <span class="ex-label">Hint — where to find the code</span>
+          {{ $job->secret_code_example }}
+        </div>
+      </div>
+      @endif
+
+      <div class="secret-label mt-3">
         <i class="fa fa-question-circle text-danger"></i> Type Secret Code
       </div>
-      <input type="text" name="secret_code" class="form-control secret-input" required>
+      <input type="text" name="secret_code" class="form-control secret-input" required
+             placeholder="Enter the secret code...">
     </div>
     @endif
 
@@ -493,7 +533,6 @@
 </footer>
 
 <script>
-  // Rules toggle
   const readRulesBtn = document.getElementById('readRulesBtn');
   const rulesBox     = document.getElementById('rulesBox');
   let rulesVisible   = false;
