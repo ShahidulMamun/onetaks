@@ -15,20 +15,13 @@
         --shadow: 0 4px 20px rgba(0,0,0,0.06);
     }
 
-    body { font-family: 'DM Sans', sans-serif; }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { overflow-x: hidden; max-width: 100%; }
+    img { max-width: 100%; height: auto; }
 
-    .page-header {
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
-        padding: 40px 0 28px;
-        margin-bottom: 32px;
-    }
-    .page-header h4 {
-        font-family: 'Syne', sans-serif;
-        font-weight: 800; color: #fff; margin: 0; font-size: 1.6rem;
-    }
-    .page-header p { color: rgba(255,255,255,.5); font-size:.85rem; margin:4px 0 0; }
+    body { font-family: 'DM Sans', sans-serif; font-size: 12px; }
 
-    /* Table card */
+    /* ── Table Card ── */
     .jobs-card {
         background: #fff;
         border-radius: var(--radius);
@@ -36,136 +29,287 @@
         border: 1px solid var(--border);
         overflow: hidden;
     }
+
     .jobs-card .card-top {
-        padding: 16px 22px;
+        padding: 13px 18px;
         border-bottom: 1px solid var(--border);
-        display: flex; align-items: center; justify-content: space-between;
-    }
-    .jobs-card .card-top h6 {
-        font-family: 'Syne', sans-serif; font-weight: 700;
-        color: var(--dark); margin: 0;
-    }
-    .result-count {
-        background: var(--teal-light); color: var(--teal-dark);
-        border-radius: 20px; padding: 3px 14px;
-        font-size: .78rem; font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
     }
 
-    table { margin: 0 !important; }
+    .jobs-card .card-top h6 {
+        font-family: 'Syne', sans-serif;
+        font-weight: 700;
+        font-size: 13px;
+        color: var(--dark);
+        margin: 0;
+    }
+
+    .result-count {
+        background: var(--teal-light);
+        color: var(--teal-dark);
+        border-radius: 20px;
+        padding: 3px 12px;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    /* ── Desktop Table ── */
+    table { margin: 0 !important; font-size: 12px; }
+
     thead th {
         font-family: 'Syne', sans-serif;
-        font-size: .78rem; text-transform: uppercase;
-        letter-spacing: .6px; color: var(--muted);
-        background: #f8f9fa; border: none !important;
-        padding: 14px 16px !important; font-weight: 700;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        color: var(--muted);
+        background: #f8f9fa;
+        border: none !important;
+        padding: 11px 14px !important;
+        font-weight: 700;
+        white-space: nowrap;
     }
+
     tbody td {
-        padding: 14px 16px !important;
+        padding: 11px 14px !important;
         vertical-align: middle !important;
         border-color: var(--border) !important;
-        font-size: .9rem; color: #333;
+        font-size: 12px;
+        color: #333;
     }
+
     tbody tr:hover { background: #f4fdfb; }
 
+    .td-title {
+        max-width: 160px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+        font-weight: 600;
+        font-size: 12px;
+    }
+
     .earn-val { color: var(--teal); font-weight: 700; }
+
     .worker-badge {
-        background: #f1f3f5; border-radius: 8px;
-        padding: 4px 10px; font-size: .82rem;
+        background: #f1f3f5;
+        border-radius: 8px;
+        padding: 3px 9px;
+        font-size: 11px;
         display: inline-block;
     }
 
-    /* Status */
+    /* ── Status Pill ── */
     .status-pill {
-        border-radius: 20px; padding: 3px 12px;
-        font-size: .74rem; font-weight: 600;
+        border-radius: 20px;
+        padding: 2px 10px;
+        font-size: 11px;
+        font-weight: 600;
         display: inline-block;
+        white-space: nowrap;
     }
-    .status-pill.active   { background:#d1f2eb; color:#0e8a6a; }
-    .status-pill.pending  { background:#fef9e7; color:#b7770d; }
-    .status-pill.paused   { background:#e8ecef; color:#555; }
-    .status-pill.completed{ background:#e3f0ff; color:#2563eb; }
+    .status-pill.active    { background:#d1f2eb; color:#0e8a6a; }
+    .status-pill.pending   { background:#fef9e7; color:#b7770d; }
+    .status-pill.paused    { background:#e8ecef; color:#555; }
+    .status-pill.completed { background:#e3f0ff; color:#2563eb; }
 
-    /* Action Buttons */
-    .action-group { display: flex; gap: 6px; flex-wrap: wrap; }
-    .btn-proof  { background: var(--teal);    color:#fff; }
-    .btn-proof:hover { background: var(--teal-dark); color:#fff; }
-    .btn-edit   { background: #3498db;         color:#fff; }
-    .btn-edit:hover { background: #2176ae;     color:#fff; }
-    .btn-top    { background: #f39c12;         color:#fff; }
-    .btn-top:hover { background: #c87f0a;      color:#fff; }
-    .btn-delete { background: #e74c3c;         color:#fff; }
-    .btn-delete:hover { background: #c0392b;   color:#fff; }
-    .action-group .btn { font-size:.78rem; border-radius:8px; padding:5px 12px; border:none; font-weight:600; }
+    .top-job-badge {
+        background: linear-gradient(135deg, #f39c12, #e67e22);
+        color: #fff;
+        border-radius: 20px;
+        padding: 2px 8px;
+        font-size: 10px;
+        font-weight: 700;
+        display: inline-block;
+        margin-top: 3px;
+    }
+
+    /* ── Action Buttons ── */
+    .action-group { display: flex; gap: 5px; flex-wrap: wrap; }
+    .action-group .btn {
+        font-size: 11px;
+        border-radius: 7px;
+        padding: 4px 10px;
+        border: none;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+    .btn-proof  { background: var(--teal);  color: #fff; }
+    .btn-proof:hover  { background: var(--teal-dark); color: #fff; }
+    .btn-edit   { background: #3498db;      color: #fff; }
+    .btn-edit:hover   { background: #2176ae; color: #fff; }
+    .btn-top    { background: #f39c12;      color: #fff; }
+    .btn-top:hover    { background: #c87f0a; color: #fff; }
+    .btn-delete { background: #e74c3c;      color: #fff; }
+    .btn-delete:hover { background: #c0392b; color: #fff; }
+
+    /* ── Mobile Cards ── */
+    .job-card-m {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: var(--shadow);
+        border: 1px solid var(--border);
+        border-left: 4px solid var(--teal);
+        padding: 13px 14px;
+        margin-bottom: 10px;
+    }
+
+    .jcm-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 8px;
+        margin-bottom: 8px;
+    }
+
+    .jcm-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--dark);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 200px;
+        flex: 1;
+    }
+
+    .jcm-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 10px;
+        font-size: 11px;
+        color: var(--muted);
+    }
+
+    .jcm-actions {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+    }
+
+    .jcm-actions .btn {
+        font-size: 11px;
+        border-radius: 7px;
+        padding: 5px 10px;
+        border: none;
+        font-weight: 600;
+        flex: 1 1 auto;
+        text-align: center;
+    }
+
+    /* ── Empty state ── */
+    .empty-state {
+        text-align: center;
+        padding: 40px 20px;
+        color: var(--muted);
+        font-size: 13px;
+    }
 
     /* ── Modals ── */
     .modal-header {
-    background: linear-gradient(135deg, #006A4E, #181c20);
-    color: #fff;
-    border: none;
-    border-radius: var(--radius) var(--radius) 0 0;
-}
-    .modal-header .modal-title { font-family:'Syne',sans-serif; font-weight:700; }
+        background: linear-gradient(135deg, #006A4E, #181c20);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius) var(--radius) 0 0;
+    }
+    .modal-header .modal-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; }
     .modal-header .btn-close { filter: invert(1) brightness(2); }
-    .modal-content { border-radius: var(--radius); overflow:hidden; border:none; box-shadow:0 16px 48px rgba(0,0,0,.18); }
+    .modal-content { border-radius: var(--radius); overflow: hidden; border: none; box-shadow: 0 16px 48px rgba(0,0,0,.18); }
 
-    .form-label { font-size:.82rem; font-weight:600; color:#555; margin-bottom:4px; }
+    .form-label { font-size: 12px; font-weight: 600; color: #555; margin-bottom: 4px; }
     .form-control, .form-select {
-        border-radius:10px; border:1.5px solid var(--border);
-        font-size:.9rem; padding: 10px 14px;
+        border-radius: 10px;
+        border: 1.5px solid var(--border);
+        font-size: 12px;
+        padding: 9px 12px;
         transition: border-color .2s, box-shadow .2s;
     }
     .form-control:focus, .form-select:focus {
-        border-color: var(--teal); box-shadow: 0 0 0 3px rgba(26,188,156,.15);
+        border-color: var(--teal);
+        box-shadow: 0 0 0 3px rgba(26,188,156,.15);
     }
     .input-group-text {
-        background: var(--teal-light); color: var(--teal-dark);
-        border: 1.5px solid var(--border); font-weight:700; border-radius: 10px 0 0 10px;
+        background: var(--teal-light);
+        color: var(--teal-dark);
+        border: 1.5px solid var(--border);
+        font-weight: 700;
+        border-radius: 10px 0 0 10px;
+        font-size: 12px;
     }
     .input-group .form-control { border-radius: 0 10px 10px 0; }
 
-    /* Charge preview box */
     .charge-preview {
         background: linear-gradient(135deg, #f8fffd, #f0faf7);
         border: 1.5px solid var(--teal-light);
-        border-radius: 12px; padding: 16px 20px;
+        border-radius: 12px;
+        padding: 14px 16px;
     }
     .charge-preview .cp-row {
-        display: flex; justify-content: space-between;
-        font-size: .88rem; color: #444; padding: 4px 0;
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: #444;
+        padding: 4px 0;
     }
     .charge-preview .cp-row.total {
         border-top: 1.5px dashed var(--teal-light);
-        margin-top: 8px; padding-top: 10px;
+        margin-top: 8px;
+        padding-top: 10px;
         font-family: 'Syne', sans-serif;
-        font-weight: 700; font-size: 1rem; color: var(--dark);
+        font-weight: 700;
+        font-size: 13px;
+        color: var(--dark);
     }
     .charge-preview .cp-row.total span:last-child { color: var(--teal); }
 
     .info-note {
-        background: #fff8e1; border-left: 3px solid #f39c12;
-        border-radius: 0 8px 8px 0; padding: 8px 14px;
-        font-size: .8rem; color: #7d5a00;
+        background: #fff8e1;
+        border-left: 3px solid #f39c12;
+        border-radius: 0 8px 8px 0;
+        padding: 8px 12px;
+        font-size: 11px;
+        color: #7d5a00;
     }
 
-    .top-job-badge {
-        background: linear-gradient(135deg, #f39c12, #e67e22);
-        color: #fff; border-radius: 20px; padding: 2px 10px;
-        font-size: .7rem; font-weight: 700;
+    /* ── Responsive show/hide ── */
+    @media (max-width: 767px) {
+        .desktop-view { display: none !important; }
+        .mobile-view  { display: block !important; }
+    }
+    @media (min-width: 768px) {
+        .mobile-view  { display: none !important; }
+        .desktop-view { display: block !important; }
+    }
+
+    /* ── Mobile tweaks ── */
+    @media (max-width: 575px) {
+        .container { padding-left: 10px !important; padding-right: 10px !important; }
+        .jobs-card .card-top { padding: 11px 13px; }
+        .modal-dialog { margin: 8px; }
+        .modal-dialog { max-width: calc(100vw - 16px); }
+        .modal-body { padding: 14px !important; }
+        .modal-footer { padding: 10px 14px !important; }
     }
 </style>
 
-<br><br><br>
+<div class="container mt-4 pb-5">
 
-<!-- Header -->
-
-<div class="container pb-5">
+    {{-- ── Card Header ── --}}
     <div class="jobs-card">
         <div class="card-top">
-            <h6><i class="bi bi-list-ul me-2 text-success"></i>{{$pageTitle}}</h6>
+            <h6><i class="bi bi-list-ul me-2 text-success"></i>{{ $pageTitle }}</h6>
             <span class="result-count">{{ count($jobs) }} Result{{ count($jobs) != 1 ? 's' : '' }}</span>
         </div>
 
-        <div class="table-responsive">
+        {{-- ── Desktop Table ── --}}
+        <div class="desktop-view table-responsive">
             <table class="table table-hover align-middle">
                 <thead>
                     <tr>
@@ -180,11 +324,11 @@
                 <tbody>
                 @forelse($jobs as $job)
                     <tr>
-                        <td>{{ $job->continent->name }}</td>
+                        <td style="font-size:12px; color:var(--muted);">{{ $job->continent->name }}</td>
                         <td>
-                            <div class="fw-semibold">{{ $job->title }}</div>
+                            <span class="td-title" title="{{ $job->title }}">{{ $job->title }}</span>
                             @if($job->is_top)
-                                <span class="top-job-badge"><i class="bi bi-star-fill me-1"></i>Top Job</span>
+                                <span class="top-job-badge"><i class="bi bi-star-fill me-1"></i>Top</span>
                             @endif
                         </td>
                         <td><span class="earn-val">${{ $job->worker_earn }}</span></td>
@@ -195,34 +339,27 @@
                             </span>
                         </td>
                         <td>
-                            <span class="status-pill {{ strtolower($job->status) }}">{{ $job->status }}</span>
+                            <span class="status-pill {{ strtolower($job->status) }}">{{ ucfirst($job->status) }}</span>
                         </td>
                         <td>
                             <div class="action-group">
-                                <!-- Proof -->
                                 <a href="{{ route('user.submit-job-proof', [$job->id, $job->code]) }}"
                                    class="btn btn-proof btn-sm">
                                     <i class="bi bi-eye me-1"></i>Proof
                                 </a>
-
-                                <!-- Edit Workers -->
                                 <button class="btn btn-edit btn-sm"
                                     onclick='openEditModal({{ $job->id }},{{ $job->worker_need }},{{ $job->worker_earn }},@json($job->title),@json($job->description))'>
                                     <i class="bi bi-pencil me-1"></i>Edit
                                 </button>
-
-                                <!-- Top Job (only if not already top) -->
                                 @if(!$job->is_top)
                                 <button class="btn btn-top btn-sm"
                                     onclick="openTopJobModal({{ $job->id }}, '{{ addslashes($job->title) }}')">
                                     <i class="bi bi-star me-1"></i>Top
                                 </button>
                                 @endif
-
-                                <!-- Delete -->
                                 <form action="{{ route('user.job.delete', [$job->id, $job->code]) }}"
                                       method="POST"
-                                      onsubmit="return confirm('Are you sure you want to delete this job?')">
+                                      onsubmit="return confirm('Delete this job?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-delete btn-sm">
@@ -234,7 +371,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center py-5 text-muted">
+                        <td colspan="6" class="empty-state">
                             <i class="bi bi-inbox fs-2 d-block mb-2"></i>
                             No jobs posted yet.
                         </td>
@@ -243,12 +380,71 @@
                 </tbody>
             </table>
         </div>
+
+        {{-- ── Mobile Cards ── --}}
+        <div class="mobile-view p-3">
+            @forelse($jobs as $job)
+            <div class="job-card-m">
+                <div class="jcm-top">
+                    <span class="jcm-title" title="{{ $job->title }}">{{ $job->title }}</span>
+                    <span class="earn-val" style="font-size:13px; white-space:nowrap;">${{ $job->worker_earn }}</span>
+                </div>
+                <div class="jcm-meta">
+                    <span>
+                        <i class="bi bi-globe2 me-1"></i>{{ $job->continent->name }}
+                    </span>
+                    <span>
+                        <span class="worker-badge">
+                            <strong class="text-success">{{ $job->worker_remaining }}</strong>
+                            / <strong class="text-danger">{{ $job->worker_need }}</strong>
+                        </span>
+                    </span>
+                    <span>
+                        <span class="status-pill {{ strtolower($job->status) }}">{{ ucfirst($job->status) }}</span>
+                        @if($job->is_top)
+                            <span class="top-job-badge ms-1"><i class="bi bi-star-fill"></i> Top</span>
+                        @endif
+                    </span>
+                </div>
+                <div class="jcm-actions">
+                    <a href="{{ route('user.submit-job-proof', [$job->id, $job->code]) }}"
+                       class="btn btn-proof btn-sm">
+                        <i class="bi bi-eye me-1"></i>Proof
+                    </a>
+                    <button class="btn btn-edit btn-sm"
+                        onclick='openEditModal({{ $job->id }},{{ $job->worker_need }},{{ $job->worker_earn }},@json($job->title),@json($job->description))'>
+                        <i class="bi bi-pencil me-1"></i>Edit
+                    </button>
+                    @if(!$job->is_top)
+                    <button class="btn btn-top btn-sm"
+                        onclick="openTopJobModal({{ $job->id }}, '{{ addslashes($job->title) }}')">
+                        <i class="bi bi-star me-1"></i>Top
+                    </button>
+                    @endif
+                    <form action="{{ route('user.job.delete', [$job->id, $job->code]) }}"
+                          method="POST"
+                          onsubmit="return confirm('Delete this job?')"
+                          style="flex:1 1 auto;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-delete btn-sm" style="width:100%;">
+                            <i class="bi bi-trash me-1"></i>Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+            @empty
+            <div class="empty-state">
+                <i class="bi bi-inbox fs-2 d-block mb-2"></i>
+                No jobs posted yet.
+            </div>
+            @endforelse
+        </div>
+
     </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     EDIT WORKERS MODAL
-══════════════════════════════════════════ -->
+{{-- ══ EDIT MODAL ══ --}}
 <div class="modal fade" id="editWorkerModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -260,50 +456,34 @@
                 @csrf
                 @method('PATCH')
                 <div class="modal-body p-4">
-
-                    <div class="info-note mb-4">
+                    <div class="info-note mb-3">
                         <i class="bi bi-info-circle me-1"></i>
-                        You can only <strong>increase</strong> the number of workers. Decreasing is not allowed.
+                        You can only <strong>increase</strong> the number of workers.
                     </div>
 
-                      <div class="mb-3">
+                    <div class="mb-3">
                         <label class="form-label">Title</label>
-                        <div class="input-group">
-                            <input style="border-radius:10px" type="text" id="jobTitle" name="job_title" class="form-control">
-                        </div>
-                      
-                       </div>
+                        <input type="text" id="jobTitle" name="job_title" class="form-control">
+                    </div>
 
-                        <div class="mb-3">
-                        <label class="form-label">Desciption</label>
-                        <div class="input-group">
-                            <textarea style="border-radius: 10px" id="jobDescription"name="job_description" class="form-control">
-                                
-                            </textarea>
-                           
-                        </div>
-                      
-                       </div>
-
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea id="jobDescription" name="job_description" class="form-control" rows="3"></textarea>
+                    </div>
 
                     <div class="mb-3">
                         <label class="form-label">Add Workers</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
-                            <input type="number"
-                                   id="extra_workers"
-                                   name="extra_workers"
-                                   class="form-control"
-                                   min="1"
-                                   placeholder="e.g. 10"
-                                   oninput="recalcEdit()">
+                            <input type="number" id="extra_workers" name="extra_workers"
+                                   class="form-control" min="1"
+                                   placeholder="e.g. 10" oninput="recalcEdit()">
                         </div>
-                        <small class="text-muted mt-1 d-block">
+                        <small class="text-muted mt-1 d-block" style="font-size:11px;">
                             Current total: <strong id="current_total">—</strong> workers
                         </small>
                     </div>
 
-                    <!-- Live Charge Preview -->
                     <div class="charge-preview">
                         <div class="cp-row">
                             <span>Extra workers</span>
@@ -322,11 +502,10 @@
                             <span id="prev-total">$0.00</span>
                         </div>
                     </div>
-
                 </div>
-                <div class="modal-footer border-0 pt-0 pb-4 px-4">
-                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-edit rounded-pill px-5 fw-bold">
+                <div class="modal-footer border-0 pt-0 pb-3 px-4">
+                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal" style="font-size:12px;">Cancel</button>
+                    <button type="submit" class="btn btn-edit rounded-pill px-4 fw-bold" style="font-size:12px;">
                         <i class="bi bi-check-circle me-1"></i>Update Job
                     </button>
                 </div>
@@ -335,49 +514,39 @@
     </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     TOP JOB MODAL
-══════════════════════════════════════════ -->
+{{-- ══ TOP JOB MODAL ══ --}}
 <div class="modal fade" id="topJobModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header" style="background: linear-gradient(135deg,#f39c12,#e67e22);">
-                <h6 class="modal-title"><i class="bi bi-star-fill me-2"></i>Promote to Top Job</h6>
+                <h6 class="modal-title" style="font-size:13px;"><i class="bi bi-star-fill me-2"></i>Promote to Top Job</h6>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form id="topJobForm" method="POST">
                 @csrf
                 @method('PATCH')
                 <div class="modal-body p-4">
-
-                    <div class="text-center mb-4">
-                        <div style="font-size:1rem;">⭐</div>
-                        <h6 class="fw-bold mt-2" id="top-job-title-display"></h6>
-                        <p class="text-muted" style="font-size:12px;">
+                    <div class="text-center mb-3">
+                        <div style="font-size:2rem;">⭐</div>
+                        <h6 class="fw-bold mt-2" id="top-job-title-display" style="font-size:13px;"></h6>
+                        <p class="text-muted" style="font-size:11px;">
                             Top Jobs appear at the top of listings and attract more workers faster.
                         </p>
                     </div>
-
                     <div class="charge-preview">
                         <div class="cp-row">
                             <span>Top Job Promotion Fee</span>
                             <span class="fw-bold text-warning">${{ $setting->topjob_charge ?? '0.00' }}</span>
                         </div>
-                      <!--   <div class="cp-row total">
-                            <span>Total charge</span>
-                            <span>${{ $setting->topjob_charge ?? '0.00' }}</span>
-                        </div> -->
                     </div>
-
                     <div class="info-note mt-3">
                         <i class="bi bi-lightning-fill me-1 text-warning"></i>
                         This amount will be deducted from your wallet immediately.
                     </div>
-
                 </div>
-                <div class="modal-footer border-0 pt-0 pb-4 px-4">
-                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-top rounded-pill px-5 fw-bold">
+                <div class="modal-footer border-0 pt-0 pb-3 px-4">
+                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal" style="font-size:12px;">Cancel</button>
+                    <button type="submit" class="btn btn-top rounded-pill px-4 fw-bold" style="font-size:12px;">
                         <i class="bi bi-star-fill me-1"></i>Make it Top Job
                     </button>
                 </div>
@@ -392,10 +561,9 @@
 
 <script>
     const JOB_POST_CHARGE = {{ $setting->jobpost_charge ?? 0 }};
-
     let _editEarn = 0;
 
-    function openEditModal(jobId, currentWorkers, workerEarn, jobTitle , jobDescription) {
+    function openEditModal(jobId, currentWorkers, workerEarn, jobTitle, jobDescription) {
         _editEarn = workerEarn;
         document.getElementById('editWorkerForm').action = '/user/jobs/' + jobId + '/update-workers';
         document.getElementById('current_total').textContent = currentWorkers;
@@ -411,8 +579,8 @@
         const extra = parseInt(document.getElementById('extra_workers').value) || 0;
         const workerCost = extra * _editEarn;
         const total = workerCost + (extra > 0 ? JOB_POST_CHARGE : 0);
-        document.getElementById('prev-extra').textContent  = extra;
-        document.getElementById('prev-total').textContent  = '$' + total.toFixed(2);
+        document.getElementById('prev-extra').textContent = extra;
+        document.getElementById('prev-total').textContent = '$' + total.toFixed(2);
     }
 
     function openTopJobModal(jobId, jobTitle) {
