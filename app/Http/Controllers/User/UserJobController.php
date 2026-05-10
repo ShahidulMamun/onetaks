@@ -145,10 +145,19 @@ class UserJobController extends Controller
 
 
 
+
+
         $thumbnailPath = null;
         if ($request->hasFile('thumbnail')) {
             $thumbnailPath = $request->file('thumbnail')
                 ->store('job-thumbnails', 'public');
+        }
+
+
+        $slug = Str::slug($request->title);
+
+        if (JobPost::where('slug', $slug)->exists()) {
+            $slug = $slug . '-' . uniqid();
         }
 
         $job = JobPost::create([
@@ -159,7 +168,7 @@ class UserJobController extends Controller
             'subcategory_id' => $request->subcategory_id,
             'title'          => $request->title,
             'code'           =>  strtoupper(Str::random(10)),
-            'slug'           => str_replace(' ', '-', $request->title),
+            'slug'           => $slug,
             'description'    => $request->description,
             'thumbnail'      => $thumbnailPath,
             'worker_need'    => $request->worker_need,
