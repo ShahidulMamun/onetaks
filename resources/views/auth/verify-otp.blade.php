@@ -1,84 +1,140 @@
-{{-- resources/views/auth/verify-otp.blade.php --}}
-<!DOCTYPE html>
-<html lang="bn">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OTP Verify</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
-<div class="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md">
-    <h2 class="text-2xl font-bold text-center text-gray-800 mb-2">OTP যাচাই করুন</h2>
-    <p class="text-center text-gray-500 mb-6 text-sm">
-        <strong>{{ session('password_reset_email') }}</strong> তে পাঠানো ৬ সংখ্যার OTP দিন
-    </p>
+@extends('frontend.layouts.app')
+@section('content')
 
-    @if(session('success'))
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-            {{ session('success') }}
+<style>
+:root {
+    --primary:    #6c47ff;
+    --primary-dk: #4f2fe0;
+    --accent:     #ff6b6b;
+    --dark:       #0f0e17;
+    --card-bg:    #ffffff;
+    --muted:      #6b7280;
+    --border:     #e5e7eb;
+    --radius:     14px;
+    --shadow:     0 20px 60px rgba(108,71,255,.13);
+    --input-bg:   #f8f7ff;
+}
+.auth-page { min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 40px 16px 60px; }
+.signup-card { background: var(--card-bg); border-radius: var(--radius); box-shadow: var(--shadow); padding: 48px 44px; width: 100%; max-width: 460px; border: 1px solid rgba(108,71,255,.1); position: relative; overflow: hidden; }
+.signup-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--accent)); border-radius: var(--radius) var(--radius) 0 0; }
+.form-title { font-size: 1.75rem; font-weight: 800; letter-spacing: .08em; color: var(--dark); margin-bottom: 8px; text-align: center; }
+.form-subtitle { text-align: center; color: var(--muted); font-size: .9rem; margin-bottom: 32px; line-height: 1.5; }
+.form-subtitle strong { color: var(--primary); }
+.form-label { font-size: .82rem; font-weight: 600; color: #374151; margin-bottom: 6px; display: block; letter-spacing: .03em; }
+.form-control { background: var(--input-bg); border: 1.5px solid var(--border); border-radius: 10px; padding: 12px 16px; font-size: .95rem; width: 100%; color: var(--dark); transition: border-color .2s, box-shadow .2s; outline: none; box-sizing: border-box; }
+.form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(108,71,255,.12); background: #fff; }
+
+/* OTP input style */
+.otp-input { text-align: center; font-size: 2rem; font-weight: 700; letter-spacing: 10px; font-family: 'Courier New', monospace; color: var(--primary); }
+
+.field-group { margin-bottom: 20px; width: 100%; }
+.btn-register { width: 100%; padding: 13px; background: linear-gradient(135deg, var(--primary), var(--primary-dk)); color: #fff; font-size: 1rem; font-weight: 700; letter-spacing: .05em; border: none; border-radius: 10px; cursor: pointer; transition: transform .15s, box-shadow .15s; box-shadow: 0 6px 20px rgba(108,71,255,.35); margin-top: 8px; }
+.btn-register:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(108,71,255,.45); }
+.btn-register:active { transform: translateY(0); opacity: .9; }
+.btn-resend { width: 100%; padding: 12px; background: transparent; color: var(--primary); font-size: .9rem; font-weight: 600; border: 1.5px solid rgba(108,71,255,.3); border-radius: 10px; cursor: pointer; transition: all .2s; margin-top: 10px; }
+.btn-resend:hover { background: rgba(108,71,255,.06); border-color: var(--primary); }
+.login-link { text-align: center; margin-top: 24px; font-size: .88rem; color: var(--muted); }
+.login-link a { color: var(--primary); font-weight: 600; text-decoration: none; }
+.login-link a:hover { color: var(--primary-dk); text-decoration: underline; }
+.auth-alert { padding: 11px 14px; border-radius: 9px; font-size: .85rem; margin-bottom: 20px; }
+.auth-alert.error { background: #fff1f1; border: 1px solid #fca5a5; color: #b91c1c; }
+.auth-alert.success { background: #f0fdf4; border: 1px solid #86efac; color: #15803d; }
+
+/* Timer */
+.timer-wrap { text-align: center; margin-bottom: 16px; }
+.timer-label { font-size: .82rem; color: var(--muted); }
+.timer-count { font-size: 1.1rem; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+.timer-count.expired { color: #9ca3af; }
+
+.icon-wrap { width: 64px; height: 64px; background: linear-gradient(135deg, rgba(108,71,255,.12), rgba(255,107,107,.1)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+.icon-wrap svg { width: 30px; height: 30px; stroke: var(--primary); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+@media (max-width: 575px) { .signup-card { padding: 36px 22px 32px; } .form-title { font-size: 1.45rem; } .otp-input { font-size: 1.6rem; letter-spacing: 6px; } }
+@media (max-width: 360px) { .signup-card { padding: 28px 16px 26px; } }
+</style>
+
+<div class="auth-page">
+    <div class="signup-card mt-5">
+        <div class="icon-wrap">
+            <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
         </div>
-    @endif
-
-    @if($errors->any())
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-            @foreach($errors->all() as $error)
-                <p>{{ $error }}</p>
-            @endforeach
-        </div>
-    @endif
-
-    <form action="{{ route('password.otp.verify') }}" method="POST">
-        @csrf
-        <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700 mb-1">OTP কোড</label>
-            <input
-                type="text"
-                name="otp"
-                maxlength="6"
-                required
-                placeholder="000000"
-                class="w-full border border-gray-300 rounded-lg px-4 py-2 text-center text-2xl tracking-widest font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
-                autocomplete="one-time-code"
-            >
-        </div>
-
-        {{-- Countdown Timer --}}
-        <p class="text-center text-sm text-gray-500 mb-4">
-            মেয়াদ শেষ হবে: <span id="timer" class="font-semibold text-red-500">10:00</span>
+        <div class="form-title">VERIFY OTP</div>
+        <p class="form-subtitle">
+            We sent a 6-digit OTP to<br>
+            <strong>{{ session('password_reset_email') }}</strong>
         </p>
 
-        <button type="submit"
-            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition">
-            OTP যাচাই করুন
-        </button>
-    </form>
+        @if(session('success'))
+            <div class="auth-alert success">{{ session('success') }}</div>
+        @endif
+        @if($errors->any())
+            <div class="auth-alert error">
+                @foreach($errors->all() as $error)<div>{{ $error }}</div>@endforeach
+            </div>
+        @endif
 
-    <form action="{{ route('password.otp.send') }}" method="POST" class="mt-3">
-        @csrf
-        <input type="hidden" name="email" value="{{ session('password_reset_email') }}">
-        <button type="submit"
-            class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 rounded-lg transition text-sm">
-            OTP আবার পাঠান
-        </button>
-    </form>
+        <form method="POST" action="{{ route('password.otp.verify') }}">
+            @csrf
+            <div class="field-group">
+                <label class="form-label">Enter OTP</label>
+                <input
+                    type="text"
+                    name="otp"
+                    class="form-control otp-input"
+                    placeholder="000000"
+                    maxlength="6"
+                    inputmode="numeric"
+                    pattern="\d{6}"
+                    required
+                    autocomplete="one-time-code"
+                />
+            </div>
+
+            <div class="timer-wrap">
+                <span class="timer-label">Expires in: </span>
+                <span class="timer-count" id="countdown">10:00</span>
+            </div>
+
+            <div class="field-group" style="margin-bottom:0">
+                <button type="submit" class="btn-register">Verify OTP</button>
+            </div>
+        </form>
+
+        <form method="POST" action="{{ route('password.otp.send') }}">
+            @csrf
+            <input type="hidden" name="email" value="{{ session('password_reset_email') }}">
+            <button type="submit" class="btn-resend">Resend OTP</button>
+        </form>
+
+        <div class="login-link"><a href="{{ route('login') }}">← Back to Login</a></div>
+    </div>
 </div>
 
+<br><br>
+<footer class="footer-section">
+    @include('frontend.layouts.partials.footer')
+</footer>
+
 <script>
-    // Countdown 10 minutes
-    let seconds = 600;
-    const timerEl = document.getElementById('timer');
-    const interval = setInterval(() => {
-        seconds--;
-        const m = String(Math.floor(seconds / 60)).padStart(2, '0');
-        const s = String(seconds % 60).padStart(2, '0');
-        timerEl.textContent = `${m}:${s}`;
-        if (seconds <= 0) {
-            clearInterval(interval);
-            timerEl.textContent = 'মেয়াদ শেষ';
-            timerEl.classList.add('text-red-700');
-        }
-    }, 1000);
+// Countdown timer
+let secs = 600;
+const el = document.getElementById('countdown');
+const tick = setInterval(() => {
+    secs--;
+    const m = String(Math.floor(secs / 60)).padStart(2, '0');
+    const s = String(secs % 60).padStart(2, '0');
+    el.textContent = `${m}:${s}`;
+    if (secs <= 0) {
+        clearInterval(tick);
+        el.textContent = 'Expired';
+        el.classList.add('expired');
+    }
+}, 1000);
+
+// Auto-format: only digits
+document.querySelector('.otp-input').addEventListener('input', function() {
+    this.value = this.value.replace(/\D/g, '').slice(0, 6);
+});
 </script>
-</body>
-</html>
+
+@endsection
