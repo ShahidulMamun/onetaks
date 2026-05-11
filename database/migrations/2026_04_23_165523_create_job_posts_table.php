@@ -39,8 +39,10 @@ return new class extends Migration
             $table->enum('status', ['pending','pause','reject','active','complete',])->default('pending');
             $table->string('reject_reason')->nullable();
             $table->boolean('is_top')->default(false);
+            $table->boolean('is_boosted')->default(false);
             $table->integer('top_order')->nullable();
             $table->timestamp('topped_at')->nullable();
+            $table->timestamp('boosted_until')->nullable();
             $table->timestamps();
             $table->index('user_id');
             $table->index('status');

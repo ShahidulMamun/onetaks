@@ -10,7 +10,7 @@ class UserDashboardController extends Controller
 {
     public function userDashboard(){
 
-        $jobs = JobPost::where('status','active')->orderBy('created_at','desc')->get();
+        $jobs = JobPost::where('status','active')->orderBy('boosted_until','desc')->get();
         return view('user.dashboard',compact('jobs'));
     }
 }

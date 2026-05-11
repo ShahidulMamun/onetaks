@@ -31,6 +31,7 @@ return new class extends Migration
             $table->decimal('jobpost_charge', 10, 2)->nullable();
             $table->decimal('dolar_rate', 10, 2)->nullable();
             $table->decimal('topjob_charge', 10, 2)->nullable();
+            $table->decimal('boost_charge_per_hour', 10, 2)->nullable();
             $table->decimal('deposit_bonus')->nullable();
             $table->boolean('maintenance_mode')->default(false);
             $table->string('meta_title')->nullable();

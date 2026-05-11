@@ -13,9 +13,6 @@
         --border: #e8ecef;
         --radius: 14px;
         --shadow: 0 4px 20px rgba(0,0,0,0.06);
-        --boost: #8b5cf6;
-        --boost-dark: #6d28d9;
-        --boost-light: #ede9fe;
     }
 
     *, *::before, *::after { box-sizing: border-box; }
@@ -131,26 +128,6 @@
         margin-top: 3px;
     }
 
-    /* ── Boost Badge ── */
-    .boost-badge {
-        background: linear-gradient(135deg, var(--boost), var(--boost-dark));
-        color: #fff;
-        border-radius: 20px;
-        padding: 2px 8px;
-        font-size: 10px;
-        font-weight: 700;
-        display: inline-flex;
-        align-items: center;
-        gap: 3px;
-        margin-top: 3px;
-        animation: boostPulse 2s ease-in-out infinite;
-    }
-
-    @keyframes boostPulse {
-        0%, 100% { box-shadow: 0 0 0 0 rgba(139,92,246,.4); }
-        50%       { box-shadow: 0 0 0 5px rgba(139,92,246,.0); }
-    }
-
     /* ── Action Buttons ── */
     .action-group { display: flex; gap: 5px; flex-wrap: wrap; }
     .action-group .btn {
@@ -170,18 +147,6 @@
     .btn-delete { background: #e74c3c;      color: #fff; }
     .btn-delete:hover { background: #c0392b; color: #fff; }
 
-    /* Boost button */
-    .btn-boost {
-        background: linear-gradient(135deg, var(--boost), var(--boost-dark));
-        color: #fff;
-    }
-    .btn-boost:hover {
-        background: linear-gradient(135deg, var(--boost-dark), #4c1d95);
-        color: #fff;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(109,40,217,.35);
-    }
-
     /* ── Mobile Cards ── */
     .job-card-m {
         background: #fff;
@@ -191,10 +156,6 @@
         border-left: 4px solid var(--teal);
         padding: 13px 14px;
         margin-bottom: 10px;
-    }
-
-    .job-card-m.is-boosted-card {
-        border-left-color: var(--boost);
     }
 
     .jcm-top {
@@ -308,94 +269,6 @@
     }
     .charge-preview .cp-row.total span:last-child { color: var(--teal); }
 
-    /* Boost modal charge preview */
-    .boost-preview {
-        background: linear-gradient(135deg, #faf5ff, #f3e8ff);
-        border: 1.5px solid #ddd6fe;
-        border-radius: 12px;
-        padding: 14px 16px;
-    }
-    .boost-preview .cp-row {
-        display: flex;
-        justify-content: space-between;
-        font-size: 12px;
-        color: #444;
-        padding: 4px 0;
-    }
-    .boost-preview .cp-row.total {
-        border-top: 1.5px dashed #ddd6fe;
-        margin-top: 8px;
-        padding-top: 10px;
-        font-family: 'Syne', sans-serif;
-        font-weight: 700;
-        font-size: 13px;
-        color: var(--dark);
-    }
-    .boost-preview .cp-row.total span:last-child { color: var(--boost); }
-
-    /* Hour selector */
-    .hour-options {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 8px;
-        margin-bottom: 16px;
-    }
-
-    .hour-option input[type="radio"] { display: none; }
-
-    .hour-option label {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 10px 6px;
-        border-radius: 10px;
-        border: 1.5px solid var(--border);
-        cursor: pointer;
-        transition: all .2s;
-        background: #fff;
-        font-size: 11px;
-        color: var(--muted);
-        gap: 2px;
-    }
-
-    .hour-option label .hr-num {
-        font-family: 'Syne', sans-serif;
-        font-size: 16px;
-        font-weight: 800;
-        color: var(--dark);
-        line-height: 1;
-    }
-
-    .hour-option label .hr-price {
-        font-size: 10px;
-        font-weight: 700;
-        color: var(--boost);
-    }
-
-    .hour-option input:checked + label {
-        border-color: var(--boost);
-        background: var(--boost-light);
-        color: var(--boost-dark);
-        box-shadow: 0 0 0 3px rgba(139,92,246,.15);
-    }
-
-    .hour-option input:checked + label .hr-num { color: var(--boost-dark); }
-
-    /* Boost timer display */
-    .boost-timer-wrap {
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        background: var(--boost-light);
-        border-radius: 8px;
-        padding: 2px 8px;
-        font-size: 10px;
-        color: var(--boost-dark);
-        font-weight: 600;
-        margin-top: 2px;
-    }
-
     .info-note {
         background: #fff8e1;
         border-left: 3px solid #f39c12;
@@ -423,27 +296,10 @@
         .modal-dialog { max-width: calc(100vw - 16px); }
         .modal-body { padding: 14px !important; }
         .modal-footer { padding: 10px 14px !important; }
-        .hour-options { grid-template-columns: repeat(4,1fr); gap: 6px; }
-        .hour-option label { padding: 8px 4px; }
-        .hour-option label .hr-num { font-size: 14px; }
     }
 </style>
 
 <div class="container mt-4 pb-5">
-
-    {{-- ── Success / Error Flash ── --}}
-   <!--  @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show rounded-3 py-2 px-3 mb-3" role="alert" style="font-size:12px;">
-            <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
-            <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
-    @if(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show rounded-3 py-2 px-3 mb-3" role="alert" style="font-size:12px;">
-            <i class="bi bi-exclamation-triangle me-2"></i>{{ session('error') }}
-            <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert"></button>
-        </div>
-    @endif -->
 
     {{-- ── Card Header ── --}}
     <div class="jobs-card">
@@ -474,12 +330,6 @@
                             @if($job->is_top)
                                 <span class="top-job-badge"><i class="bi bi-star-fill me-1"></i>Top</span>
                             @endif
-                            @if($job->isBoostedActive())
-                                <span class="boost-badge">
-                                    <i class="bi bi-rocket-takeoff-fill"></i>
-                                    Boosted · {{ $job->boostRemainingMinutes() }}m left
-                                </span>
-                            @endif
                         </td>
                         <td><span class="earn-val">${{ $job->worker_earn }}</span></td>
                         <td>
@@ -507,11 +357,6 @@
                                     <i class="bi bi-star me-1"></i>Top
                                 </button>
                                 @endif
-                                {{-- ── Boost Button ── --}}
-                                <button class="btn btn-boost btn-sm"
-                                    onclick="openBoostModal({{ $job->id }}, '{{ addslashes($job->title) }}', {{ $job->isBoostedActive() ? 'true' : 'false' }})">
-                                    <i class="bi bi-rocket-takeoff me-1"></i>Boost
-                                </button>
                                 <form action="{{ route('user.job.delete', [$job->id, $job->code]) }}"
                                       method="POST"
                                       onsubmit="return confirm('Delete this job?')">
@@ -539,13 +384,15 @@
         {{-- ── Mobile Cards ── --}}
         <div class="mobile-view p-3">
             @forelse($jobs as $job)
-            <div class="job-card-m {{ $job->isBoostedActive() ? 'is-boosted-card' : '' }}">
+            <div class="job-card-m">
                 <div class="jcm-top">
                     <span class="jcm-title" title="{{ $job->title }}">{{ $job->title }}</span>
                     <span class="earn-val" style="font-size:13px; white-space:nowrap;">${{ $job->worker_earn }}</span>
                 </div>
                 <div class="jcm-meta">
-                    <span><i class="bi bi-globe2 me-1"></i>{{ $job->continent->name }}</span>
+                    <span>
+                        <i class="bi bi-globe2 me-1"></i>{{ $job->continent->name }}
+                    </span>
                     <span>
                         <span class="worker-badge">
                             <strong class="text-success">{{ $job->worker_remaining }}</strong>
@@ -556,12 +403,6 @@
                         <span class="status-pill {{ strtolower($job->status) }}">{{ ucfirst($job->status) }}</span>
                         @if($job->is_top)
                             <span class="top-job-badge ms-1"><i class="bi bi-star-fill"></i> Top</span>
-                        @endif
-                        @if($job->isBoostedActive())
-                            <span class="boost-badge ms-1">
-                                <i class="bi bi-rocket-takeoff-fill"></i>
-                                {{ $job->boostRemainingMinutes() }}m
-                            </span>
                         @endif
                     </span>
                 </div>
@@ -580,11 +421,6 @@
                         <i class="bi bi-star me-1"></i>Top
                     </button>
                     @endif
-                    {{-- ── Boost Button (mobile) ── --}}
-                    <button class="btn btn-boost btn-sm"
-                        onclick="openBoostModal({{ $job->id }}, '{{ addslashes($job->title) }}', {{ $job->isBoostedActive() ? 'true' : 'false' }})">
-                        <i class="bi bi-rocket-takeoff me-1"></i>Boost
-                    </button>
                     <form action="{{ route('user.job.delete', [$job->id, $job->code]) }}"
                           method="POST"
                           onsubmit="return confirm('Delete this job?')"
@@ -719,97 +555,14 @@
     </div>
 </div>
 
-{{-- ══ BOOST MODAL ══ --}}
-<div class="modal fade" id="boostModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header" style="background: linear-gradient(135deg, #6d28d9, #4c1d95);">
-                <h6 class="modal-title" style="font-size:13px;">
-                    <i class="bi bi-rocket-takeoff-fill me-2"></i>Boost Job
-                </h6>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-
-            <form id="boostForm" method="POST">
-                @csrf
-                <div class="modal-body p-4">
-
-                    {{-- Job name --}}
-                    <div class="text-center mb-4">
-                        <div style="font-size:2rem; line-height:1;">🚀</div>
-                        <h6 class="fw-bold mt-2 mb-1" id="boost-job-title" style="font-size:13px;"></h6>
-                        <p class="text-muted mb-0" style="font-size:11px;">
-                            Boost করলে job টি সবার উপরে দেখাবে নির্দিষ্ট সময়ের জন্য।
-                        </p>
-                        {{-- Already boosted notice --}}
-                        <div id="boost-extend-notice" class="mt-2" style="display:none;">
-                            <span style="background:#ede9fe; color:#6d28d9; border-radius:8px; padding:3px 10px; font-size:11px; font-weight:600;">
-                                <i class="bi bi-info-circle me-1"></i>Already boosted — new time will be added on top
-                            </span>
-                        </div>
-                    </div>
-
-                    {{-- Hour selector --}}
-                    <label class="form-label mb-2">Boost Duration বেছে নিন</label>
-                    <div class="hour-options">
-                        @foreach([1,2,3,4,5,6,7,8,9,10,12,24] as $h)
-                        <div class="hour-option">
-                            <input type="radio" name="boost_hours" id="h{{ $h }}" value="{{ $h }}"
-                                {{ $h === 1 ? 'checked' : '' }}
-                                onchange="recalcBoost()">
-                            <label for="h{{ $h }}">
-                                <span class="hr-num">{{ $h }}h</span>
-                                <span class="text-muted" style="font-size:9px;">hour{{ $h > 1 ? 's' : '' }}</span>
-                                <span class="hr-price" id="price-{{ $h }}">—</span>
-                            </label>
-                        </div>
-                        @endforeach
-                    </div>
-
-                    {{-- Cost preview --}}
-                    <div class="boost-preview">
-                        <div class="cp-row">
-                            <span>Duration</span>
-                            <span id="bprev-hours">1 hour</span>
-                        </div>
-                        <div class="cp-row">
-                            <span>Charge per hour</span>
-                            <span>${{ number_format($setting->boost_charge_per_hour ?? 1, 2) }}</span>
-                        </div>
-                        <div class="cp-row total">
-                            <span>Total to pay</span>
-                            <span id="bprev-total">$0.00</span>
-                        </div>
-                    </div>
-
-                    <div class="info-note mt-3">
-                        <i class="bi bi-wallet2 me-1"></i>
-                        আপনার wallet থেকে কেটে নেওয়া হবে। Current balance:
-                        <strong>${{ number_format(auth()->user()->current_deposit ?? 0, 2) }}</strong>
-                    </div>
-
-                </div>
-                <div class="modal-footer border-0 pt-0 pb-3 px-4">
-                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal" style="font-size:12px;">Cancel</button>
-                    <button type="submit" class="btn btn-boost rounded-pill px-4 fw-bold" style="font-size:12px;">
-                        <i class="bi bi-rocket-takeoff-fill me-1"></i>Boost Now
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
 <footer class="mt-5 footer-section">
     @include('user.layouts.partials.footer')
 </footer>
 
 <script>
-    const JOB_POST_CHARGE   = {{ $setting->jobpost_charge ?? 0 }};
-    const BOOST_CHARGE_PER_HOUR = {{ $setting->boost_charge_per_hour ?? 1 }};
+    const JOB_POST_CHARGE = {{ $setting->jobpost_charge ?? 0 }};
     let _editEarn = 0;
 
-    /* ── Edit Modal ── */
     function openEditModal(jobId, currentWorkers, workerEarn, jobTitle, jobDescription) {
         _editEarn = workerEarn;
         document.getElementById('editWorkerForm').action = '/user/jobs/' + jobId + '/update-workers';
@@ -830,40 +583,10 @@
         document.getElementById('prev-total').textContent = '$' + total.toFixed(2);
     }
 
-    /* ── Top Job Modal ── */
     function openTopJobModal(jobId, jobTitle) {
         document.getElementById('topJobForm').action = '/user/jobs/' + jobId + '/make-top';
         document.getElementById('top-job-title-display').textContent = jobTitle;
         new bootstrap.Modal(document.getElementById('topJobModal')).show();
-    }
-
-    /* ── Boost Modal ── */
-    function openBoostModal(jobId, jobTitle, isBoosted) {
-        document.getElementById('boostForm').action = '/user/jobs/' + jobId + '/boost';
-        document.getElementById('boost-job-title').textContent = jobTitle;
-
-        // Show extend notice if already boosted
-        document.getElementById('boost-extend-notice').style.display = isBoosted ? 'block' : 'none';
-
-        // Reset to 1 hour selected
-        document.getElementById('h1').checked = true;
-
-        // Fill price labels
-        [1,2,3,4,5,6,7,8,9,10,12,24,].forEach(h => {
-            const price = (BOOST_CHARGE_PER_HOUR * h).toFixed(2);
-            document.getElementById('price-' + h).textContent = '$' + price;
-        });
-
-        recalcBoost();
-        new bootstrap.Modal(document.getElementById('boostModal')).show();
-    }
-
-    function recalcBoost() {
-        const selected = document.querySelector('input[name="boost_hours"]:checked');
-        const h = selected ? parseInt(selected.value) : 1;
-        const total = (BOOST_CHARGE_PER_HOUR * h).toFixed(2);
-        document.getElementById('bprev-hours').textContent = h + (h === 1 ? ' hour' : ' hours');
-        document.getElementById('bprev-total').textContent = '$' + total;
     }
 </script>
 

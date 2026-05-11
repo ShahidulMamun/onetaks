@@ -10,6 +10,7 @@ use App\Http\Controllers\User\UserWithdrawController;
 use App\Http\Controllers\User\UserNotificationController;
 use App\Http\Controllers\User\UserSubmitJobController;
 use App\Http\Controllers\User\FinishJobController;
+use App\Http\Controllers\User\BoostJobController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\ContinentController;
 use App\Http\Controllers\Admin\CountryController;
@@ -105,7 +106,13 @@ Route::middleware(['auth', 'user'])
         Route::get('/create-job',  [UserJobController::class, 'create'])->name('create.job');
         Route::post('/create-job', [UserJobController::class, 'store'])->name('create.job.store');
         Route::patch('/jobs/{id}/update-workers', [UserJobController::class, 'update']);
+
+        //Top job route
         Route::patch('/jobs/{id}/make-top', [UserJobController::class, 'makeTopJob']);
+
+         // Job Boost Route
+        Route::post('/jobs/{id}/boost', [BoostJobController::class, 'boost'])->name('job.boost');
+
 
         Route::delete('/delete-job/{id}/{code}', [UserJobController::class, 'delete'])->name('job.delete');
         Route::get('/job-details/{code}',  [UserJobController::class, 'details'])->name('job-details');

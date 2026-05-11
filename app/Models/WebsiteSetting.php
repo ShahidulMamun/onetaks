@@ -30,5 +30,6 @@ class WebsiteSetting extends Model
         'meta_keywords',
         'dolar_rate',
         'topjob_charge',
+        'boost_charge_per_hour',
     ];
 }
