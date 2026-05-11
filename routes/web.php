@@ -23,7 +23,6 @@ use App\Http\Controllers\Admin\DepositController;
 use App\Http\Controllers\Admin\BreakingNoticeController;
 use App\Http\Controllers\Admin\WithdrawController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\Auth\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 
 // web pages
@@ -47,21 +46,31 @@ Route::middleware('guest.redirect')->group(function () {
     Route::get('/register', [AuthController::class, 'registerForm'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
 
-    // Step 1: Show forgot password form
-    Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotForm'])
+
+    // Step 1 - Email form
+    Route::get('/forgot-password', [ForgotPasswordController::class, 'showEmailForm'])
         ->name('password.request');
- 
-    // Step 2: Send reset email
-    Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink'])
-        ->name('password.email');
- 
-    // Step 3: Show reset form (via link in email)
-    Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])
+
+    // Step 2 - Send OTP
+    Route::post('/forgot-password/send-otp', [ForgotPasswordController::class, 'sendOtp'])
+        ->name('password.otp.send');
+
+    // Step 3 - OTP verify form
+    Route::get('/forgot-password/verify-otp', [ForgotPasswordController::class, 'showOtpForm'])
+        ->name('password.otp.form');
+
+    // Step 4 - Verify OTP
+    Route::post('/forgot-password/verify-otp', [ForgotPasswordController::class, 'verifyOtp'])
+        ->name('password.otp.verify');
+
+    // Step 5 - New password form
+    Route::get('/forgot-password/reset', [ForgotPasswordController::class, 'showResetForm'])
+        ->name('password.reset.form');
+
+    // Step 6 - Save new password
+    Route::post('/forgot-password/reset', [ForgotPasswordController::class, 'resetPassword'])
         ->name('password.reset');
- 
-    // Step 4: Process new password
-    Route::post('/reset-password', [ResetPasswordController::class, 'resetPassword'])
-        ->name('password.update');
+
 });
 
 
