@@ -430,7 +430,7 @@ class UserJobController extends Controller
    }
 
     
-  public function jobPause($id, $code)
+  public function jobStopMoneyBack($id, $code)
   {
     $job = JobPost::where('id', $id)
         ->where('code', $code)
@@ -445,8 +445,8 @@ class UserJobController extends Controller
     }
 
     // If already paused
-    if ($job->status === 'pause') {
-        return back()->with('error', 'Job is already paused');
+    if ($job->status === 'stop') {
+        return back()->with('error', 'Job is already stoped');
     }
 
     DB::transaction(function () use ($job) {
@@ -465,13 +465,14 @@ class UserJobController extends Controller
         $user->increment('current_deposit',$refundAmount);
         // update job
         $job->update([
-        'status' => 'pause',
+        'status' => 'stop',
         'worker_remaining' => 0,
+        'worker_need' => 0,
     ]);
 
      //user notification
-        $title = "Job paused";
-        $message = "$".$refundAmount." has been refunded for ".$job->code . " paused";
+        $title = "Job stop deposit back";
+        $message = "$".$refundAmount." has been refunded for ".$job->code . " stoped";
         UserNotification::create([
             'user_id' => $user->id,
             'title'   =>$title,
@@ -485,7 +486,7 @@ class UserJobController extends Controller
         'transaction_id' => strtoupper(uniqid()),
         'type' => "refund",
         'amount' => $refundAmount,
-        'description' => "Jop paused and deposit refunded",
+        'description' => "Jop stop and deposit refunded",
         'reference_id' => $job->id,
         'status' => 'success',
        ]);
@@ -493,7 +494,7 @@ class UserJobController extends Controller
 
     });
 
-    return redirect()->back()->with('success', 'Job paused successfully and refund added.');
+    return redirect()->back()->with('success', 'Job stoped successfully and refund added.');
 }
 
    

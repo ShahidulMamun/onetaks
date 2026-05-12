@@ -116,7 +116,7 @@ Route::middleware(['auth', 'user'])
         //job delete route for user
         Route::delete('/delete-job/{id}/{code}', [UserJobController::class, 'delete'])->name('job.delete');
         //job paused route for user
-        Route::patch('/pause-job/{id}/{code}', [UserJobController::class, 'jobPause'])->name('job.pause');
+        Route::patch('/pause-job/{id}/{code}', [UserJobController::class, 'jobStopMoneyBack'])->name('job.money-back');
 
         Route::get('/job-details/{code}',  [UserJobController::class, 'details'])->name('job-details');
         Route::get('/my-jobs',  [UserJobController::class, 'myjobs'])->name('my.jobs');

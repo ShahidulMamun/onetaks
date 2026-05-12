@@ -493,6 +493,7 @@
                         </td>
                         <td>
                             <div class="action-group">
+                            	@if($job->status != 'stop')
                                 <a href="{{ route('user.submit-job-proof', [$job->id, $job->code]) }}"
                                    class="btn btn-proof btn-sm">
                                     <i class="bi bi-eye me-1"></i>Proof
@@ -512,7 +513,8 @@
                                     onclick="openBoostModal({{ $job->id }}, '{{ addslashes($job->title) }}', {{ $job->isBoostedActive() ? 'true' : 'false' }})">
                                     <i class="bi bi-rocket-takeoff me-1"></i>Boost
                                 </button>
-                               @if($job->status != 'pending')
+                                @endif
+                                @if($job->status != 'pending' && $job->status != 'stop')
                                 <form action="{{ route('user.job.delete', [$job->id, $job->code]) }}"
                                       method="POST"
                                       onsubmit="return confirm('Delete this job?')">
@@ -523,14 +525,14 @@
                                     </button>
                                 </form>
                                 @endif
-                                  @if($job->status != 'pause')
-                                 <form action="{{ route('user.job.pause', [$job->id, $job->code]) }}"
+                                  @if($job->status != 'stop')
+                                 <form action="{{ route('user.job.money-back', [$job->id, $job->code]) }}"
                                       method="POST"
-                                      onsubmit="return confirm('Delete this job?')">
+                                      onsubmit="return confirm('Stop this job?')">
                                     @csrf
                                     @method('PATCH')
                                     <button type="submit" class="btn btn-dark btn-sm">
-                                        <i class="bi bi-trash me-1"></i>Pause
+                                        <i class="bi bi-trash me-1"></i>Money Back
                                     </button>
                                 </form>
                                 @endif
@@ -580,35 +582,54 @@
                     </span>
                 </div>
                 <div class="jcm-actions">
-                    <a href="{{ route('user.submit-job-proof', [$job->id, $job->code]) }}"
-                       class="btn btn-proof btn-sm">
-                        <i class="bi bi-eye me-1"></i>Proof
-                    </a>
-                    <button class="btn btn-edit btn-sm"
-                        onclick='openEditModal({{ $job->id }},{{ $job->worker_need }},{{ $job->worker_earn }},@json($job->title),@json($job->description))'>
-                        <i class="bi bi-pencil me-1"></i>Edit
-                    </button>
-                    @if(!$job->is_top)
-                    <button class="btn btn-top btn-sm"
-                        onclick="openTopJobModal({{ $job->id }}, '{{ addslashes($job->title) }}')">
-                        <i class="bi bi-star me-1"></i>Top
-                    </button>
-                    @endif
-                    {{-- ── Boost Button (mobile) ── --}}
-                    <button class="btn btn-boost btn-sm"
-                        onclick="openBoostModal({{ $job->id }}, '{{ addslashes($job->title) }}', {{ $job->isBoostedActive() ? 'true' : 'false' }})">
-                        <i class="bi bi-rocket-takeoff me-1"></i>Boost
-                    </button>
-                    <form action="{{ route('user.job.delete', [$job->id, $job->code]) }}"
-                          method="POST"
-                          onsubmit="return confirm('Delete this job?')"
-                          style="flex:1 1 auto;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-delete btn-sm" style="width:100%;">
-                            <i class="bi bi-trash me-1"></i>Delete
-                        </button>
-                    </form>
+                       <td>
+                            <div class="action-group">
+                            	@if($job->status != 'stop')
+                                <a href="{{ route('user.submit-job-proof', [$job->id, $job->code]) }}"
+                                   class="btn btn-proof btn-sm">
+                                    <i class="bi bi-eye me-1"></i>Proof
+                                </a>
+                                <button class="btn btn-edit btn-sm"
+                                    onclick='openEditModal({{ $job->id }},{{ $job->worker_need }},{{ $job->worker_earn }},@json($job->title),@json($job->description))'>
+                                    <i class="bi bi-pencil me-1"></i>Edit
+                                </button>
+                                @if(!$job->is_top)
+                                <button class="btn btn-top btn-sm"
+                                    onclick="openTopJobModal({{ $job->id }}, '{{ addslashes($job->title) }}')">
+                                    <i class="bi bi-star me-1"></i>Top
+                                </button>
+                                @endif
+                                {{-- ── Boost Button ── --}}
+                                <button class="btn btn-boost btn-sm"
+                                    onclick="openBoostModal({{ $job->id }}, '{{ addslashes($job->title) }}', {{ $job->isBoostedActive() ? 'true' : 'false' }})">
+                                    <i class="bi bi-rocket-takeoff me-1"></i>Boost
+                                </button>
+                                @endif
+                                @if($job->status != 'pending' && $job->status != 'stop')
+                                <form action="{{ route('user.job.delete', [$job->id, $job->code]) }}"
+                                      method="POST"
+                                      onsubmit="return confirm('Delete this job?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-delete btn-sm">
+                                        <i class="bi bi-trash me-1"></i>Delete
+                                    </button>
+                                </form>
+                                @endif
+                                  @if($job->status != 'stop')
+                                 <form action="{{ route('user.job.money-back', [$job->id, $job->code]) }}"
+                                      method="POST"
+                                      onsubmit="return confirm('Stop this job?')">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="btn btn-dark btn-sm">
+                                        <i class="bi bi-trash me-1"></i>Money Back
+                                    </button>
+                                </form>
+                                @endif
+
+                            </div>
+                        </td>
                 </div>
             </div>
             @empty
