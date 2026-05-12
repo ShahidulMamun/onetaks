@@ -484,8 +484,8 @@
                         <td><span class="earn-val">${{ $job->worker_earn }}</span></td>
                         <td>
                             <span class="worker-badge">
-                                <strong class="text-success">{{ $job->worker_remaining }}</strong>
-                                / <strong class="text-danger">{{ $job->worker_need }}</strong>
+                                <strong class="text-danger">{{ $job->worker_done }}</strong>
+                                / <strong class="text-success">{{ $job->worker_need }}</strong>
                             </span>
                         </td>
                         <td>
@@ -548,8 +548,8 @@
                     <span><i class="bi bi-globe2 me-1"></i>{{ $job->continent->name }}</span>
                     <span>
                         <span class="worker-badge">
-                            <strong class="text-success">{{ $job->worker_remaining }}</strong>
-                            / <strong class="text-danger">{{ $job->worker_need }}</strong>
+                            <strong class="text-danger">{{ $job->worker_done }}</strong>
+                            / <strong class="text-success">{{ $job->worker_need }}</strong>
                         </span>
                     </span>
                     <span>
