@@ -1,8 +1,7 @@
 <?php
 
 namespace App\Console\Commands;
-
-use App\Models\Job;
+use App\Models\JobPost;
 use Illuminate\Console\Command;
 
 /**
@@ -35,7 +34,7 @@ class ExpireJobBoosts extends Command
 
     public function handle(): void
     {
-        $expired = Job::where('is_boosted', true)
+        $expired = JobPost::where('is_boosted', true)
             ->where('boosted_until', '<=', now())
             ->update([
                 'is_boosted'    => false,
