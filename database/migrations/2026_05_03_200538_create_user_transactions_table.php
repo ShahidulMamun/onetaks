@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('transaction_id')->unique();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->enum('type', ['deposit', 'withdraw', 'earning','charge']);
+            $table->enum('type', ['deposit', 'withdraw', 'earning','charge','refund']);
             $table->decimal('amount', 10, 4)->default(0);
             $table->string('description')->nullable();
             $table->string('reference_id')->nullable(); 

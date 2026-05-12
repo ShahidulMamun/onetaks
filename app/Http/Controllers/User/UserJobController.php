@@ -376,18 +376,125 @@ class UserJobController extends Controller
        return back()->with('error','Job id or code is invalid');
     }
     
-     if ($job->user_id !== Auth::user()->id) {
+     if ($job->user_id != Auth::user()->id) {
 
         abort(403, 'Unauthorized');
      }
 
-    if ($job->submitjobs()->exists()) {
+     if($job->submitjobs()->exists()) {
         return back()->with('error','This job Cannot delete because submit jobs exist under it');
       }
+
+          DB::transaction(function () use ($job) {
+
+        $user = $job->user;
+
+        // total remaining value
+        $baseAmount = $job->worker_remaining * $job->worker_earn;
+        // charge calculation
+        $charge = ($baseAmount * $job->charge_percentage) / 100;
+
+        // final refund
+        $refundAmount = $baseAmount - $charge;
+
+        // add to user deposit
+        $user->increment('current_deposit',$refundAmount);
+        
+       //user notification
+        $title = "Job Deleted";
+        $message = "$".$refundAmount." has been refunded for ".$job->code . " deleted";
+        UserNotification::create([
+            'user_id' => $user->id,
+            'title'   =>$title,
+            'message' => $message,
+            'status'  => 'pending',
+        ]);
+
+
+         UserTransaction::create([
+        'user_id' => $user->id,
+        'transaction_id' => strtoupper(uniqid()),
+        'type' => "refund",
+        'amount' => $refundAmount,
+        'description' => "Jop deleted and deposit refunded",
+        'reference_id' => $job->id,
+        'status' => 'success',
+        ]);
+
+
+     });
+
     $job->delete();
 
     return redirect()->back()->with('success', 'Job deleted successfully!');
    }
+
+    
+  public function jobPause($id, $code)
+  {
+    $job = JobPost::where('id', $id)
+        ->where('code', $code)
+        ->first();
+
+    if (!$job) {
+        return back()->with('error', 'Job id or code is invalid');
+    }
+
+    if ($job->user_id != Auth::user()->id) {
+        abort(403, 'Unauthorized');
+    }
+
+    // If already paused
+    if ($job->status === 'pause') {
+        return back()->with('error', 'Job is already paused');
+    }
+
+    DB::transaction(function () use ($job) {
+
+        $user = $job->user;
+
+        // total remaining value
+        $baseAmount = $job->worker_remaining * $job->worker_earn;
+        // charge calculation
+        $charge = ($baseAmount * $job->charge_percentage) / 100;
+
+        // final refund
+        $refundAmount = $baseAmount - $charge;
+
+        // add to user deposit
+        $user->increment('current_deposit',$refundAmount);
+        // update job
+        $job->update([
+        'status' => 'pause',
+        'worker_remaining' => 0,
+    ]);
+
+     //user notification
+        $title = "Job paused";
+        $message = "$".$refundAmount." has been refunded for ".$job->code . " paused";
+        UserNotification::create([
+            'user_id' => $user->id,
+            'title'   =>$title,
+            'message' => $message,
+            'status'  => 'pending',
+        ]);
+
+
+         UserTransaction::create([
+        'user_id' => $user->id,
+        'transaction_id' => strtoupper(uniqid()),
+        'type' => "refund",
+        'amount' => $refundAmount,
+        'description' => "Jop paused and deposit refunded",
+        'reference_id' => $job->id,
+        'status' => 'success',
+       ]);
+
+
+    });
+
+    return redirect()->back()->with('success', 'Job paused successfully and refund added.');
+}
 
    
 

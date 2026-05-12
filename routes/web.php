@@ -112,9 +112,12 @@ Route::middleware(['auth', 'user'])
 
          // Job Boost Route
         Route::post('/jobs/{id}/boost', [BoostJobController::class, 'boost'])->name('job.boost');
-
-
+        
+        //job delete route for user
         Route::delete('/delete-job/{id}/{code}', [UserJobController::class, 'delete'])->name('job.delete');
+        //job paused route for user
+        Route::patch('/pause-job/{id}/{code}', [UserJobController::class, 'jobPause'])->name('job.pause');
+
         Route::get('/job-details/{code}',  [UserJobController::class, 'details'])->name('job-details');
         Route::get('/my-jobs',  [UserJobController::class, 'myjobs'])->name('my.jobs');
         Route::get('/find-jobs',  [UserJobController::class, 'findjobs'])->name('find.jobs'); 

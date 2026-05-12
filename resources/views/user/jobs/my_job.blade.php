@@ -512,6 +512,7 @@
                                     onclick="openBoostModal({{ $job->id }}, '{{ addslashes($job->title) }}', {{ $job->isBoostedActive() ? 'true' : 'false' }})">
                                     <i class="bi bi-rocket-takeoff me-1"></i>Boost
                                 </button>
+                               @if($job->status != 'pending')
                                 <form action="{{ route('user.job.delete', [$job->id, $job->code]) }}"
                                       method="POST"
                                       onsubmit="return confirm('Delete this job?')">
@@ -521,6 +522,19 @@
                                         <i class="bi bi-trash me-1"></i>Delete
                                     </button>
                                 </form>
+                                @endif
+                                  @if($job->status != 'pause')
+                                 <form action="{{ route('user.job.pause', [$job->id, $job->code]) }}"
+                                      method="POST"
+                                      onsubmit="return confirm('Delete this job?')">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="btn btn-dark btn-sm">
+                                        <i class="bi bi-trash me-1"></i>Pause
+                                    </button>
+                                </form>
+                                @endif
+
                             </div>
                         </td>
                     </tr>
