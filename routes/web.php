@@ -11,6 +11,7 @@ use App\Http\Controllers\User\UserNotificationController;
 use App\Http\Controllers\User\UserSubmitJobController;
 use App\Http\Controllers\User\FinishJobController;
 use App\Http\Controllers\User\BoostJobController;
+use App\Http\Controllers\User\BannerController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\ContinentController;
 use App\Http\Controllers\Admin\CountryController;
@@ -138,11 +139,13 @@ Route::middleware(['auth', 'user'])
         
 
 
-        //deal route
+        //banner ads route
         Route::get('/browse-deal',  [UserDealController::class, 'browsedeal'])->name('browse.deal'); 
         Route::get('/deal-create',  [UserDealController::class, 'dealcreate'])->name('deal.create');
         Route::get('/my-deal-post',  [UserDealController::class, 'mydealpost'])->name('my.deal.post'); 
         Route::get('/deal-order',  [UserDealController::class, 'dealorder'])->name('deal.order');
+        Route::post('/store-baner-ads',  [BannerController::class, 'store'])->name('store.babber.ads');
+
 
 
         //deposit route for user

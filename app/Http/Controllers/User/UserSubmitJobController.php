@@ -33,6 +33,7 @@ class UserSubmitJobController extends Controller
         return back()->with('error','Invalid Request');
        }
 
+
        if($job->worker_need==0){
        	 return back()->with('error','No worker need this job');
        }
@@ -41,11 +42,38 @@ class UserSubmitJobController extends Controller
        	 return back()->with('error','This job not available');
        }
 
+       // if ($job->user_id = Auth::user()->id) {
+
+       //   return back()->with('error','You can not submit your jobs');
+       // }
+
+      $alreadySubmitted = DB::table('job_submits')
+       ->where('job_id', $job->id)
+       ->where('user_id', auth()->id())
+       ->exists();
+
+      if($alreadySubmitted){
+
+          return back()->with(
+              'error',
+              'You already submitted this job'
+          );
+      }
+
+
+
+       $status = 'pending';
+
        if($job->has_secret_code==1){
 
        	 $request->validate([
-    	 'secret_code' =>['required','exists:job_posts,secret_code'],
-        ]);
+    	  'secret_code' =>['required','exists:job_posts,secret_code'],
+        ],
+        [
+         'secret_code.exists'=>'Secret code not match',
+        ]
+
+        );
          
          if ($job->secret_code !== $request->secret_code) {
            return back()->with('error','Secret code not match');
@@ -53,7 +81,8 @@ class UserSubmitJobController extends Controller
 
          $authuser = Auth::user();
          $authuser->increment('current_earning',$job->worker_earn);
-
+         $authuser->increment('total_earning',$job->worker_earn);
+         $status = 'approved';
         }
 
         $job->increment('worker_done',1);
@@ -64,35 +93,36 @@ class UserSubmitJobController extends Controller
     // try {
         
         $texts = [];
-		if ($request->filled('texts')) {
-		    foreach ($request->texts as $text) {
-		        if (!empty($text)) {
-		            $texts[] = strip_tags($text);
-		        }
-		    }
-		}
+    		if ($request->filled('texts')) {
+    		    foreach ($request->texts as $text) {
+    		        if (!empty($text)) {
+    		            $texts[] = strip_tags($text);
+    		        }
+    		    }
+    		}
 
-		$images = [];
-		if ($request->hasFile('images')) {
-		    foreach ($request->file('images') as $file) {
-		        if ($file) {
-		            $name = uniqid() . '.' . $file->getClientOriginalExtension();
-		            $path = $file->storeAs('proofs', $name, 'public');
-		            $images[] = $path;
-		        }
-		    }
-		}
+    		$images = [];
+    		if ($request->hasFile('images')) {
+    		    foreach ($request->file('images') as $file) {
+    		        if ($file) {
+    		            $name = uniqid() . '.' . $file->getClientOriginalExtension();
+    		            $path = $file->storeAs('proofs', $name, 'public');
+    		            $images[] = $path;
+    		        }
+    		    }
+    		}
 
-        // submit job
-        DB::table('job_submits')->insert([
-        	  'job_id'  => $job->id,
-            'user_id' => auth()->user()->id,
-            'job_owner_user_id' => $job->user_id,
-            'proof_text'  => !empty($texts) ? json_encode($texts) : null,
-            'proof_image' => !empty($images) ? json_encode($images) : null,
-            'submitted_code'=>$request->secret_code ?? '',
-            'created_at' => now(),
-        ]);
+          // submit job
+          DB::table('job_submits')->insert([
+          	  'job_id'  => $job->id,
+              'user_id' => auth()->user()->id,
+              'job_owner_user_id' => $job->user_id,
+              'proof_text'  => !empty($texts) ? json_encode($texts) : null,
+              'proof_image' => !empty($images) ? json_encode($images) : null,
+              'submitted_code'=>$request->secret_code ?? '',
+              'created_at' => now(),
+              'status'     =>$status,
+          ]);
 
             //notification for job owner
             $title = "Job submitted";
