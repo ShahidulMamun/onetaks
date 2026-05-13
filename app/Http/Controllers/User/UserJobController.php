@@ -344,8 +344,64 @@ class UserJobController extends Controller
     // find jobs
     public function findjobs(){
 
-        $jobs = JobPost::where('status','active')->orderBy('created_at','desc')->get();
-        return view('user.dashboard',compact('jobs'));
+               $userId = Auth::id();
+ 
+        $submittedJobIds = DB::table('job_submits')
+            ->where('user_id', $userId)
+            ->pluck('job_id')
+            ->toArray();
+ 
+        // ── common query
+        $baseQuery = JobPost::with('continent')
+            ->where('status', 'active')
+            // ->where('user_id', '!=', $userId)    
+            ->whereNotIn('id', $submittedJobIds)     
+            ->where('worker_remaining', '>', 0);    
+ 
+      
+        //  Boost jobs
+        $boostedJobs = (clone $baseQuery)
+            ->where('is_boosted', true)
+            ->where('boosted_until', '>', now())
+            ->orderBy('boosted_until', 'desc')   
+            ->get();
+ 
+  
+        //   TOP jobs
+        $topJobs = (clone $baseQuery)
+            ->where('is_top', true)
+            ->where(function ($q) {
+                $q->where('is_boosted', false)
+                  ->orWhereNull('boosted_until')
+                  ->orWhere('boosted_until', '<=', now());
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+ 
+     
+        //  NORMAL jobs
+        $normalJobs = (clone $baseQuery)
+            ->where('is_top', false)
+            ->where(function ($q) {
+                $q->where('is_boosted', false)
+                  ->orWhereNull('boosted_until')
+                  ->orWhere('boosted_until', '<=', now());
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+ 
+        // ── Priority order এ merge ──
+        $jobs = $boostedJobs->concat($topJobs)->concat($normalJobs);
+ 
+        $setting = WebsiteSetting::first();
+ 
+        return view('user.dashboard', compact(
+            'jobs',
+            'boostedJobs',
+            'topJobs',
+            'normalJobs',
+            'setting'
+        ));
     }
 
     // job details
