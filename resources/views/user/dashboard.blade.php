@@ -150,10 +150,8 @@
     font-size: 13px;
     font-weight: 600;
     color: var(--text-dark);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 180px;
+    white-space: normal;
+    word-break: break-word;
     flex: 1;
   }
 
@@ -317,9 +315,10 @@
   }
 
   @media (max-width: 575px) {
-    .filter-controls { flex-wrap: wrap; }
-    .filter-controls > * { flex: 1 1 calc(50% - 4px); }
-    .search-wrapper { flex: 1 1 100%; }
+   .filter-controls { flex-wrap: nowrap; gap: 5px; }
+  .filter-select, .filter-sort { font-size: 11px; padding: 6px 4px; }
+  .filter-input { font-size: 11px; padding: 6px 6px 6px 24px; }
+  .filter-controls > * { flex: 1 1 0; min-width: 0; }
   }
 </style>
 
