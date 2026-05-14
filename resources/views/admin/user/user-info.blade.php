@@ -100,6 +100,60 @@ tr:last-child td{border-bottom:none}
   .hbtn{display:none}
   .overlay{display:none!important}
 }
+
+
+body{
+    background:#f1f5f9;
+    font-family:system-ui;
+}
+
+.profile-card{
+    background:#fff;
+    border-radius:12px;
+    padding:25px;
+    box-shadow:0 2px 10px rgba(0,0,0,.05);
+}
+
+.profile-img{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    object-fit:cover;
+    border:4px solid #e2e8f0;
+}
+
+.info-box{
+    background:#fff;
+    border-radius:10px;
+    padding:15px;
+    margin-bottom:15px;
+    border:1px solid #e2e8f0;
+}
+
+.info-label{
+    font-size:12px;
+    color:#64748b;
+    margin-bottom:3px;
+}
+
+.info-value{
+    font-size:14px;
+    font-weight:600;
+    word-break:break-word;
+}
+
+@media(max-width:768px){
+
+    .profile-img{
+        width:90px;
+        height:90px;
+    }
+
+    .info-value{
+        font-size:13px;
+    }
+
+}
 </style>
 
 <div class="app">
@@ -124,120 +178,256 @@ tr:last-child td{border-bottom:none}
    @include('admin.layouts.sidebar')
 
     <main class="main">
-      <div class="row"> 
-         <div class="col-md-12">
-               <div class="card shadow-sm border-0 rounded-3 mt-3">
-                   <div class="card-body">
-                   <table class="table table-striped  table-responsive">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>User Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Total Deposit</th>
-                        <th>Total Earning</th>
-                        <th>Total Reffer</th>
-                        <th>Photo</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                    	
-                     @foreach($users as $user)
-                      <?php $i=1; ?>
-                      <tr>
-                        <td> <?php echo $i++ ?></td>
-                        <td>{{ $user->name}}</td>
-                        <td>{{ $user->username}}</td>
-                        <td>{{ $user->email}}</td>
-                        <td>{{ $user->phone}}</td>
-                        <td>{{ $user->total_deposit}}</td>
-                        <td>{{ $user->total_earning}}</td>
-                        <td>{{ $user->total_refer}}</td>
-                        <td>
-                          <img src="{{asset('storage/'.$user->photo)}}" style="width: 80px; height: 40px">
-                        </td>
-                        <td>
-                          @if($user->status==true)
-                           <strong class="badge badge-success mt-2">Active</strong>
-                          @else
-                           <strong class="badge badge-danger mt-2">Inactive</strong>
-                          @endif
+       <div class="container-fluid py-4">
 
-                        </td>
-                        <td>
-                        
-                        <!-- delete button -->
-                        <a href="{{route('admin.user-delete',$user->id)}}"
-                           onclick="return confirm('Are you sure to delete user?')">
-                           <button class="btn btn-sm btn-danger">Delete</button>
-                        </a>
+    <div class="mb-3">
+        <a href="{{ url()->previous() }}" class="btn btn-dark btn-sm">
+            ← Back
+        </a>
+    </div>
 
-                        <!-- edit button -->
-                         <button class="editBtn btn btn-sm btn-success"
-                              data-id="{{ $user->id }}"
-                              data-status="{{ $user->status }}">
-                            
-                              Change Status
-                        </button>
-                          
-                      <a href="{{ route('admin.user.details',$user->id) }}"
-                         class="btn btn-sm btn-primary mb-1">
-                          Details
-                      </a>
-                        </td>
-                      </tr>
-                    @endforeach
-                     
-                    </tbody>
-                  </table>
-                  </div>
+    <div class="profile-card mb-4">
+
+        <div class="row align-items-center">
+
+            <div class="col-md-2 text-center mb-3 mb-md-0">
+
+                @if($user->photo)
+                    <img src="{{ asset('storage/'.$user->photo) }}"
+                         class="profile-img">
+                @else
+                    <img src="https://via.placeholder.com/120"
+                         class="profile-img">
+                @endif
+
             </div>
-         </div>
-    
-      </div>
-       <!-- =======edit modal start======= -->
-          <div class="modal fade" id="editModal">
-            <div class="modal-dialog">
-                <form id="editForm" action="{{route('admin.update-user-status')}}" method="POST">
-                    @csrf
 
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5>Active or Inactive User</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
+            <div class="col-md-10">
 
+                <h3 class="mb-1">{{ $user->name }}</h3>
 
-                        <div class="modal-body">
+                <p class="text-muted mb-1">
+                    {{ $user->email }}
+                </p>
 
-                           <input type="hidden" name="id" id="edit_id">
-                         
-                        
-                         <div class="form-group">
-                              <label><strong>Status</strong></label>
-                            <select name="status" id="edit_status" class="form-control mb-2">
-                                <option value="1">Active</option>
-                                <option value="0">Inactive</option>
-                            </select>
-                          </div>
-                         
+                <p class="mb-0">
+                    @if($user->status)
+                        <span class="badge badge-success">
+                            Active
+                        </span>
+                    @else
+                        <span class="badge badge-danger">
+                            Inactive
+                        </span>
+                    @endif
 
-                        </div>
+                    @if($user->is_verified)
+                        <span class="badge badge-primary">
+                            Verified
+                        </span>
+                    @endif
 
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-success">Update</button>
-                        </div>
-                    </div>
-                </form>
+                    @if($user->is_ban)
+                        <span class="badge badge-dark">
+                            Banned
+                        </span>
+                    @endif
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <div class="info-box">
+                <div class="info-label">ID</div>
+                <div class="info-value">{{ $user->id }}</div>
             </div>
         </div>
-      <!--  ========edit modal end======== -->
+
+        <div class="col-md-4">
+            <div class="info-box">
+                <div class="info-label">Role</div>
+                <div class="info-value">{{ $user->role }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="info-box">
+                <div class="info-label">Admin Type</div>
+                <div class="info-value">{{ $user->admin_type }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="info-box">
+                <div class="info-label">Username</div>
+                <div class="info-value">{{ $user->username }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="info-box">
+                <div class="info-label">Phone</div>
+                <div class="info-value">{{ $user->phone }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="info-box">
+                <div class="info-label">Birthday</div>
+                <div class="info-value">{{ $user->birthday }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="info-box">
+                <div class="info-label">Gender</div>
+                <div class="info-value">{{ $user->gender }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="info-box">
+                <div class="info-label">Country ID</div>
+                <div class="info-value">{{ $user->country_id }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="info-box">
+                <div class="info-label">Referral Code</div>
+                <div class="info-value">{{ $user->referral_code }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="info-box">
+                <div class="info-label">Present Address</div>
+                <div class="info-value">{{ $user->present_address }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="info-box">
+                <div class="info-label">Permanent Address</div>
+                <div class="info-value">{{ $user->permanent_address }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="info-box">
+                <div class="info-label">Total Earning</div>
+                <div class="info-value">{{ $user->total_earning }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="info-box">
+                <div class="info-label">Current Earning</div>
+                <div class="info-value">{{ $user->current_earning }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="info-box">
+                <div class="info-label">Total Deposit</div>
+                <div class="info-value">{{ $user->total_deposit }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="info-box">
+                <div class="info-label">Current Deposit</div>
+                <div class="info-value">{{ $user->current_deposit }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="info-box">
+                <div class="info-label">Referred By</div>
+                <div class="info-value">{{ $user->referred_by }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="info-box">
+                <div class="info-label">Total Refer</div>
+                <div class="info-value">{{ $user->total_refer }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="info-box">
+                <div class="info-label">Satisfied Tasks</div>
+                <div class="info-value">{{ $user->satisfied_tasks }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="info-box">
+                <div class="info-label">Deposit Commission From Refer</div>
+                <div class="info-value">{{ $user->deposit_commission_from_refer }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="info-box">
+                <div class="info-label">Earning Commission From Refer</div>
+                <div class="info-value">{{ $user->earning_commission_from_refer }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="info-box">
+                <div class="info-label">Activity</div>
+                <div class="info-value">{{ $user->activity }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="info-box">
+                <div class="info-label">Reason</div>
+                <div class="info-value">{{ $user->reason }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="info-box">
+                <div class="info-label">Verified Reason</div>
+                <div class="info-value">{{ $user->verified_reason }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="info-box">
+                <div class="info-label">IP Address</div>
+                <div class="info-value">{{ $user->ip_address }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="info-box">
+                <div class="info-label">Created At</div>
+                <div class="info-value">{{ $user->created_at }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="info-box">
+                <div class="info-label">Updated At</div>
+                <div class="info-value">{{ $user->updated_at }}</div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
     </main>
   </div>
 </div>

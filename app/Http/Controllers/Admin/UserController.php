@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     public function index(){
 
-    	 $users = User::orderBy('id','desc')->paginate(10);
+    	$users = User::orderBy('id','desc')->paginate(20);
     	return view('admin.user.index',compact('users'));
     }
 
@@ -40,4 +40,11 @@ class UserController extends Controller
 
          return back()->with('message', 'User deleted successfully');
     }
+
+    public function userDetails($id)
+   {
+    $user = User::findOrFail($id);
+
+    return view('admin.user.user-info', compact('user'));
+  }
 }

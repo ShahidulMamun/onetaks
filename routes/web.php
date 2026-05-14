@@ -254,6 +254,9 @@ Route::middleware(['auth', 'admin'])
        Route::get('/users/', [UserController::class, 'index'])->name('users');
        Route::post('/user-status-update/', [UserController::class, 'userActiveInactive'])->name('update-user-status');
       Route::get('/user-delete/{id}', [UserController::class, 'delete'])->name('user-delete');
+
+      Route::get('/user/details/{id}', [UserController::class,'userDetails'])
+    ->name('user.details');
       
       //jobs route
       Route::get('/all-jobs', [JobController::class, 'jobs'])->name('all-jobs');
