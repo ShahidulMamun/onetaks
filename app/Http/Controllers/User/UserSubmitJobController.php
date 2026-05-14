@@ -290,7 +290,7 @@ class UserSubmitJobController extends Controller
         ]);
         /* Worker Balance Add */
         $submission->user->increment('total_earning',$job->worker_earn);
-        $submission->user->increment('total_earning',$job->worker_earn);
+        $submission->user->increment('current_earning',$job->worker_earn);
         
         /* Worker Remaining Decrease */
         $job->decrement('worker_remaining');
