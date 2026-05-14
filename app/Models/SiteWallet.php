@@ -12,5 +12,5 @@ class SiteWallet extends Model
      'lifetime_withdraw',
      'withdraw_charge',
      'jobpost_charge',
-    ]
+    ];
 }

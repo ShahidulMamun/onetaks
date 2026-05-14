@@ -15,23 +15,61 @@ class UserSubmitJobController extends Controller
 {
     public function storeSubmitjob(Request $request, $code,$slug){
 
-       // return $request->all();
+        // return $request->all();
 
-	    // Validation
-	    $request->validate([
 
-	    	// 'job_id' => ['required','exists:job_posts,id'],
-	        'texts'   => ['nullable', 'array'],
-	        'texts.*' => ['nullable', 'string', 'max:100'],
-	        'images'   => ['nullable', 'array'],
-	        'images.*' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:1024'], // 2MB
-	    ]);
+       $job = JobPost::where('code',$code)->first();
 
-	   $job = JobPost::where('code',$code)->first();
-
-       if (!$job) {
+         if (!$job) {
         return back()->with('error','Invalid Request');
        }
+
+      $proofs = collect($job->proofs);
+      
+      $hasText = $proofs->contains(fn($item) => $item['type'] === 'text');
+      $hasFile = $proofs->contains(fn($item) => $item['type'] === 'file');
+
+
+       
+
+	    // Validation
+
+      $request->validate([
+
+        'images' => ['required', 'array'],
+        // TEXT
+        'texts' => [
+            $hasText ? 'required' : 'nullable',
+            'array'
+        ],
+        'texts.*' => [
+            $hasText ? 'required' : 'nullable',
+            'string',
+            'max:100'
+        ],
+        // IMAGE
+        'images' => [
+            $hasFile ? 'required' : 'nullable',
+            'array'
+        ],
+        'images.*' => [
+            $hasFile ? 'required' : 'nullable',
+            'image',
+            'mimes:jpg,jpeg,png',
+            'max:1024'
+        ],
+
+    ]);
+	    // $request->validate([
+
+	    // 	// 'job_id' => ['required','exists:job_posts,id'],
+	    //     'texts'   => ['nullable', 'array'],
+	    //     'texts.*' => ['nullable', 'string', 'max:100'],
+	    //     'images'   => ['nullable', 'array'],
+	    //     'images.*' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:1024'], // 2MB
+	    // ]);
+
+	
 
 
        if($job->worker_need==0){
@@ -42,10 +80,10 @@ class UserSubmitJobController extends Controller
        	 return back()->with('error','This job not available');
        }
 
-       // if ($job->user_id = Auth::user()->id) {
+       if ($job->user_id = Auth::user()->id) {
 
-       //   return back()->with('error','You can not submit your jobs');
-       // }
+         return back()->with('error','You can not submit your jobs');
+       }
 
       $alreadySubmitted = DB::table('job_submits')
        ->where('job_id', $job->id)

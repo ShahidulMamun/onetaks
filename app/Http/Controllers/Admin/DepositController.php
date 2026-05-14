@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Deposit;
 use App\Models\UserNotification;
 use App\Models\User;
+use App\Models\SiteWallet;
 
 class DepositController extends Controller
 {
@@ -97,6 +98,9 @@ class DepositController extends Controller
             'message' => "Your deposit of $" .$deposit->amount ."has been approved.",
             'status'  => 'pending',
         ]);
+
+        $mainWallet = SiteWallet::first();
+        $mainWallet->increment('lifetime_deposit',$deposit->amount);
 
         DB::commit();
 
