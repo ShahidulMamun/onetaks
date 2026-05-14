@@ -125,69 +125,67 @@ tr:last-child td{border-bottom:none}
 
     <main class="main">
       <div class="row"> 
+
          <div class="col-md-12">
                <div class="card shadow-sm border-0 rounded-3 mt-3">
                    <div class="card-body">
+              @if(session('success'))
+                  <div class="alert alert-success alert-dismissible fade show mt-2 mb-2" role="alert">
+                      {{ session('success') }}
+
+                      <button type="button" class="close" data-dismiss="alert">
+                          <span>&times;</span>
+                      </button>
+                  </div>
+              @endif
                    <table class="table table-striped  table-responsive">
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th>Name</th>
-                        <th>User Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Total Deposit</th>
-                        <th>Total Earning</th>
-                        <th>Total Reffer</th>
-                        <th>Photo</th>
+                        <th>Tile</th>
+                        <th>Posted</th>
+                        <th>Thumbnail</th>
+                        <th>link</th>
+                        <th>Duration</th>
                         <th>Status</th>
                         <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
                     	
-                     @foreach($users as $user)
+                     @foreach($banners as $banner)
                       <?php $i=1; ?>
                       <tr>
                         <td> <?php echo $i++ ?></td>
-                        <td>{{ $user->name}}</td>
-                        <td>{{ $user->username}}</td>
-                        <td>{{ $user->email}}</td>
-                        <td>{{ $user->phone}}</td>
-                        <td>{{ $user->total_deposit}}</td>
-                        <td>{{ $user->total_earning}}</td>
-                        <td>{{ $user->total_refer}}</td>
+                        <td>{{ $banner->title}}</td>
+                        <td>{{ $banner->user->name}}</td>
+                        <td><img src="{{ asset('storage/'.$banner->Thumbnail)}}"style="width: 80px; height: 40px"></td>
+                        <td>{{ $banner->link}}</td>
+                
+                        <td>{{ $banner->days}} days</td>
+                  
+                        
                         <td>
-                          <img src="{{asset('storage/'.$user->photo)}}" style="width: 80px; height: 40px">
-                        </td>
-                        <td>
-                          @if($user->status==true)
-                           <strong class="badge badge-success mt-2">Active</strong>
-                          @else
-                           <strong class="badge badge-danger mt-2">Inactive</strong>
-                          @endif
+                           <strong class="badge badge-dark mt-2">
+                             {{ $banner->status}}
+                           </strong>
+                        
 
                         </td>
                         <td>
                         
                         <!-- delete button -->
-                        <a href="{{route('admin.user-delete',$user->id)}}"
-                           onclick="return confirm('Are you sure to delete user?')">
+                        <a href="{{route('admin.user-delete',$banner->id)}}"
+                           onclick="return confirm('Are you sure to delete ads?')">
                            <button class="btn btn-sm btn-danger">Delete</button>
                         </a>
 
-                        <!-- edit button -->
-                         <button class="editBtn btn btn-sm btn-success"
-                              data-id="{{ $user->id }}"
-                              data-status="{{ $user->status }}">
-                            
-                              Change Status
-                        </button>
-                          
-                      <a href="{{ route('admin.user.details',$user->id) }}"
-                         class="btn btn-sm btn-info mb-1">
-                          Details
-                      </a>
+                        <!-- approve -->
+                         <a href="{{route('admin.approve-banner',$banner->id)}}"
+                           onclick="return confirm('Are you sure to approve?')">
+                           <button class="btn btn-sm btn-success">Approve</button>
+                        </a>
+     
                         </td>
                       </tr>
                     @endforeach

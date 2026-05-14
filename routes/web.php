@@ -11,7 +11,7 @@ use App\Http\Controllers\User\UserNotificationController;
 use App\Http\Controllers\User\UserSubmitJobController;
 use App\Http\Controllers\User\FinishJobController;
 use App\Http\Controllers\User\BoostJobController;
-use App\Http\Controllers\User\BannerController;
+use App\Http\Controllers\User\UserBannerController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\ContinentController;
 use App\Http\Controllers\Admin\CountryController;
@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\DepositController;
 use App\Http\Controllers\Admin\BreakingNoticeController;
+use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\WithdrawController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use Illuminate\Support\Facades\Route;
@@ -144,7 +145,7 @@ Route::middleware(['auth', 'user'])
         Route::get('/deal-create',  [UserDealController::class, 'dealcreate'])->name('deal.create');
         Route::get('/my-deal-post',  [UserDealController::class, 'mydealpost'])->name('my.deal.post'); 
         Route::get('/deal-order',  [UserDealController::class, 'dealorder'])->name('deal.order');
-        Route::post('/store-baner-ads',  [BannerController::class, 'store'])->name('store.babber.ads');
+        Route::post('/store-baner-ads',  [UserBannerController::class, 'store'])->name('store.babber.ads');
 
 
 
@@ -273,6 +274,11 @@ Route::middleware(['auth', 'admin'])
 
      Route::get('pause-job/{id}',    [JobController::class, 'pauseJob'])->name('make-pause-job');
      Route::get('/live-job/{id}',     [JobController::class, 'liveJob'])->name('make-un-pause-job');
+
+     Route::get('/pending-banner', [BannerController::class, 'pendingBanner'])->name('pending-banner');
+
+     Route::get('/pending-banner/{id}', [BannerController::class, 'approveBanner'])->name('approve-banner');
+
 
 
 

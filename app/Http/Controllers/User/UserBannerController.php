@@ -10,7 +10,7 @@ use App\Models\Banner;
 use App\Models\UserTransaction;
 use App\Models\UserNotification;
 use Auth;
-class BannerController extends Controller
+class UserBannerController extends Controller
 {
     public function store(Request $request)
    {

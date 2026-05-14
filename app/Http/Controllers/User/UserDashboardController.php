@@ -8,10 +8,16 @@ use App\Models\JobPost;
 use App\Models\WebsiteSetting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\Banner;
 
 class UserDashboardController extends Controller
 {
     public function userDashboard(){
+
+    $banner = Banner::where('status', 'approved')
+    ->where('expired_at', '>', now())
+    ->inRandomOrder()
+    ->first();
 
            $userId = Auth::id();
  
@@ -74,7 +80,8 @@ class UserDashboardController extends Controller
             'boostedJobs',
             'topJobs',
             'normalJobs',
-            'setting'
+            'setting',
+            'banner'
         ));
        
     }
