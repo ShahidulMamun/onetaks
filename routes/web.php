@@ -275,9 +275,14 @@ Route::middleware(['auth', 'admin'])
      Route::get('pause-job/{id}',    [JobController::class, 'pauseJob'])->name('make-pause-job');
      Route::get('/live-job/{id}',     [JobController::class, 'liveJob'])->name('make-un-pause-job');
 
-     Route::get('/pending-banner', [BannerController::class, 'pendingBanner'])->name('pending-banner');
+    
 
-     Route::get('/pending-banner/{id}', [BannerController::class, 'approveBanner'])->name('approve-banner');
+      // Banner Management
+    Route::get('/banners',                [BannerController::class, 'index'])   ->name('banners');
+    Route::get('/banners/{id}/approve',   [BannerController::class, 'approve']) ->name('banner.approve');
+    Route::get('/banners/{id}/inactive',  [BannerController::class, 'inactive'])->name('banner.inactive');
+    Route::post('/banners/reject',        [BannerController::class, 'reject'])  ->name('banner.reject');
+    Route::get('/banners/{id}/delete',    [BannerController::class, 'delete'])  ->name('banner.delete');
 
 
 

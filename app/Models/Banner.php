@@ -28,6 +28,7 @@ class Banner extends Model
         'approved_at' => 'datetime',
         'expired_at' => 'datetime',
         'price' => 'decimal:2',
+        'days' => 'integer',
     ];
 
     public function user()

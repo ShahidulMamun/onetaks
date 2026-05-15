@@ -293,12 +293,12 @@
     {{-- Banner Manage --}}
   <div class="sb-section">Banner Manage</div>
 
-  <a href="{{route('admin.pending-banner')}}"
-     class="ni {{ request()->routeIs('admin.pending-banner') ? 'active' : '' }}">
+  <a href="{{route('admin.banners')}}"
+     class="ni {{ request()->routeIs('admin.banners') ? 'active' : '' }}">
     <div class="ni-icon">
       <svg viewBox="0 0 16 16"><path d="M8 13V5M5 8l3-3 3 3"/><rect x="2" y="2" width="12" height="2" rx="1"/></svg>
     </div>
-    <span class="ni-label">Pending Banner</span>
+    <span class="ni-label">Banner</span>
     <span class="nbadge blue">{{App\Models\Banner::where('status','pending')->count()}}</span>
   </a>
 

@@ -25,7 +25,8 @@ return new class extends Migration
             $table->bigInteger('impressions')->default(0);
             $table->enum('status',[
                 'pending',
-                'approved',
+                'active',
+                'inactive',
                 'expired',
                 'rejected'
             ])->default('pending');

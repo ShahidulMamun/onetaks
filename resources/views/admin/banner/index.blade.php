@@ -19,86 +19,103 @@ body{font-family:system-ui,sans-serif;background:#f1f5f9;color:#0f172a;font-size
 .notif svg{width:14px;height:14px;opacity:.6}
 .ndot{position:absolute;top:5px;right:5px;width:6px;height:6px;background:#ef4444;border-radius:50%;border:1.5px solid #fff}
 .ava{width:30px;height:30px;border-radius:50%;background:#2563eb;color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer}
-
-/* BODY = sidebar + main side by side */
 .body{display:flex;flex:1;overflow:hidden}
-
-/* SIDEBAR — always visible, 210px wide */
-.sidebar{width:210px;min-width:210px;background:#fff;border-right:1px solid #e2e8f0;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;flex-shrink:0}
-
-/* On mobile: sidebar becomes overlay */
 .overlay{display:none;position:fixed;inset:0;top:52px;background:rgba(0,0,0,.45);z-index:40}
-
-.sec-label{padding:14px 14px 4px;font-size:10px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.7px}
-.ni{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;margin:1px 8px;cursor:pointer;font-size:13px;color:#64748b;transition:background .15s;white-space:nowrap}
-.ni:hover{background:#f1f5f9;color:#0f172a}
-.ni.on{background:#eff6ff;color:#2563eb;font-weight:500}
-.ni svg{width:15px;height:15px;flex-shrink:0;opacity:.7}
-.ni.on svg{opacity:1}
-.nbadge{margin-left:auto;font-size:10px;font-weight:600;padding:1px 6px;border-radius:20px}
-.nbadge.red{background:#fee2e2;color:#991b1b}
-.nbadge.amber{background:#fef3c7;color:#92400e}
-.sb-bottom{margin-top:auto;padding:10px 8px;border-top:1px solid #e2e8f0}
-
-.main{flex:1;overflow-y:auto;padding:16px;min-width:0}
-
-.pg-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:16px}
-.pg-title{font-size:17px;font-weight:700;letter-spacing:-.3px}
-.pg-sub{font-size:12px;color:#64748b;margin-top:2px}
-.pills{display:flex;gap:6px}
-.pill{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;background:#f8fafc;color:#64748b;border:1px solid #e2e8f0;cursor:pointer}
-.pill.on{background:#eff6ff;color:#2563eb;border-color:#bfdbfe}
-
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
-.sc{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:13px}
-.sc .ic{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:9px}
-.sc .ic svg{width:15px;height:15px}
-.sc .lbl{font-size:11px;color:#64748b;margin-bottom:2px}
-.sc .val{font-size:18px;font-weight:700;letter-spacing:-.3px}
-.sc .dl{font-size:11px;margin-top:3px}
-.up{color:#16a34a}.dn{color:#dc2626}
-
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin-bottom:14px}
-.card-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.card-t{font-size:13px;font-weight:600}
-.card-s{font-size:11px;color:#64748b}
-
-table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed}
-th{padding:7px 8px;text-align:left;font-size:10px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid #e2e8f0}
-td{padding:8px 8px;border-bottom:1px solid #f1f5f9;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-tr:last-child td{border-bottom:none}
-.tag{display:inline-block;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:500}
-.tg{background:#dcfce7;color:#15803d}.ta{background:#fef9c3;color:#854d0e}.tr{background:#fee2e2;color:#991b1b}.tb{background:#dbeafe;color:#1d4ed8}
-.uc{display:flex;align-items:center;gap:6px}
-.mav{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;flex-shrink:0}
-
-.fi{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid #f1f5f9}
-.fi:last-child{border-bottom:none}
-.fd{width:26px;height:26px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.ft{font-size:12px;line-height:1.4}
-.fti{font-size:10px;color:#94a3b8;margin-top:2px}
-
-/* MOBILE: sidebar hidden by default, slides in as overlay */
+.main{flex:1;overflow-y:auto;padding:20px;min-width:0}
 @media(max-width:640px){
-  .sidebar{
-    position:fixed;
-    top:52px;left:0;
-    height:calc(100% - 52px);
-    z-index:50;
-    transform:translateX(-100%);
-    transition:transform .25s ease;
-    min-width:200px;
-    width:200px;
-  }
+  .sidebar{position:fixed;top:52px;left:0;height:calc(100% - 52px);z-index:50;transform:translateX(-100%);transition:transform .25s ease;min-width:200px;width:200px}
   .sidebar.mob-open{transform:translateX(0)}
   .overlay.show{display:block}
-  .stats{grid-template-columns:repeat(2,1fr)}
   .tb-search{display:none}
 }
-/* DESKTOP: hamburger hidden, sidebar always visible */
-@media(min-width:641px){
-  .hbtn{display:none}
-  .overlay{display:none!important}
+@media(min-width:641px){.hbtn{display:none}.overlay{display:none!important}}
+
+/* PAGE SPECIFIC */
+.page-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px}
+.page-title{font-size:18px;font-weight:700;color:#0f172a;letter-spacing:-.3px}
+.page-sub{font-size:12px;color:#64748b;margin-top:2px}
+
+/* FILTER BAR */
+.filter-bar{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.filter-bar form{display:flex;flex-wrap:wrap;gap:10px;align-items:center;width:100%}
+.filter-group{display:flex;flex-direction:column;gap:4px}
+.filter-label{font-size:10px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px}
+.filter-select,.filter-input{
+  height:34px;padding:0 10px;border:1px solid #e2e8f0;border-radius:8px;
+  font-size:12px;color:#0f172a;background:#f8fafc;outline:none;
+  transition:border .15s;
+}
+.filter-select:focus,.filter-input:focus{border-color:#2563eb;background:#fff}
+.filter-input{width:180px}
+.btn-filter{height:34px;padding:0 16px;border-radius:8px;border:none;cursor:pointer;font-size:12px;font-weight:600;transition:background .15s}
+.btn-filter.apply{background:#2563eb;color:#fff}
+.btn-filter.apply:hover{background:#1d4ed8}
+.btn-filter.reset{background:#f1f5f9;color:#64748b;border:1px solid #e2e8f0}
+.btn-filter.reset:hover{background:#e2e8f0}
+.filter-pills{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+.fpill{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;border:1.5px solid transparent;cursor:pointer;text-decoration:none;transition:all .15s}
+.fpill:hover{opacity:.85}
+.fpill.all{background:#f1f5f9;color:#475569;border-color:#e2e8f0}
+.fpill.pending{background:#fef9c3;color:#854d0e;border-color:#fde047}
+.fpill.active{background:#dcfce7;color:#15803d;border-color:#86efac}
+.fpill.inactive{background:#f1f5f9;color:#475569;border-color:#cbd5e1}
+.fpill.expired{background:#fee2e2;color:#991b1b;border-color:#fca5a5}
+.fpill.rejected{background:#fce7f3;color:#9d174d;border-color:#f9a8d4}
+.fpill.sel{box-shadow:0 0 0 2px currentColor}
+
+/* STATS ROW */
+.bstats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+.bsc{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:12px 14px;text-align:center}
+.bsc .bval{font-size:20px;font-weight:700;line-height:1}
+.bsc .blbl{font-size:10px;color:#94a3b8;margin-top:4px;text-transform:uppercase;letter-spacing:.4px}
+
+/* TABLE CARD */
+.tcard{background:#fff;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden}
+.tcard-head{padding:14px 16px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between}
+.tcard-title{font-size:13px;font-weight:600}
+.tcard-count{font-size:11px;color:#94a3b8}
+
+.btable{width:100%;border-collapse:collapse;font-size:12px}
+.btable th{padding:9px 12px;text-align:left;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;background:#fafafa;border-bottom:1px solid #f1f5f9}
+.btable td{padding:11px 12px;border-bottom:1px solid #f8fafc;vertical-align:middle}
+.btable tr:last-child td{border-bottom:none}
+.btable tr:hover td{background:#fafafa}
+
+.thumb-wrap{width:72px;height:40px;border-radius:6px;overflow:hidden;background:#f1f5f9;flex-shrink:0}
+.thumb-wrap img{width:100%;height:100%;object-fit:cover}
+.thumb-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:#cbd5e1;font-size:18px}
+
+.user-cell{display:flex;align-items:center;gap:8px}
+.user-av{width:28px;height:28px;border-radius:50%;background:#eff6ff;color:#2563eb;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+.status-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700}
+.status-badge::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.sb-pending{background:#fef9c3;color:#854d0e}.sb-pending::before{background:#eab308}
+.sb-active{background:#dcfce7;color:#15803d}.sb-active::before{background:#22c55e}
+.sb-inactive{background:#f1f5f9;color:#475569}.sb-inactive::before{background:#94a3b8}
+.sb-expired{background:#fee2e2;color:#991b1b}.sb-expired::before{background:#ef4444}
+.sb-rejected{background:#fce7f3;color:#9d174d}.sb-rejected::before{background:#ec4899}
+
+.act-btns{display:flex;gap:5px;flex-wrap:wrap}
+.abtn{display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border-radius:7px;font-size:11px;font-weight:600;border:none;cursor:pointer;transition:background .15s;text-decoration:none;white-space:nowrap}
+.abtn svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2}
+.abtn-approve{background:#dcfce7;color:#15803d}.abtn-approve:hover{background:#bbf7d0}
+.abtn-inactive{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0}.abtn-inactive:hover{background:#e2e8f0}
+.abtn-reject{background:#fce7f3;color:#9d174d}.abtn-reject:hover{background:#fbcfe8}
+.abtn-delete{background:#fee2e2;color:#991b1b}.abtn-delete:hover{background:#fecaca}
+
+.link-cell{max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#2563eb;font-size:11px}
+.meta-cell{font-size:11px;color:#64748b}
+.clicks-cell{font-size:12px;font-weight:600;color:#0f172a}
+
+@media(max-width:768px){
+  .bstats{grid-template-columns:repeat(2,1fr)}
+  .btable thead{display:none}
+  .btable tr{display:block;border:1px solid #e2e8f0;border-radius:10px;margin-bottom:10px;padding:10px}
+  .btable td{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #f8fafc;font-size:11px}
+  .btable td::before{content:attr(data-label);font-weight:600;color:#94a3b8;font-size:10px;text-transform:uppercase;letter-spacing:.4px;margin-right:8px}
+  .btable td:last-child{border-bottom:none}
+  .act-btns{justify-content:flex-end}
 }
 </style>
 
@@ -107,13 +124,18 @@ tr:last-child td{border-bottom:none}
     <button class="hbtn" id="hbtn" onclick="toggleSB()">
       <span></span><span></span><span></span>
     </button>
-    <div class="logo">Onetask<em>Market</em> <span style="font-size:10px;background:#eff6ff;color:#2563eb;padding:2px 6px;border-radius:4px;font-weight:600;margin-left:2px">Admin</span></div>
+    <div class="logo">Onetask<em>Market</em>
+      <span style="font-size:10px;background:#eff6ff;color:#2563eb;padding:2px 6px;border-radius:4px;font-weight:600;margin-left:2px">Admin</span>
+    </div>
     <div class="tb-search">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6.5" cy="6.5" r="4.5"/><path d="m10 10 3.5 3.5"/></svg>
       <input placeholder="Search jobs, users...">
     </div>
     <div class="tb-right">
-      <div class="notif"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 1.5a5 5 0 0 1 5 5v2l1 2H2l1-2v-2a5 5 0 0 1 5-5Z"/><path d="M6.5 13.5a1.5 1.5 0 0 0 3 0"/></svg><div class="ndot"></div></div>
+      <div class="notif">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 1.5a5 5 0 0 1 5 5v2l1 2H2l1-2v-2a5 5 0 0 1 5-5Z"/><path d="M6.5 13.5a1.5 1.5 0 0 0 3 0"/></svg>
+        <div class="ndot"></div>
+      </div>
       <div class="ava">AD</div>
     </div>
   </div>
@@ -121,125 +143,319 @@ tr:last-child td{border-bottom:none}
   <div class="body">
     <div class="overlay" id="overlay" onclick="closeSB()"></div>
 
-   @include('admin.layouts.sidebar')
+    @include('admin.layouts.sidebar')
 
     <main class="main">
-      <div class="row"> 
 
-         <div class="col-md-12">
-               <div class="card shadow-sm border-0 rounded-3 mt-3">
-                   <div class="card-body">
-              @if(session('success'))
-                  <div class="alert alert-success alert-dismissible fade show mt-2 mb-2" role="alert">
-                      {{ session('success') }}
-
-                      <button type="button" class="close" data-dismiss="alert">
-                          <span>&times;</span>
-                      </button>
-                  </div>
-              @endif
-                   <table class="table table-striped  table-responsive">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>Tile</th>
-                        <th>Posted</th>
-                        <th>Thumbnail</th>
-                        <th>link</th>
-                        <th>Duration</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                    	
-                     @foreach($banners as $banner)
-                      <?php $i=1; ?>
-                      <tr>
-                        <td> <?php echo $i++ ?></td>
-                        <td>{{ $banner->title}}</td>
-                        <td>{{ $banner->user->name}}</td>
-                        <td><img src="{{ asset('storage/'.$banner->Thumbnail)}}"style="width: 80px; height: 40px"></td>
-                        <td>{{ $banner->link}}</td>
-                
-                        <td>{{ $banner->days}} days</td>
-                  
-                        
-                        <td>
-                           <strong class="badge badge-dark mt-2">
-                             {{ $banner->status}}
-                           </strong>
-                        
-
-                        </td>
-                        <td>
-                        
-                        <!-- delete button -->
-                        <a href="{{route('admin.user-delete',$banner->id)}}"
-                           onclick="return confirm('Are you sure to delete ads?')">
-                           <button class="btn btn-sm btn-danger">Delete</button>
-                        </a>
-
-                        <!-- approve -->
-                         <a href="{{route('admin.approve-banner',$banner->id)}}"
-                           onclick="return confirm('Are you sure to approve?')">
-                           <button class="btn btn-sm btn-success">Approve</button>
-                        </a>
-     
-                        </td>
-                      </tr>
-                    @endforeach
-                     
-                    </tbody>
-                  </table>
-                  </div>
-            </div>
-         </div>
-    
-      </div>
-       <!-- =======edit modal start======= -->
-          <div class="modal fade" id="editModal">
-            <div class="modal-dialog">
-                <form id="editForm" action="{{route('admin.update-user-status')}}" method="POST">
-                    @csrf
-
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5>Active or Inactive User</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-
-
-                        <div class="modal-body">
-
-                           <input type="hidden" name="id" id="edit_id">
-                         
-                        
-                         <div class="form-group">
-                              <label><strong>Status</strong></label>
-                            <select name="status" id="edit_status" class="form-control mb-2">
-                                <option value="1">Active</option>
-                                <option value="0">Inactive</option>
-                            </select>
-                          </div>
-                         
-
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-success">Update</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+      {{-- PAGE HEADER --}}
+      <div class="page-header">
+        <div>
+          <div class="page-title">Banner Management</div>
+          <div class="page-sub">Manage all user-submitted banner advertisements</div>
         </div>
-      <!--  ========edit modal end======== -->
+      </div>
+
+      {{-- SUCCESS ALERT --}}
+      @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show mb-3" role="alert" style="border-radius:10px;font-size:13px">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;vertical-align:middle"><path d="M3 8l3 3 7-7"/></svg>
+          {{ session('success') }}
+          <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+        </div>
+      @endif
+
+      @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert" style="border-radius:10px;font-size:13px">
+          {{ session('error') }}
+          <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+        </div>
+      @endif
+
+      {{-- MINI STATS --}}
+      <div class="bstats">
+        <div class="bsc">
+          <div class="bval">{{ $counts['all'] }}</div>
+          <div class="blbl">Total</div>
+        </div>
+        <div class="bsc">
+          <div class="bval" style="color:#eab308">{{ $counts['pending'] }}</div>
+          <div class="blbl">Pending</div>
+        </div>
+        <div class="bsc">
+          <div class="bval" style="color:#22c55e">{{ $counts['active'] }}</div>
+          <div class="blbl">Active</div>
+        </div>
+        <div class="bsc">
+          <div class="bval" style="color:#ef4444">{{ $counts['expired'] }}</div>
+          <div class="blbl">Expired</div>
+        </div>
+        <div class="bsc">
+          <div class="bval" style="color:#ec4899">{{ $counts['rejected'] }}</div>
+          <div class="blbl">Rejected</div>
+        </div>
+      </div>
+
+      {{-- FILTER BAR --}}
+      <div class="filter-bar">
+        <form method="GET" action="{{ route('admin.banners') }}">
+          {{-- Search --}}
+          <div class="filter-group">
+            <span class="filter-label">Search</span>
+            <input type="text" name="search" class="filter-input"
+              placeholder="Title, user, code..."
+              value="{{ request('search') }}">
+          </div>
+
+          {{-- Position --}}
+          <div class="filter-group">
+            <span class="filter-label">Position</span>
+            <select name="position" class="filter-select" style="min-width:120px">
+              <option value="">All Positions</option>
+              <option value="top" {{ request('position')=='top'?'selected':'' }}>Top</option>
+              <option value="sidebar" {{ request('position')=='sidebar'?'selected':'' }}>Sidebar</option>
+              <option value="bottom" {{ request('position')=='bottom'?'selected':'' }}>Bottom</option>
+              <option value="popup" {{ request('position')=='popup'?'selected':'' }}>Popup</option>
+            </select>
+          </div>
+
+          {{-- Status --}}
+          <div class="filter-group">
+            <span class="filter-label">Status</span>
+            <select name="status" class="filter-select" style="min-width:110px">
+              <option value="">All Status</option>
+              <option value="pending"  {{ request('status')=='pending' ?'selected':'' }}>Pending</option>
+              <option value="active"   {{ request('status')=='active'  ?'selected':'' }}>Active</option>
+              <option value="inactive" {{ request('status')=='inactive'?'selected':'' }}>Inactive</option>
+              <option value="expired"  {{ request('status')=='expired' ?'selected':'' }}>Expired</option>
+              <option value="rejected" {{ request('status')=='rejected'?'selected':'' }}>Rejected</option>
+            </select>
+          </div>
+
+          {{-- Sort --}}
+          <div class="filter-group">
+            <span class="filter-label">Sort</span>
+            <select name="sort" class="filter-select" style="min-width:120px">
+              <option value="latest"  {{ request('sort','latest')=='latest' ?'selected':'' }}>Latest First</option>
+              <option value="oldest"  {{ request('sort')=='oldest' ?'selected':'' }}>Oldest First</option>
+              <option value="clicks"  {{ request('sort')=='clicks'  ?'selected':'' }}>Most Clicks</option>
+              <option value="price"   {{ request('sort')=='price'   ?'selected':'' }}>Highest Price</option>
+            </select>
+          </div>
+
+          <div style="display:flex;gap:6px;margin-top:18px">
+            <button type="submit" class="btn-filter apply">
+              <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;vertical-align:middle"><circle cx="6.5" cy="6.5" r="4.5"/><path d="m10 10 3.5 3.5"/></svg>Filter
+            </button>
+            <a href="{{ route('admin.banners') }}" class="btn-filter reset" style="display:inline-flex;align-items:center;text-decoration:none">Reset</a>
+          </div>
+
+          {{-- Quick pill filters --}}
+          <div class="filter-pills" style="margin-top:18px">
+            <a href="{{ route('admin.banners') }}"
+               class="fpill all {{ !request('status') ? 'sel' : '' }}">All ({{ $counts['all'] }})</a>
+            <a href="{{ route('admin.banners',['status'=>'pending']) }}"
+               class="fpill pending {{ request('status')=='pending' ? 'sel' : '' }}">Pending ({{ $counts['pending'] }})</a>
+            <a href="{{ route('admin.banners',['status'=>'active']) }}"
+               class="fpill active {{ request('status')=='active' ? 'sel' : '' }}">Active ({{ $counts['active'] }})</a>
+            <a href="{{ route('admin.banners',['status'=>'inactive']) }}"
+               class="fpill inactive {{ request('status')=='inactive' ? 'sel' : '' }}">Inactive ({{ $counts['inactive'] }})</a>
+            <a href="{{ route('admin.banners',['status'=>'expired']) }}"
+               class="fpill expired {{ request('status')=='expired' ? 'sel' : '' }}">Expired ({{ $counts['expired'] }})</a>
+            <a href="{{ route('admin.banners',['status'=>'rejected']) }}"
+               class="fpill rejected {{ request('status')=='rejected' ? 'sel' : '' }}">Rejected ({{ $counts['rejected'] }})</a>
+          </div>
+        </form>
+      </div>
+
+      {{-- TABLE --}}
+      <div class="tcard">
+        <div class="tcard-head">
+          <div class="tcard-title">Banners</div>
+          <div class="tcard-count">{{ $banners->total() }} results</div>
+        </div>
+
+        <div style="overflow-x:auto">
+          <table class="btable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Thumbnail</th>
+                <th>Title / Code</th>
+                <th>Posted By</th>
+                <th>Position</th>
+                <th>Price</th>
+                <th>Days</th>
+                <th>Clicks</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @forelse($banners as $i => $banner)
+              <tr>
+                <td data-label="#">{{ $banners->firstItem() + $i }}</td>
+
+                <td data-label="Thumb">
+                  <div class="thumb-wrap">
+                    @if($banner->thumbnail)
+                      <img src="{{ asset('storage/'.$banner->thumbnail) }}" alt="thumb">
+                    @else
+                      <div class="thumb-placeholder">🖼</div>
+                    @endif
+                  </div>
+                </td>
+
+                <td data-label="Title">
+                  <div style="font-weight:600;font-size:12px;color:#0f172a">{{ Str::limit($banner->title,28) }}</div>
+                  <div style="font-size:10px;color:#94a3b8;margin-top:2px;font-family:monospace">{{ $banner->code }}</div>
+                  @if($banner->link)
+                    <a href="{{ $banner->link }}" target="_blank" class="link-cell" title="{{ $banner->link }}">
+                      ↗ {{ Str::limit($banner->link,22) }}
+                    </a>
+                  @endif
+                </td>
+
+                <td data-label="Posted By">
+                  <div class="user-cell">
+                    <div class="user-av">{{ strtoupper(substr($banner->user->name,0,2)) }}</div>
+                    <div>
+                      <div style="font-size:12px;font-weight:500">{{ $banner->user->name }}</div>
+                      <div style="font-size:10px;color:#94a3b8">{{ $banner->user->email }}</div>
+                    </div>
+                  </div>
+                </td>
+
+                <td data-label="Position">
+                  <span style="font-size:11px;background:#f1f5f9;padding:3px 8px;border-radius:6px;color:#475569;font-weight:600;text-transform:capitalize">
+                    {{ $banner->position ?? '—' }}
+                  </span>
+                </td>
+
+                <td data-label="Price">
+                  <span style="font-weight:600;color:#0f172a">${{ number_format($banner->price,2) }}</span>
+                </td>
+
+                <td data-label="Days" class="meta-cell">
+                  {{ $banner->days }}d
+                  @if($banner->approved_at)
+                    <div style="font-size:10px;color:#94a3b8">from {{ \Carbon\Carbon::parse($banner->approved_at)->format('M d') }}</div>
+                  @endif
+                </td>
+
+                <td data-label="Clicks">
+                  <div class="clicks-cell">{{ number_format($banner->clicks) }}</div>
+                  <div style="font-size:10px;color:#94a3b8">{{ number_format($banner->impressions) }} imp.</div>
+                </td>
+
+                <td data-label="Status">
+                  <span class="status-badge sb-{{ $banner->status }}">{{ ucfirst($banner->status) }}</span>
+                  @if($banner->status === 'rejected' && $banner->rejected_reason)
+                    <div style="font-size:10px;color:#9d174d;margin-top:3px" title="{{ $banner->rejected_reason }}">
+                      ⚠ {{ Str::limit($banner->rejected_reason,20) }}
+                    </div>
+                  @endif
+                </td>
+
+                <td data-label="Actions">
+                  <div class="act-btns">
+                    {{-- Approve / Activate --}}
+                    @if(in_array($banner->status, ['pending','inactive','expired']))
+                      <a href="{{ route('admin.banner.approve', $banner->id) }}"
+                         onclick="return confirm('Approve this banner?')"
+                         class="abtn abtn-approve">
+                        <svg viewBox="0 0 16 16"><path d="M3 8l3 3 7-7"/></svg> Approve
+                      </a>
+                    @endif
+
+                    {{-- Deactivate --}}
+                    @if($banner->status === 'active')
+                      <a href="{{ route('admin.banner.inactive', $banner->id) }}"
+                         onclick="return confirm('Deactivate this banner?')"
+                         class="abtn abtn-inactive">
+                        <svg viewBox="0 0 16 16"><rect x="4" y="3" width="3" height="10" rx="1"/><rect x="9" y="3" width="3" height="10" rx="1"/></svg> Inactive
+                      </a>
+                    @endif
+
+                    {{-- Reject --}}
+                    @if(!in_array($banner->status, ['rejected']))
+                      <button class="abtn abtn-reject rejectBtn"
+                        data-id="{{ $banner->id }}">
+                        <svg viewBox="0 0 16 16"><path d="m4 4 8 8M12 4l-8 8"/></svg> Reject
+                      </button>
+                    @endif
+
+                    {{-- Delete --}}
+                    <a href="{{ route('admin.banner.delete', $banner->id) }}"
+                       onclick="return confirm('Permanently delete this banner?')"
+                       class="abtn abtn-delete">
+                      <svg viewBox="0 0 16 16"><path d="M3 4h10M5 4V3h6v1M6 7v5M10 7v5"/><rect x="4" y="4" width="8" height="9" rx="1.5"/></svg> Delete
+                    </a>
+                  </div>
+                </td>
+              </tr>
+              @empty
+              <tr>
+                <td colspan="10" style="text-align:center;padding:40px;color:#94a3b8;font-size:13px">
+                  <div style="font-size:32px;margin-bottom:8px">📭</div>
+                  No banners found for the selected filters.
+                </td>
+              </tr>
+              @endforelse
+            </tbody>
+          </table>
+        </div>
+
+        {{-- PAGINATION --}}
+        @if($banners->hasPages())
+          <div style="padding:14px 16px;border-top:1px solid #f1f5f9">
+            {{ $banners->appends(request()->query())->links() }}
+          </div>
+        @endif
+      </div>
+
     </main>
   </div>
 </div>
 
+{{-- ═══════════════════════════════════════
+     REJECT MODAL
+════════════════════════════════════════ --}}
+<div class="modal fade" id="rejectModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <form action="{{ route('admin.banner.reject') }}" method="POST">
+      @csrf
+      <input type="hidden" name="id" id="reject_id">
+      <div class="modal-content" style="border-radius:14px;border:none;box-shadow:0 20px 60px rgba(0,0,0,.15)">
+        <div class="modal-header" style="border-bottom:1px solid #f1f5f9;padding:16px 20px">
+          <h5 style="font-size:14px;font-weight:700;color:#0f172a;margin:0">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#e11d48" stroke-width="2" style="margin-right:6px;vertical-align:middle"><path d="m4 4 8 8M12 4l-8 8"/></svg>
+            Reject Banner
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" style="font-size:18px">&times;</button>
+        </div>
+        <div class="modal-body" style="padding:20px">
+          <div class="form-group mb-0">
+            <label style="font-size:12px;font-weight:600;color:#374151;margin-bottom:6px;display:block">
+              Rejection Reason <span style="color:#ef4444">*</span>
+            </label>
+            <textarea name="rejected_reason" rows="4" required
+              placeholder="Explain why this banner is being rejected..."
+              style="width:100%;border:1px solid #e2e8f0;border-radius:9px;padding:10px 12px;font-size:13px;outline:none;resize:vertical;font-family:inherit;color:#0f172a"
+              onfocus="this.style.borderColor='#2563eb'"
+              onblur="this.style.borderColor='#e2e8f0'"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer" style="border-top:1px solid #f1f5f9;padding:12px 20px;gap:8px">
+          <button type="button" class="btn btn-sm btn-light" data-dismiss="modal" style="border-radius:8px;font-size:12px">Cancel</button>
+          <button type="submit" class="btn btn-sm btn-danger" style="border-radius:8px;font-size:12px;font-weight:600">Reject Banner</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 var mobOpen=false;
 function toggleSB(){
@@ -256,75 +472,9 @@ function closeSB(){
   document.getElementById('overlay').classList.remove('show');
   document.getElementById('hbtn').classList.remove('open');
 }
-function navClick(el,name){
-  document.querySelectorAll('.ni').forEach(function(n){n.classList.remove('on')});
-  el.classList.add('on');
-  document.getElementById('pg-title').textContent=name;
-  if(window.innerWidth<=640) closeSB();
-}
-function setPill(el){
-  document.querySelectorAll('.pill').forEach(function(p){p.classList.remove('on')});
-  el.classList.add('on');
-  drawChart();
-}
-function drawChart(){
-  var days=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-  var data=days.map(function(){return Math.round(5000+Math.random()*11000)});
-  var max=Math.max.apply(null,data);
-  var svg=document.getElementById('rchart');
-  var W=340,H=90,pad=18,gap=7;
-  var bw=Math.floor((W-pad*2-(days.length-1)*gap)/days.length);
-  var html='';
-  data.forEach(function(v,i){
-    var x=pad+i*(bw+gap);
-    var bh=Math.round((v/max)*(H-22));
-    var y=H-16-bh;
-    var clr=i===4?'#2563eb':'#bfdbfe';
-    html+='<rect x="'+x+'" y="'+y+'" width="'+bw+'" height="'+bh+'" rx="3" fill="'+clr+'"/>';
-    html+='<text x="'+(x+bw/2)+'" y="'+(H-2)+'" text-anchor="middle" font-size="9" fill="#94a3b8" font-family="system-ui">'+days[i]+'</text>';
-  });
-  svg.innerHTML=html;
-}
-drawChart();
 
-var orders=[
-  {u:'Sarah K.',av:'SK',c:'#2563eb',sv:'Logo Design',am:'$85',st:'completed'},
-  {u:'Mike T.',av:'MT',c:'#16a34a',sv:'SEO Article',am:'$45',st:'progress'},
-  {u:'Aisha B.',av:'AB',c:'#9333ea',sv:'Promo Video',am:'$220',st:'pending'},
-  {u:'James O.',av:'JO',c:'#d97706',sv:'WP Fix',am:'$60',st:'completed'},
-  {u:'Priya N.',av:'PN',c:'#e11d48',sv:'Data Entry',am:'$35',st:'disputed'},
-];
-var scls={completed:'tag tg',progress:'tag tb',pending:'tag ta',disputed:'tag tr'};
-var slbl={completed:'Done',progress:'Active',pending:'Pending',disputed:'Dispute'};
-document.getElementById('otb').innerHTML=orders.map(function(o){
-  return '<tr><td><div class="uc"><div class="mav" style="background:'+o.c+'20;color:'+o.c+'">'+o.av+'</div>'+o.u+'</div></td><td style="color:#64748b">'+o.sv+'</td><td style="font-weight:500">'+o.am+'</td><td><span class="'+scls[o.st]+'">'+slbl[o.st]+'</span></td></tr>';
-}).join('');
-
-var acts=[
-  {bg:'#eff6ff',ic:'#2563eb',t:'<strong>Alex M.</strong> registered as new seller',ti:'2 min ago'},
-  {bg:'#f0fdf4',ic:'#16a34a',t:'Order #4821 marked <strong>completed</strong>',ti:'8 min ago'},
-  {bg:'#fef9c3',ic:'#854d0e',t:'<strong>Dispute #204</strong> opened by buyer',ti:'15 min ago'},
-  {bg:'#fdf4ff',ic:'#9333ea',t:'<strong>$340</strong> withdrawal processed',ti:'28 min ago'},
-  {bg:'#fff7ed',ic:'#d97706',t:'New <strong>5-star review</strong> posted',ti:'42 min ago'},
-];
-document.getElementById('afeed').innerHTML=acts.map(function(a){
-  return '<div class="fi"><div class="fd" style="background:'+a.bg+'"><svg viewBox="0 0 12 12" fill="none" stroke="'+a.ic+'" stroke-width="1.6" width="12" height="12"><circle cx="6" cy="4" r="2"/><path d="M2 10a4 4 0 0 1 8 0"/></svg></div><div><div class="ft">'+a.t+'</div><div class="fti">'+a.ti+'</div></div></div>';
-}).join('');
-</script>
-
-<!-- script for edit modal open and data set -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  
-  $(document).on('click', '.editBtn', function () {
-
-    let id = $(this).data('id');
-    $('#edit_id').val(id);
-   
-    $('#edit_status').val($(this).data('status'));
-
-    $('#editModal').modal('show');
+$(document).on('click','.rejectBtn',function(){
+  $('#reject_id').val($(this).data('id'));
+  $('#rejectModal').modal('show');
 });
 </script>
-
