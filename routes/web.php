@@ -147,6 +147,10 @@ Route::middleware(['auth', 'user'])
         Route::get('/deal-order',  [UserDealController::class, 'dealorder'])->name('deal.order');
         Route::post('/store-baner-ads',  [UserBannerController::class, 'store'])->name('store.babber.ads');
 
+        Route::get('/banner/click/{id}', [UserBannerController::class, 'bannerClick'])
+    ->name('banner.click');
+
+
 
 
         //deposit route for user
@@ -284,7 +288,7 @@ Route::middleware(['auth', 'admin'])
     Route::post('/banners/reject',        [BannerController::class, 'reject'])  ->name('banner.reject');
     Route::get('/banners/{id}/delete',    [BannerController::class, 'delete'])  ->name('banner.delete');
 
-
+    // routes/web.php
 
 
     //notice route

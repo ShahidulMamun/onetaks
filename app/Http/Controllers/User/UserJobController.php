@@ -10,6 +10,7 @@ use App\Models\JobPost;
 use App\Models\WebsiteSetting;
 use App\Models\UserNotification;
 use App\Models\UserTransaction;
+use App\Models\Banner;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -344,7 +345,13 @@ class UserJobController extends Controller
     // find jobs
     public function findjobs(){
 
-               $userId = Auth::id();
+        $banner = Banner::where('status', 'active')
+        ->where('expired_at', '>', now())
+        ->inRandomOrder()
+        ->first();
+
+
+        $userId = Auth::id();
  
         $submittedJobIds = DB::table('job_submits')
             ->where('user_id', $userId)
@@ -400,7 +407,8 @@ class UserJobController extends Controller
             'boostedJobs',
             'topJobs',
             'normalJobs',
-            'setting'
+            'setting',
+            'banner'
         ));
     }
 

@@ -326,6 +326,12 @@
   <div class="row">
     <div class="col-12">
 
+       @if($banner)
+      <a target="_blank" href="{{ route('user.banner.click', $banner->id) }}">
+          <img src="{{ asset('storage/'.$banner->thumbnail) }}">
+      </a>
+        @endif
+
       {{-- ── Filter Bar ── --}}
       <div class="filter-bar mb-3">
         <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">

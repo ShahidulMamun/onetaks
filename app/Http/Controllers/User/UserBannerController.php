@@ -84,4 +84,13 @@ class UserBannerController extends Controller
         'Banner ads created successfully and waiting for approval'
     );
    }
+
+   public function bannerClick($id)
+   {
+    $banner = Banner::findOrFail($id);
+    // increment click
+    $banner->increment('clicks');
+    // redirect to original link
+    return redirect()->away($banner->link);
+   }
 }

@@ -14,7 +14,7 @@ class UserDashboardController extends Controller
 {
     public function userDashboard(){
 
-    $banner = Banner::where('status', 'approved')
+    $banner = Banner::where('status', 'active')
     ->where('expired_at', '>', now())
     ->inRandomOrder()
     ->first();
