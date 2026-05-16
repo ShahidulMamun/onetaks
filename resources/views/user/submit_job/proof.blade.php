@@ -209,12 +209,12 @@
         </div>
         <div class="ji-stat">
             <div class="v">
-                <span class="text-success">{{ $job->worker_remaining }}</span>/<span class="text-danger">{{ $job->worker_need }}</span>
+                <span class="text-danger">{{ $job->worker_done }}</span>/<span class="text-success">{{ $job->worker_need }}</span>
             </div>
             <div class="l">Remaining</div>
         </div>
         <div class="ji-stat">
-            <div class="v">{{ $job->submitjobs->count() }}</div>
+            <div class="v">{{ $job->worker_done }}</div>
             <div class="l">Submissions</div>
         </div>
     </div>
@@ -224,7 +224,7 @@
         <div class="card-top">
             <h6><i class="bi bi-card-checklist me-2 text-success"></i>Submitted Proofs</h6>
             <span class="result-count">
-                {{ $job->submitjobs->count() }} Submission{{ $job->submitjobs->count() != 1 ? 's' : '' }}
+                {{ $job->worker_done }}
             </span>
         </div>
 
@@ -442,7 +442,7 @@ function openProofModal(subId) {
 
         _slides.forEach(function (src, i) {
             var cleanSrc = src.replace(/\\/g, '/');
-            var url      = '/storage/' + cleanSrc;
+            var url      = '/storage/app/public/' + cleanSrc;
 
             var slide = document.createElement('div');
             slide.className = 'slide' + (i === 0 ? ' active' : '');

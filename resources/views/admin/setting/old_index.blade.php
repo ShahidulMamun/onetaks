@@ -222,18 +222,11 @@ tr:last-child td{border-bottom:none}
                             value="{{ old('youtube', $setting->youtube) }}">
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <label class="form-label">Telegram</label>
                         <input type="text" name="telegram" class="form-control"
                             value="{{ old('telegram', $setting->telegram) }}">
                     </div>
-
-                     <div class="col-md-4">
-                        <label class="form-label">Boost Charge</label>
-                        <input type="text" name="boost_charge_per_hour" class="form-control"
-                            value="{{ old('boost_charge_per_hour', $setting->boost_charge_per_hour) }}">
-                    </div>
-
 
                     {{-- Financial --}}
                     <div class="col-md-4">

@@ -42,35 +42,59 @@ class SettingController extends Controller
             'meta_keywords' => 'nullable|string',
             'dolar_rate'    =>'required|numeric',
             'topjob_charge' =>'required',
+            'boost_charge_per_hour'=>'required',
         ]);
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
+         $setting = WebsiteSetting::first();
+                // ── site_logo upload ──────────────────────────────
+            if ($request->hasFile('site_logo')) {
+                // পুরনো file delete
+                if ($setting->site_logo && Storage::disk('public')->exists($setting->site_logo)) {
+                    Storage::disk('public')->delete($setting->site_logo);
+                }
+                // নতুন file save — storage/app/public/settings/
+                $setting->site_logo = $request->file('site_logo')
+                    ->store('settings', 'public');
+            }
 
-        $data = $validator->validated();
+            // ── favicon upload ────────────────────────────────
+            if ($request->hasFile('favicon')) {
+                if ($setting->favicon && Storage::disk('public')->exists($setting->favicon)) {
+                    Storage::disk('public')->delete($setting->favicon);
+                }
+                $setting->favicon = $request->file('favicon')
+                    ->store('settings', 'public');
+            }
 
-        // ✅ Sanitize
-        $data = collect($data)->map(function ($value) {
-            return is_string($value) ? trim($value) : $value;
-        })->toArray();
+            // ── বাকি সব fields ───────────────────────────────
+            $setting->fill([
+                'site_name'             => $request->site_name,
+                'site_title'            => $request->site_title,
+                'site_description'      => $request->site_description,
+                'email'                 => $request->email,
+                'phone'                 => $request->phone,
+                'address'               => $request->address,
+                'facebook'              => $request->facebook,
+                'youtube'               => $request->youtube,
+                'whatsapp'              => $request->whatsapp,
+                'telegram'              => $request->telegram,
+                'min_withdraw'          => $request->min_withdraw,
+                'min_deposit'           => $request->min_deposit,
+                'withdraw_charge'       => $request->withdraw_charge,
+                'jobpost_charge'        => $request->jobpost_charge,
+                'dolar_rate'            => $request->dolar_rate,
+                'topjob_charge'         => $request->topjob_charge,
+                'boost_charge_per_hour' => $request->boost_charge_per_hour,
+                'deposit_bonus'         => $request->deposit_bonus,
+                'maintenance_mode'      => $request->boolean('maintenance_mode'),
+                'meta_title'            => $request->meta_title,
+                'meta_description'      => $request->meta_description,
+                'meta_keywords'         => $request->meta_keywords,
+                'boost_charge_per_hour' =>$request->boost_charge_per_hour,
+            ]);
 
-        // ✅ File Upload
-        if ($request->hasFile('site_logo')) {
-            $data['site_logo'] = $request->file('site_logo')
-                ->store('settings', 'public');
-        }
+          $setting->save();
 
-        if ($request->hasFile('favicon')) {
-            $data['favicon'] = $request->file('favicon')
-                ->store('settings', 'public');
-        }
-
-        // checkbox fix
-        $data['maintenance_mode'] = $request->has('maintenance_mode');
-
-        $setting = WebsiteSetting::firstOrCreate();
-        $setting->update($data);
 
         return back()->with('message', 'Settings updated successfully');
     }

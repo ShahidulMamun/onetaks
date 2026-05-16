@@ -40,7 +40,7 @@
 
   .job-thumbnail {
     width: 100%;
-    max-height: 200px;
+    /*max-height: 200px;*/
     object-fit: cover;
     display: block;
   }

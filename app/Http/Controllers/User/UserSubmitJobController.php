@@ -13,176 +13,325 @@ use App\Models\JobSubmit;
 
 class UserSubmitJobController extends Controller
 {
-    public function storeSubmitjob(Request $request, $code,$slug){
+  //   public function storeSubmitjob(Request $request, $code,$slug){
 
-        // return $request->all();
+  //       // return $request->all();
 
 
-       $job = JobPost::where('code',$code)->first();
+  //      $job = JobPost::where('code',$code)->first();
 
-         if (!$job) {
-        return back()->with('error','Invalid Request');
-       }
+  //        if (!$job) {
+  //       return back()->with('error','Invalid Request');
+  //      }
 
-      $proofs = collect($job->proofs);
+  //     $proofs = collect($job->proofs);
       
-      $hasText = $proofs->contains(fn($item) => $item['type'] === 'text');
-      $hasFile = $proofs->contains(fn($item) => $item['type'] === 'file');
+  //     $hasText = $proofs->contains(fn($item) => $item['type'] === 'text');
+  //     $hasFile = $proofs->contains(fn($item) => $item['type'] === 'file');
 
 
        
 
-	    // Validation
+	 //    // Validation
 
-      $request->validate([
+  //     $request->validate([
 
-        'images' => ['required', 'array'],
-        // TEXT
-        'texts' => [
-            $hasText ? 'required' : 'nullable',
-            'array'
-        ],
-        'texts.*' => [
-            $hasText ? 'required' : 'nullable',
-            'string',
-            'max:100'
-        ],
-        // IMAGE
-        'images' => [
-            $hasFile ? 'required' : 'nullable',
-            'array'
-        ],
-        'images.*' => [
-            $hasFile ? 'required' : 'nullable',
-            'image',
-            'mimes:jpg,jpeg,png',
-            'max:1024'
-        ],
+  //       'images' => ['required', 'array'],
+  //       // TEXT
+  //       'texts' => [
+  //           $hasText ? 'required' : 'nullable',
+  //           'array'
+  //       ],
+  //       'texts.*' => [
+  //           $hasText ? 'required' : 'nullable',
+  //           'string',
+  //           'max:100'
+  //       ],
+  //       // IMAGE
+  //       'images' => [
+  //           $hasFile ? 'required' : 'nullable',
+  //           'array'
+  //       ],
+  //       'images.*' => [
+  //           $hasFile ? 'required' : 'nullable',
+  //           'image',
+  //           'mimes:jpg,jpeg,png',
+  //           'max:1024'
+  //       ],
 
-    ]);
-	    // $request->validate([
-
-	    // 	// 'job_id' => ['required','exists:job_posts,id'],
-	    //     'texts'   => ['nullable', 'array'],
-	    //     'texts.*' => ['nullable', 'string', 'max:100'],
-	    //     'images'   => ['nullable', 'array'],
-	    //     'images.*' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:1024'], // 2MB
-	    // ]);
-
+  //   ]);
+	 
 	
 
 
-       if($job->worker_need==0){
-       	 return back()->with('error','No worker need this job');
-       }
+  //      if($job->worker_need==0){
+  //      	 return back()->with('error','No worker need this job');
+  //      }
 
-       if($job->status !=='active'){
-       	 return back()->with('error','This job not available');
-       }
+  //      if($job->status !=='active'){
+  //      	 return back()->with('error','This job not available');
+  //      }
 
-       if ($job->user_id = Auth::user()->id) {
+  //      if ($job->user_id === Auth::user()->id) {
 
-         return back()->with('error','You can not submit your jobs');
-       }
+  //        return back()->with('error','You can not submit your jobs');
+  //      }
 
-      $alreadySubmitted = DB::table('job_submits')
-       ->where('job_id', $job->id)
-       ->where('user_id', auth()->id())
-       ->exists();
+  //     $alreadySubmitted = DB::table('job_submits')
+  //      ->where('job_id', $job->id)
+  //      ->where('user_id', auth()->id())
+  //      ->exists();
 
-      if($alreadySubmitted){
+  //     if($alreadySubmitted){
 
-          return back()->with(
-              'error',
-              'You already submitted this job'
-          );
-      }
+  //         return back()->with(
+  //             'error',
+  //             'You already submitted this job'
+  //         );
+  //     }
 
 
 
-       $status = 'pending';
+  //      $status = 'pending';
 
-       if($job->has_secret_code==1){
+  //      if($job->has_secret_code==1){
 
-       	 $request->validate([
-    	  'secret_code' =>['required','exists:job_posts,secret_code'],
-        ],
-        [
-         'secret_code.exists'=>'Secret code not match',
-        ]
+  //      	 $request->validate([
+  //   	  'secret_code' =>['required','exists:job_posts,secret_code'],
+  //       ],
+  //       [
+  //        'secret_code.exists'=>'Secret code not match',
+  //       ]
 
-        );
+  //       );
          
-         if ($job->secret_code !== $request->secret_code) {
-           return back()->with('error','Secret code not match');
-         }
+  //        if ($job->secret_code !== $request->secret_code) {
+  //          return back()->with('error','Secret code not match');
+  //        }
 
-         $authuser = Auth::user();
-         $authuser->increment('current_earning',$job->worker_earn);
-         $authuser->increment('total_earning',$job->worker_earn);
-         $status = 'approved';
+  //        $authuser = Auth::user();
+  //        $authuser->increment('current_earning',$job->worker_earn);
+  //        $authuser->increment('total_earning',$job->worker_earn);
+  //        $status = 'approved';
+  //       }
+
+  //       $job->increment('worker_done',1);
+  //       $job->decrement('worker_remaining',1);
+
+  //   DB::beginTransaction();
+
+  //   try {
+        
+  //       $texts = [];
+  //   		if ($request->filled('texts')) {
+  //   		    foreach ($request->texts as $text) {
+  //   		        if (!empty($text)) {
+  //   		            $texts[] = strip_tags($text);
+  //   		        }
+  //   		    }
+  //   		}
+
+  //   		$images = [];
+  //   		if ($request->hasFile('images')) {
+  //   		    foreach ($request->file('images') as $file) {
+  //   		        if ($file) {
+  //   		            $name = uniqid() . '.' . $file->getClientOriginalExtension();
+  //   		            $path = $file->storeAs('proofs', $name, 'public');
+  //   		            $images[] = $path;
+  //   		        }
+  //   		    }
+  //   		}
+
+  //         // submit job
+  //         DB::table('job_submits')->insert([
+  //         	  'job_id'  => $job->id,
+  //             'user_id' => auth()->user()->id,
+  //             'job_owner_user_id' => $job->user_id,
+  //             'proof_text'  => !empty($texts) ? json_encode($texts) : null,
+  //             'proof_image' => !empty($images) ? json_encode($images) : null,
+  //             'submitted_code'=>$request->secret_code ?? '',
+  //             'created_at' => now(),
+  //             'status'     =>$status,
+  //         ]);
+
+  //           //notification for job owner
+  //           $title = "Job submitted";
+  //           $message = $job->code." job has been submitted";
+  //           UserNotification::create([
+  //               'user_id' => $job->user_id,
+  //               'title'   => $title,
+  //               'message' => $message,
+  //               'status'  => 'pending',
+  //           ]);
+
+  //       DB::commit();
+
+  //       return back()->with('success', 'Proof submitted successfully');
+
+  //    } catch (\Exception $e) {
+
+  //       DB::rollBack();
+
+  //       return back()->with('error', 'Something went wrong');
+  //   }
+  // }
+
+public function storeSubmitjob(Request $request, $code, $slug)
+{
+    // ─── 1. Job খোঁজো ────────────────────────────────────────────────
+    $job = JobPost::where('code', $code)->firstOrFail();
+
+    // ─── 2. Proof type নির্ধারণ ──────────────────────────────────────
+    $proofs  = collect($job->proofs);
+    $hasText = $proofs->contains(fn($item) => $item['type'] === 'text');
+    $hasFile = $proofs->contains(fn($item) => $item['type'] === 'file');
+
+    // ─── 3. Validation ───────────────────────────────────────────────
+    $rules = [
+        'texts'    => [$hasText ? 'required' : 'nullable', 'array'],
+        'texts.*'  => [$hasText ? 'required' : 'nullable', 'string', 'max:100'],
+        'images'   => [$hasFile ? 'required' : 'nullable', 'array'],
+        'images.*' => [$hasFile ? 'required' : 'nullable', 'image', 'mimes:jpg,jpeg,png', 'max:1024'],
+    ];
+
+    $request->validate($rules);
+
+    // ─── 4. Business rule checks (DB lock এর আগে দ্রুত bail-out) ────
+    if ($job->status !== 'active') {
+        return back()->with('error', 'This job is not available.');
+    }
+
+    if ($job->user_id === Auth::id()) {
+        return back()->with('error', 'You cannot submit your own job.');
+    }
+
+    // ─── 5. Secret code pre-validation (lock নেওয়ার আগেই) ───────────
+    if ($job->has_secret_code) {
+        $request->validate(
+            ['secret_code' => ['required']],
+        );
+
+        if ($job->secret_code !== $request->secret_code) {
+            return back()->with('error', 'Secret code does not match.');
+        }
+    }
+
+    // ─── 6. File upload (lock এর বাইরে — IO-heavy কাজ আগে করো) ─────
+    $texts  = [];
+    $images = [];
+
+    if ($request->filled('texts')) {
+        foreach ($request->texts as $text) {
+            if (!empty($text)) {
+                $texts[] = strip_tags($text);
+            }
+        }
+    }
+
+    if ($request->hasFile('images')) {
+        foreach ($request->file('images') as $file) {
+            if ($file) {
+                $name     = uniqid() . '.' . $file->getClientOriginalExtension();
+                $path     = $file->storeAs('proofs', $name, 'public');
+                $images[] = $path;
+            }
+        }
+    }
+
+    // ─── 7. Transaction + pessimistic lock ───────────────────────────
+    //  lockForUpdate() নিশ্চিত করে যে একটি request process হওয়ার সময়
+    //  অন্য কোনো request একই row পড়তে বা পরিবর্তন করতে পারবে না।
+    DB::beginTransaction();
+
+    try {
+        // Row-level lock — race condition সম্পূর্ণ বন্ধ হবে
+        $job = JobPost::where('code', $code)
+            ->lockForUpdate()
+            ->firstOrFail();
+
+        // Lock নেওয়ার পরে আবার validate করো (state বদলে যেতে পারে)
+        if ($job->status !== 'active') {
+            DB::rollBack();
+            return back()->with('error', 'This job is not available.');
         }
 
-        $job->increment('worker_done',1);
-        $job->decrement('worker_remaining',1);
+        if ($job->worker_remaining <= 0) {
+            DB::rollBack();
+            return back()->with('error', 'No worker slots remaining for this job.');
+        }
 
-    // DB::beginTransaction();
+        // Duplicate submit check — lock এর ভেতরে হওয়া জরুরি
+        $alreadySubmitted = DB::table('job_submits')
+            ->where('job_id', $job->id)
+            ->where('user_id', Auth::id())
+            ->exists();
 
-    // try {
-        
-        $texts = [];
-    		if ($request->filled('texts')) {
-    		    foreach ($request->texts as $text) {
-    		        if (!empty($text)) {
-    		            $texts[] = strip_tags($text);
-    		        }
-    		    }
-    		}
+        if ($alreadySubmitted) {
+            DB::rollBack();
+            return back()->with('error', 'You have already submitted this job.');
+        }
 
-    		$images = [];
-    		if ($request->hasFile('images')) {
-    		    foreach ($request->file('images') as $file) {
-    		        if ($file) {
-    		            $name = uniqid() . '.' . $file->getClientOriginalExtension();
-    		            $path = $file->storeAs('proofs', $name, 'public');
-    		            $images[] = $path;
-    		        }
-    		    }
-    		}
+        // ─── 8. Status ও earning নির্ধারণ ───────────────────────────
+        $status   = 'pending';
+        $authUser = Auth::user();
 
-          // submit job
-          DB::table('job_submits')->insert([
-          	  'job_id'  => $job->id,
-              'user_id' => auth()->user()->id,
-              'job_owner_user_id' => $job->user_id,
-              'proof_text'  => !empty($texts) ? json_encode($texts) : null,
-              'proof_image' => !empty($images) ? json_encode($images) : null,
-              'submitted_code'=>$request->secret_code ?? '',
-              'created_at' => now(),
-              'status'     =>$status,
-          ]);
+        if ($job->has_secret_code) {
+            $authUser->increment('current_earning', $job->worker_earn);
+            $authUser->increment('total_earning',   $job->worker_earn);
+            $status = 'approved';
+        }
 
-            //notification for job owner
-            $title = "Job submitted";
-            $message = $job->code." job has been submitted";
-            UserNotification::create([
-                'user_id' => $job->user_id,
-                'title'   => $title,
-                'message' => $message,
-                'status'  => 'pending',
-            ]);
+        // ─── 9. Counter update ───────────────────────────────────────
+        // decrement worker_remaining, increment worker_done — atomically
+        $job->increment('worker_done',      1);
+        $job->decrement('worker_remaining', 1);
+
+        // worker_remaining শূন্য হলে job বন্ধ করো
+        if (($job->worker_remaining - 1) <= 0) {
+            $job->update(['status' => 'completed']);
+        }
+
+        // ─── 10. Submit insert ───────────────────────────────────────
+        DB::table('job_submits')->insert([
+            'job_id'              => $job->id,
+            'user_id'             => Auth::id(),
+            'job_owner_user_id'   => $job->user_id,
+            'proof_text'          => !empty($texts)  ? json_encode($texts)  : null,
+            'proof_image'         => !empty($images) ? json_encode($images) : null,
+            'submitted_code'      => $request->secret_code ?? '',
+            'status'              => $status,
+            'created_at'          => now(),
+            'updated_at'          => now(),
+        ]);
+
+        // ─── 11. Notification ────────────────────────────────────────
+        UserNotification::create([
+            'user_id' => $job->user_id,
+            'title'   => 'Job Submitted',
+            'message' => $job->code . ' job has been submitted.',
+            'status'  => 'pending',
+        ]);
 
         DB::commit();
 
-        return back()->with('success', 'Proof submitted successfully');
+        return back()->with('success', 'Proof submitted successfully.');
 
-    //  } catch (\Exception $e) {
+    } catch (\Exception $e) {
+        DB::rollBack();
 
-    //     DB::rollBack();
+        // Upload হয়ে যাওয়া files মুছে দাও যদি transaction fail হয়
+        foreach ($images as $imagePath) {
+            \Storage::disk('public')->delete($imagePath);
+        }
 
-    //     return back()->with('error', 'Something went wrong');
-    // }
-  }
+        \Log::error('Job submit failed: ' . $e->getMessage(), [
+            'user_id' => Auth::id(),
+            'job_code' => $code,
+        ]);
+
+        return back()->with('error', 'Something went wrong. Please try again.');
+    }
+}
 
 
     public function proof($id,$code){
@@ -293,8 +442,8 @@ class UserSubmitJobController extends Controller
         $submission->user->increment('current_earning',$job->worker_earn);
         
         /* Worker Remaining Decrease */
-        $job->decrement('worker_remaining');
-        $job->increment('worker_done');
+        // $job->decrement('worker_remaining');
+        // $job->increment('worker_done');
     });
 
     /* Notification for Worker */
