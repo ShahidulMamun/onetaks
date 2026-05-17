@@ -431,20 +431,6 @@
 
 <div class="container mt-4 pb-5">
 
-    {{-- ── Success / Error Flash ── --}}
-   <!--  @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show rounded-3 py-2 px-3 mb-3" role="alert" style="font-size:12px;">
-            <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
-            <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
-    @if(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show rounded-3 py-2 px-3 mb-3" role="alert" style="font-size:12px;">
-            <i class="bi bi-exclamation-triangle me-2"></i>{{ session('error') }}
-            <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert"></button>
-        </div>
-    @endif -->
-
     {{-- ── Card Header ── --}}
     <div class="jobs-card">
         <div class="card-top">
@@ -493,7 +479,7 @@
                         </td>
                         <td>
                             <div class="action-group">
-                            	@if($job->status != 'stop')
+                                @if($job->status != 'stop')
                                 <a href="{{ route('user.submit-job-proof', [$job->id, $job->code]) }}"
                                    class="btn btn-proof btn-sm">
                                     <i class="bi bi-eye me-1"></i>Proof
@@ -525,18 +511,17 @@
                                     </button>
                                 </form>
                                 @endif
-                                  @if($job->status != 'stop')
-                                 <form action="{{ route('user.job.money-back', [$job->id, $job->code]) }}"
+                                @if($job->status != 'stop')
+                                <form action="{{ route('user.job.money-back', [$job->id, $job->code]) }}"
                                       method="POST"
                                       onsubmit="return confirm('Stop this job?')">
                                     @csrf
                                     @method('PATCH')
                                     <button type="submit" class="btn btn-dark btn-sm">
-                                        <i class="bi bi-trash me-1"></i>Money Back
+                                        <i class="bi bi-wallet2 me-1"></i>Money Back
                                     </button>
                                 </form>
                                 @endif
-
                             </div>
                         </td>
                     </tr>
@@ -582,54 +567,50 @@
                     </span>
                 </div>
                 <div class="jcm-actions">
-                       <td>
-                            <div class="action-group">
-                            	@if($job->status != 'stop')
-                                <a href="{{ route('user.submit-job-proof', [$job->id, $job->code]) }}"
-                                   class="btn btn-proof btn-sm">
-                                    <i class="bi bi-eye me-1"></i>Proof
-                                </a>
-                                <button class="btn btn-edit btn-sm"
-                                    onclick='openEditModal({{ $job->id }},{{ $job->worker_need }},{{ $job->worker_earn }},@json($job->title),@json($job->description))'>
-                                    <i class="bi bi-pencil me-1"></i>Edit
-                                </button>
-                                @if(!$job->is_top)
-                                <button class="btn btn-top btn-sm"
-                                    onclick="openTopJobModal({{ $job->id }}, '{{ addslashes($job->title) }}')">
-                                    <i class="bi bi-star me-1"></i>Top
-                                </button>
-                                @endif
-                                {{-- ── Boost Button ── --}}
-                                <button class="btn btn-boost btn-sm"
-                                    onclick="openBoostModal({{ $job->id }}, '{{ addslashes($job->title) }}', {{ $job->isBoostedActive() ? 'true' : 'false' }})">
-                                    <i class="bi bi-rocket-takeoff me-1"></i>Boost
-                                </button>
-                                @endif
-                                @if($job->status != 'pending' && $job->status != 'stop')
-                                <form action="{{ route('user.job.delete', [$job->id, $job->code]) }}"
-                                      method="POST"
-                                      onsubmit="return confirm('Delete this job?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-delete btn-sm">
-                                        <i class="bi bi-trash me-1"></i>Delete
-                                    </button>
-                                </form>
-                                @endif
-                                  @if($job->status != 'stop')
-                                 <form action="{{ route('user.job.money-back', [$job->id, $job->code]) }}"
-                                      method="POST"
-                                      onsubmit="return confirm('Stop this job?')">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit" class="btn btn-dark btn-sm">
-                                        <i class="bi bi-trash me-1"></i>Money Back
-                                    </button>
-                                </form>
-                                @endif
-
-                            </div>
-                        </td>
+                    <div class="action-group" style="width:100%;">
+                        @if($job->status != 'stop')
+                        <a href="{{ route('user.submit-job-proof', [$job->id, $job->code]) }}"
+                           class="btn btn-proof btn-sm">
+                            <i class="bi bi-eye me-1"></i>Proof
+                        </a>
+                        <button class="btn btn-edit btn-sm"
+                            onclick='openEditModal({{ $job->id }},{{ $job->worker_need }},{{ $job->worker_earn }},@json($job->title),@json($job->description))'>
+                            <i class="bi bi-pencil me-1"></i>Edit
+                        </button>
+                        @if(!$job->is_top)
+                        <button class="btn btn-top btn-sm"
+                            onclick="openTopJobModal({{ $job->id }}, '{{ addslashes($job->title) }}')">
+                            <i class="bi bi-star me-1"></i>Top
+                        </button>
+                        @endif
+                        <button class="btn btn-boost btn-sm"
+                            onclick="openBoostModal({{ $job->id }}, '{{ addslashes($job->title) }}', {{ $job->isBoostedActive() ? 'true' : 'false' }})">
+                            <i class="bi bi-rocket-takeoff me-1"></i>Boost
+                        </button>
+                        @endif
+                        @if($job->status != 'pending' && $job->status != 'stop')
+                        <form action="{{ route('user.job.delete', [$job->id, $job->code]) }}"
+                              method="POST"
+                              onsubmit="return confirm('Delete this job?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-delete btn-sm">
+                                <i class="bi bi-trash me-1"></i>Delete
+                            </button>
+                        </form>
+                        @endif
+                        @if($job->status != 'stop')
+                        <form action="{{ route('user.job.money-back', [$job->id, $job->code]) }}"
+                              method="POST"
+                              onsubmit="return confirm('Stop this job?')">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" class="btn btn-dark btn-sm">
+                                <i class="bi bi-wallet2 me-1"></i>Money Back
+                            </button>
+                        </form>
+                        @endif
+                    </div>
                 </div>
             </div>
             @empty
@@ -693,8 +674,8 @@
                             <span id="prev-earn">$0.00</span>
                         </div>
                         <div class="cp-row">
-                            <span>Job post charge</span>
-                            <span id="prev-charge">{{ $setting->jobpost_charge ?? '0.00' }}%</span>
+                            <span>Job post charge ({{ $setting->jobpost_charge ?? 0 }}%)</span>
+                            <span id="prev-charge">$0.00</span>
                         </div>
                         <div class="cp-row total">
                             <span>Total to pay</span>
@@ -795,7 +776,8 @@
                             <label for="h{{ $h }}">
                                 <span class="hr-num">{{ $h }}h</span>
                                 <span class="text-muted" style="font-size:9px;">hour{{ $h > 1 ? 's' : '' }}</span>
-                                <span class="hr-price" id="price-{{ $h }}">—</span>
+                                {{-- Price label: calculated as hours × boost_charge_per_hour from admin setting --}}
+                                <span class="hr-price" id="price-{{ $h }}">${{ number_format(($setting->boost_charge_per_hour ?? 1) * $h, 2) }}</span>
                             </label>
                         </div>
                         @endforeach
@@ -809,11 +791,11 @@
                         </div>
                         <div class="cp-row">
                             <span>Charge per hour</span>
-                            <span>${{ number_format($setting->boost_charge_per_hour ?? 1, 2) }}</span>
+                            <span id="bprev-rate">${{ number_format($setting->boost_charge_per_hour ?? 1, 2) }}</span>
                         </div>
                         <div class="cp-row total">
                             <span>Total to pay</span>
-                            <span id="bprev-total">$0.00</span>
+                            <span id="bprev-total">${{ number_format($setting->boost_charge_per_hour ?? 1, 2) }}</span>
                         </div>
                     </div>
 
@@ -840,29 +822,34 @@
 </footer>
 
 <script>
-    const JOB_POST_CHARGE   = {{ $setting->jobpost_charge ?? 0 }};
-    const BOOST_CHARGE_PER_HOUR = {{ $setting->boost_charge_per_hour ?? 1 }};
+    // Admin-configured values passed from backend
+    const JOB_POST_CHARGE_PERCENT = {{ $setting->jobpost_charge ?? 0 }};   // e.g. 10 means 10%
+    const BOOST_CHARGE_PER_HOUR   = {{ $setting->boost_charge_per_hour ?? 1 }}; // e.g. 0.50
     let _editEarn = 0;
 
     /* ── Edit Modal ── */
     function openEditModal(jobId, currentWorkers, workerEarn, jobTitle, jobDescription) {
-        _editEarn = workerEarn;
+        _editEarn = parseFloat(workerEarn);
         document.getElementById('editWorkerForm').action = '/user/jobs/' + jobId + '/update-workers';
-        document.getElementById('current_total').textContent = currentWorkers;
-        document.getElementById('jobTitle').value = jobTitle;
-        document.getElementById('jobDescription').value = jobDescription;
-        document.getElementById('extra_workers').value = '';
-        document.getElementById('prev-earn').textContent = '$' + parseFloat(workerEarn).toFixed(2);
+        document.getElementById('current_total').textContent  = currentWorkers;
+        document.getElementById('jobTitle').value             = jobTitle;
+        document.getElementById('jobDescription').value       = jobDescription;
+        document.getElementById('extra_workers').value        = '';
+        document.getElementById('prev-earn').textContent      = '$' + _editEarn.toFixed(2);
         recalcEdit();
         new bootstrap.Modal(document.getElementById('editWorkerModal')).show();
     }
 
     function recalcEdit() {
-        const extra = parseInt(document.getElementById('extra_workers').value) || 0;
+        const extra      = parseInt(document.getElementById('extra_workers').value) || 0;
         const workerCost = extra * _editEarn;
-        const total = workerCost + (extra > 0 ? JOB_POST_CHARGE : 0);
-        document.getElementById('prev-extra').textContent = extra;
-        document.getElementById('prev-total').textContent = '$' + total.toFixed(2);
+        // jobpost_charge is a percentage: charge = workerCost × (percent / 100)
+        const feeAmount  = workerCost * (JOB_POST_CHARGE_PERCENT / 100);
+        const total      = workerCost + feeAmount;
+
+        document.getElementById('prev-extra').textContent  = extra;
+        document.getElementById('prev-charge').textContent = '$' + feeAmount.toFixed(2);
+        document.getElementById('prev-total').textContent  = '$' + total.toFixed(2);
     }
 
     /* ── Top Job Modal ── */
@@ -883,10 +870,12 @@
         // Reset to 1 hour selected
         document.getElementById('h1').checked = true;
 
-        // Fill price labels
-        [1,2,3,4,5,6,7,8,9,10,12,24,].forEach(h => {
-            const price = (BOOST_CHARGE_PER_HOUR * h).toFixed(2);
-            document.getElementById('price-' + h).textContent = '$' + price;
+        // Update per-hour price labels dynamically from the admin setting
+        // (Blade already rendered them server-side; this keeps JS in sync
+        //  in case the modal is opened multiple times without page reload)
+        [1,2,3,4,5,6,7,8,9,10,12,24].forEach(h => {
+            const el = document.getElementById('price-' + h);
+            if (el) el.textContent = '$' + (BOOST_CHARGE_PER_HOUR * h).toFixed(2);
         });
 
         recalcBoost();
@@ -895,10 +884,13 @@
 
     function recalcBoost() {
         const selected = document.querySelector('input[name="boost_hours"]:checked');
-        const h = selected ? parseInt(selected.value) : 1;
-        const total = (BOOST_CHARGE_PER_HOUR * h).toFixed(2);
+        const h        = selected ? parseInt(selected.value) : 1;
+        const total    = (BOOST_CHARGE_PER_HOUR * h).toFixed(2);
+
         document.getElementById('bprev-hours').textContent = h + (h === 1 ? ' hour' : ' hours');
         document.getElementById('bprev-total').textContent = '$' + total;
+        // Also keep rate row accurate (static but nice to confirm)
+        document.getElementById('bprev-rate').textContent  = '$' + BOOST_CHARGE_PER_HOUR.toFixed(2);
     }
 </script>
 

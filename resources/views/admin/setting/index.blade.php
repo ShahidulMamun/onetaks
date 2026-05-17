@@ -230,7 +230,7 @@ tr:last-child td{border-bottom:none}
 
                      <div class="col-md-4">
                         <label class="form-label">Boost Charge</label>
-                        <input type="number" name="boost_charge_per_hour" class="form-control"
+                        <input type="text" name="boost_charge_per_hour" class="form-control"
                             value="{{ old('boost_charge_per_hour', $setting->boost_charge_per_hour) }}">
                     </div>
 

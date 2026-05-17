@@ -15,7 +15,7 @@ class BoostJobController extends Controller
 {
     public function boost(Request $request, $id)
     {
-     
+     // return $request->all();
         $request->validate([
             'boost_hours' => 'required|integer|in:1,2,3,4,5,6,7,8,9,10,12,24',
         ]);
@@ -55,7 +55,7 @@ class BoostJobController extends Controller
              UserTransaction::create([
             'user_id' => $user->id,
             'transaction_id' => strtoupper(uniqid()),
-            'type' => "charge",
+            'type' => "boost_job_charge",
             'amount' => $totalCost,
             'description' => "Job post boosting cost",
             'reference_id' => $job->id,
