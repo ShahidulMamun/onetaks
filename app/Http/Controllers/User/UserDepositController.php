@@ -12,11 +12,11 @@ use App\Models\Deposit;
 class UserDepositController extends Controller
 {
     // add deposit
-	public function create(){
+    public function create(){
         
         $methods = PaymentMethod::where('status','active')->get();
-	    return view('user.deposit.create',compact('methods')); 
-	}
+        return view('user.deposit.create',compact('methods')); 
+    }
 
     // user submit deposit
     public function store(Request $request)
@@ -24,13 +24,13 @@ class UserDepositController extends Controller
        //validation
        $request->validate([
         'payment_method_id' => ['required','integer','exists:payment_methods,id'],
-        'amount' => ['required','integer','min:1'],
+        'amount' => ['required','min:1','max:1000'],
         'transaction_id' => [ 'required','string','max:255',
         'unique:deposits,transaction_id'],
         'sender_number' => ['required','string','regex:/^[0-9]+$/','min:11','max:15']
         ]);
 
-        // 🔥Sanitation
+        // ðŸ”¥Sanitation
         $payment_method_id = (int) $request->payment_method_id;
         $amount = (int) $request->amount;
         $transaction_id = trim(strip_tags($request->transaction_id));
@@ -54,10 +54,10 @@ class UserDepositController extends Controller
 
     }
 
-	// deposit history
-	public function depositHistory(){
+    // deposit history
+    public function depositHistory(){
          $deposits = Deposit::where('user_id',Auth::user()->id)->with(['method','user'])->get();
          $count = count($deposits);
-	    return view('user.deposit.history',compact('deposits','count')); 
-	}
+        return view('user.deposit.history',compact('deposits','count')); 
+    }
 }

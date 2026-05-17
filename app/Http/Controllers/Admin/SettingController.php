@@ -95,7 +95,6 @@ class SettingController extends Controller
 
           $setting->save();
 
-
         return back()->with('message', 'Settings updated successfully');
     }
 }

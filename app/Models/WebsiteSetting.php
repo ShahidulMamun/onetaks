@@ -32,4 +32,16 @@ class WebsiteSetting extends Model
         'topjob_charge',
         'boost_charge_per_hour',
     ];
+
+    protected $casts = [
+    'maintenance_mode'      => 'boolean',
+    'min_withdraw'          => 'decimal:2',
+    'min_deposit'           => 'decimal:2',
+    'withdraw_charge'       => 'decimal:2',
+    'jobpost_charge'        => 'decimal:2',
+    'dolar_rate'            => 'decimal:2',
+    'topjob_charge'         => 'decimal:2',
+    'boost_charge_per_hour' => 'decimal:2',
+    'deposit_bonus'         => 'decimal:2',
+  ];
 }

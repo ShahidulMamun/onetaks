@@ -7,65 +7,66 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Deposit;
 use App\Models\UserNotification;
+use App\Models\UserTransaction;
 use App\Models\User;
 use App\Models\SiteWallet;
 
 class DepositController extends Controller
 {
     public function pendingDeposit(){
-     $pageTitle="Pending Deposit";	
+     $pageTitle="Pending Deposit";  
      $deposits = Deposit::where('status','pending')->orderBy('created_at')->get();
      return view('admin.deposits.index',compact(['deposits','pageTitle']));
     }
 
     public function approvedDeposit(){
-     $pageTitle="Approved Deposit";	
+     $pageTitle="Approved Deposit"; 
      $deposits = Deposit::where('status','approved')->orderBy('created_at')->get();
      return view('admin.deposits.index',compact(['deposits','pageTitle']));
     }
 
     public function rejectedDeposit(){
-     $pageTitle="Rejected Deposit";	
+     $pageTitle="Rejected Deposit"; 
      $deposits = Deposit::where('status','rejected')->orderBy('created_at')->get();
      return view('admin.deposits.index',compact(['deposits','pageTitle']));
     }
 
-	public function rejectDeposit($id)
-	{
-	    $deposit = Deposit::findOrFail($id);
+    public function rejectDeposit($id)
+    {
+        $deposit = Deposit::findOrFail($id);
 
-	    // already processed check
-	    if ($deposit->status !== 'pending') {
-	        return back()->with('error', 'Already processed');
-	    }
+        // already processed check
+        if ($deposit->status !== 'pending') {
+            return back()->with('error', 'Already processed');
+        }
 
-	    DB::beginTransaction();
+        DB::beginTransaction();
 
-	    try {
-	        $deposit->status = 'rejected';
-	        $deposit->save();
+        try {
+            $deposit->status = 'rejected';
+            $deposit->save();
            
             //user notification create
             $title = "Deposit rejected";
-	        UserNotification::create([
-	            'user_id' => $deposit->user_id,
+            UserNotification::create([
+                'user_id' => $deposit->user_id,
                 'title'   =>$title, 
-	            'message' => "Your $".$deposit->amount ." deposit has been rejected.",
-	            'status'  => 'pending',
-	        ]);
+                'message' => "Your $".$deposit->amount ." deposit has been rejected.",
+                'status'  => 'pending',
+            ]);
 
-	        DB::commit();
+            DB::commit();
 
-	        return back()->with('success', 'Deposit rejected');
+            return back()->with('success', 'Deposit rejected');
 
-	    } catch (\Exception $e) {
-	        DB::rollBack();
+        } catch (\Exception $e) {
+            DB::rollBack();
 
-	        return back()->with('error', 'Something went wrong');
-	    }
-	}
+            return back()->with('error', 'Something went wrong');
+        }
+    }
 
-	public function approveDeposit($id)
+    public function approveDeposit($id)
     {
   
     $deposit = Deposit::findOrFail($id);
@@ -98,6 +99,18 @@ class DepositController extends Controller
             'message' => "Your deposit of $" .$deposit->amount ."has been approved.",
             'status'  => 'pending',
         ]);
+        
+        UserTransaction::create([
+            'user_id' => $deposit->user_id,
+            'transaction_id' => strtoupper(uniqid()),
+            'type' => "deposit",
+            'amount' => $deposit->amount,
+            'description' => "Deposit successfully added",
+            'reference_id' => "Deposit ID ".$deposit->id,
+            'status' => 'success',
+           ]);
+           
+           
 
         $mainWallet = SiteWallet::first();
         $mainWallet->increment('lifetime_deposit',$deposit->amount);
