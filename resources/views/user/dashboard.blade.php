@@ -118,7 +118,6 @@
     color: inherit;
   }
 
-  /* Boosted card */
   .job-card.card-boosted {
     border-left-color: var(--boost);
     background: linear-gradient(135deg, #fff 80%, #f5f0ff 100%);
@@ -133,7 +132,6 @@
     pointer-events: none;
   }
 
-  /* Top card */
   .job-card.card-top {
     border-left-color: var(--top-color);
     background: linear-gradient(135deg, #fff 80%, #fffbf0 100%);
@@ -256,7 +254,6 @@
   .jobs-table tbody tr:last-child { border-bottom: none; }
   .jobs-table tbody tr:hover { background: #f8f7ff; }
 
-  /* Desktop row highlights */
   .jobs-table tbody tr.row-boosted {
     background: linear-gradient(90deg, #f5f0ff 0%, #fff 100%);
   }
@@ -267,7 +264,6 @@
   }
   .jobs-table tbody tr.row-top:hover { background: var(--top-light); }
 
-  /* Section divider row in table */
   .section-divider-row td {
     background: #f8f9fa !important;
     padding: 6px 16px !important;
@@ -315,10 +311,10 @@
   }
 
   @media (max-width: 575px) {
-   .filter-controls { flex-wrap: nowrap; gap: 5px; }
-  .filter-select, .filter-sort { font-size: 11px; padding: 6px 4px; }
-  .filter-input { font-size: 11px; padding: 6px 6px 6px 24px; }
-  .filter-controls > * { flex: 1 1 0; min-width: 0; }
+    .filter-controls { flex-wrap: nowrap; gap: 5px; }
+    .filter-select, .filter-sort { font-size: 11px; padding: 6px 4px; }
+    .filter-input { font-size: 11px; padding: 6px 6px 6px 24px; }
+    .filter-controls > * { flex: 1 1 0; min-width: 0; }
   }
 </style>
 
@@ -326,11 +322,11 @@
   <div class="row">
     <div class="col-12">
 
-       @if($banner)
+      @if($banner)
       <a target="_blank" href="{{ route('user.banner.click', $banner->id) }}">
           <img src="{{ asset('storage/'.$banner->thumbnail) }}">
       </a>
-        @endif
+      @endif
 
       {{-- ── Filter Bar ── --}}
       <div class="filter-bar mb-3">
@@ -340,8 +336,6 @@
             Available Jobs
             <span class="badge bg-danger ms-1" id="jobCount">{{ count($jobs) }}</span>
           </span>
-          {{-- Legend --}}
-          
         </div>
         <div class="filter-controls">
           @php
@@ -350,7 +344,8 @@
           <select class="filter-select" id="catSelect" onchange="applyFilters()">
             <option value="">All Categories</option>
             @foreach($categories as $category)
-              <option value="{{ $category->name }}">{{ $category->name }}</option>
+              {{-- value lowercase করা হচ্ছে যাতে data-category এর সাথে match করে --}}
+              <option value="{{ strtolower($category->name) }}">{{ $category->name }}</option>
             @endforeach
           </select>
           <div class="search-wrapper">
@@ -382,6 +377,7 @@
              href="{{ route('user.job-details', $job->code) }}"
              data-title="{{ strtolower($job->title) }}"
              data-earn="{{ $job->worker_earn }}"
+             data-category="{{ strtolower($job->category->name ?? '') }}"
              data-type="boosted"
              data-index="{{ $loop->index }}">
             <div class="job-card-top">
@@ -421,6 +417,7 @@
              href="{{ route('user.job-details', $job->code) }}"
              data-title="{{ strtolower($job->title) }}"
              data-earn="{{ $job->worker_earn }}"
+             data-category="{{ strtolower($job->category->name ?? '') }}"
              data-type="top"
              data-index="{{ $loop->index }}">
             <div class="job-card-top">
@@ -459,6 +456,7 @@
              href="{{ route('user.job-details', $job->code) }}"
              data-title="{{ strtolower($job->title) }}"
              data-earn="{{ $job->worker_earn }}"
+             data-category="{{ strtolower($job->category->name ?? '') }}"
              data-type="normal"
              data-index="{{ $loop->index }}">
             <div class="job-card-top">
@@ -526,6 +524,7 @@
                 onclick="window.location.href='{{ route('user.job-details', $job->code) }}'"
                 data-title="{{ strtolower($job->title) }}"
                 data-earn="{{ $job->worker_earn }}"
+                data-category="{{ strtolower($job->category->name ?? '') }}"
                 data-type="boosted"
                 data-index="{{ $loop->index }}">
               <td>
@@ -571,6 +570,7 @@
                 onclick="window.location.href='{{ route('user.job-details', $job->code) }}'"
                 data-title="{{ strtolower($job->title) }}"
                 data-earn="{{ $job->worker_earn }}"
+                data-category="{{ strtolower($job->category->name ?? '') }}"
                 data-type="top"
                 data-index="{{ $loop->index }}">
               <td>
@@ -610,6 +610,7 @@
             <tr onclick="window.location.href='{{ route('user.job-details', $job->code) }}'"
                 data-title="{{ strtolower($job->title) }}"
                 data-earn="{{ $job->worker_earn }}"
+                data-category="{{ strtolower($job->category->name ?? '') }}"
                 data-type="normal"
                 data-index="{{ $loop->index }}">
               <td></td>
@@ -661,34 +662,42 @@
   function applyFilters() {
     const search = document.getElementById('searchInput').value.toLowerCase().trim();
     const sort   = document.getElementById('sortSelect').value;
+    const cat    = document.getElementById('catSelect').value.trim(); // already lowercase from option value
 
     const desktopRows = Array.from(document.querySelectorAll('#desktopBody tr:not(.section-divider-row)'));
     const mobileCards = Array.from(document.querySelectorAll('#mobileList .job-card'));
 
-    function matches(title) {
-      return title.includes(search);
+    // একটা element match করে কিনা চেক করে (title + category উভয়ই)
+    function matches(el) {
+      const title    = (el.dataset.title    || '').toLowerCase();
+      const category = (el.dataset.category || '').toLowerCase();
+      const titleOk  = search === '' || title.includes(search);
+      const catOk    = cat    === '' || category === cat;
+      return titleOk && catOk;
     }
 
-    // Filter
+    // Desktop rows filter
     let visibleDesktop = desktopRows.filter(r => {
-      const show = matches(r.dataset.title || '');
+      const show = matches(r);
       r.style.display = show ? '' : 'none';
       return show;
     });
 
+    // Mobile cards filter
     let visibleMobile = mobileCards.filter(c => {
-      const show = matches(c.dataset.title || '');
+      const show = matches(c);
       c.style.display = show ? '' : 'none';
       return show;
     });
 
-    // Sort (only when non-default)
+    // Sort (default = priority order যেভাবে server থেকে এসেছে)
     if (sort !== 'default') {
       function sortItems(items, parent) {
         items.sort((a, b) => {
-          if (sort === 'highest') return parseFloat(b.dataset.earn) - parseFloat(a.dataset.earn);
-          if (sort === 'lowest')  return parseFloat(a.dataset.earn) - parseFloat(b.dataset.earn);
-          return parseInt(b.dataset.index) - parseInt(a.dataset.index); // newest
+          if (sort === 'highest') return parseFloat(b.dataset.earn)  - parseFloat(a.dataset.earn);
+          if (sort === 'lowest')  return parseFloat(a.dataset.earn)  - parseFloat(b.dataset.earn);
+          if (sort === 'newest')  return parseInt(b.dataset.index)   - parseInt(a.dataset.index);
+          return 0;
         });
         items.forEach(el => parent.appendChild(el));
       }
@@ -696,19 +705,19 @@
       sortItems(visibleMobile,  document.getElementById('mobileList'));
     }
 
-    // Section divider visibility (hide if all rows in section hidden)
+    // Desktop: section divider গুলো hide করো যদি ওই section এ কোনো visible row না থাকে
     const dividers = document.querySelectorAll('#desktopBody .section-divider-row');
     dividers.forEach(divider => {
-      let nextSibling = divider.nextElementSibling;
+      let next = divider.nextElementSibling;
       let hasVisible = false;
-      while (nextSibling && !nextSibling.classList.contains('section-divider-row')) {
-        if (nextSibling.style.display !== 'none') hasVisible = true;
-        nextSibling = nextSibling.nextElementSibling;
+      while (next && !next.classList.contains('section-divider-row')) {
+        if (next.style.display !== 'none') hasVisible = true;
+        next = next.nextElementSibling;
       }
       divider.style.display = hasVisible ? '' : 'none';
     });
 
-    // Mobile section labels
+    // Mobile: section label গুলো hide করো যদি ওই section এ কোনো visible card না থাকে
     document.querySelectorAll('#mobileList .section-label').forEach(label => {
       let next = label.nextElementSibling;
       let hasVisible = false;
@@ -719,16 +728,16 @@
       label.style.display = hasVisible ? '' : 'none';
     });
 
-    // Empty states
+    // Empty state toggle
     document.getElementById('desktopEmpty').style.display = visibleDesktop.length ? 'none' : 'block';
     document.getElementById('mobileEmpty').style.display  = visibleMobile.length  ? 'none' : 'block';
 
-    // Count badge
+    // Job count badge আপডেট (viewport অনুযায়ী)
     const total = window.innerWidth < 768 ? visibleMobile.length : visibleDesktop.length;
     document.getElementById('jobCount').textContent = total;
   }
 
-  // Tooltips
+  // Tooltips init
   document.addEventListener('DOMContentLoaded', function () {
     [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
       .forEach(el => new bootstrap.Tooltip(el));
