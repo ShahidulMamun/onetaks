@@ -103,7 +103,7 @@ class UserJobController extends Controller
             'title'          => 'required|string|max:255',
             'description'    => 'required|string',
             'worker_need'    => 'required|integer|min:1',
-            'thumbnail'      => 'nullable|image|mimes:jpeg,png,jpg,webp|max:1024',
+            'thumbnail'      => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'has_secret_code'=> 'boolean',
             'secret_code'    => 'required_if:has_secret_code,1|nullable|string|max:20',
             'secret_code_example'    => 'required_if:has_secret_code,1|nullable|string|max:20',
@@ -196,14 +196,26 @@ class UserJobController extends Controller
                 'status'  => 'pending',
             ]);
 
-
+            //job post paymnet transaction
              UserTransaction::create([
             'user_id' => $user->id,
             'transaction_id' => strtoupper(uniqid()),
-            'type' => "charge",
-            'amount' => $total_cost_with_charge,
-            'description' => "Job post cost(including charge)",
-            'reference_id' => $job->id,
+            'type' => "jobpost_payment",
+            'amount' => $cost,
+            'description' => "Job post cost has been deducted",
+            'reference_id' => "Job ID ".$job->id,
+            'status' => 'success',
+           ]);
+           
+           
+            //job post charge transaction
+             UserTransaction::create([
+            'user_id' => $user->id,
+            'transaction_id' => strtoupper(uniqid()),
+            'type' => "jobpost_charge",
+            'amount' => $total_charge,
+            'description' => "Job post charge has been deducted",
+            'reference_id' => "Job ID ".$job->id,
             'status' => 'success',
            ]);
          }
@@ -264,20 +276,29 @@ class UserJobController extends Controller
                 'status'  => 'pending',
             ]);
 
-
-             UserTransaction::create([
+           
+           //payment transaction
+           UserTransaction::create([
             'user_id' => $user->id,
             'transaction_id' => strtoupper(uniqid()),
-            'type' => "charge",
-            'amount' => $totalCharge,
-            'description' => "Job edit cost(including charge)",
-            'reference_id' => $job->id,
+            'type' => "jobpost_payment",
+            'amount' => $new_budget,
+            'description' => "Job edit cost has beeb deducted",
+            'reference_id' => "Job ID ".$job->id,
+            'status' => 'success',
+           ]);
+           
+           //charge transaction
+            UserTransaction::create([
+            'user_id' => $user->id,
+            'transaction_id' => strtoupper(uniqid()),
+            'type' => "jobpost_charge",
+            'amount' => $charge,
+            'description' => "Job edit charge has been deducted",
+            'reference_id' => "Job ID ".$job->id,
             'status' => 'success',
            ]);
 
-
-
- 
     return back()->with('success', $extraWorkers . ' workers added successfully.');
    }
 
@@ -338,27 +359,26 @@ class UserJobController extends Controller
     public function myjobs(){
         $pageTitle= "My Jobs";
         $setting = WebsiteSetting::first();
-        $jobs =  JobPost::where('user_id',Auth::user()->id)->get();
+        $jobs =  JobPost::where('user_id',Auth::user()->id)->orderBy('created_at','desc')->get();
         return view('user.jobs.my_job',compact('jobs','pageTitle','setting'));
     }
 
     // find jobs
     public function findjobs(){
 
-        $banner = Banner::where('status', 'active')
+         $userId = Auth::id();
+ 
+         $banner = Banner::where('status', 'active')
         ->where('expired_at', '>', now())
         ->inRandomOrder()
         ->first();
-
-
-        $userId = Auth::id();
- 
+        
         $submittedJobIds = DB::table('job_submits')
             ->where('user_id', $userId)
             ->pluck('job_id')
             ->toArray();
  
-        // ── common query
+        // ── Base scope (সব query তে common) ──
         $baseQuery = JobPost::with('continent')
             ->where('status', 'active')
             // ->where('user_id', '!=', $userId)    
@@ -367,6 +387,7 @@ class UserJobController extends Controller
  
       
         //  Boost jobs
+        
         $boostedJobs = (clone $baseQuery)
             ->where('is_boosted', true)
             ->where('boosted_until', '>', now())
@@ -375,6 +396,7 @@ class UserJobController extends Controller
  
   
         //   TOP jobs
+    
         $topJobs = (clone $baseQuery)
             ->where('is_top', true)
             ->where(function ($q) {
