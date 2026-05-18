@@ -12,6 +12,7 @@ use App\Http\Controllers\User\UserSubmitJobController;
 use App\Http\Controllers\User\FinishJobController;
 use App\Http\Controllers\User\BoostJobController;
 use App\Http\Controllers\User\UserBannerController;
+use App\Http\Controllers\User\HideJobController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\ContinentController;
 use App\Http\Controllers\Admin\CountryController;
@@ -123,6 +124,10 @@ Route::middleware(['auth', 'user'])
         Route::get('/job-details/{code}',  [UserJobController::class, 'details'])->name('job-details');
         Route::get('/my-jobs',  [UserJobController::class, 'myjobs'])->name('my.jobs');
         Route::get('/find-jobs',  [UserJobController::class, 'findjobs'])->name('find.jobs'); 
+
+        //hide job
+
+        Route::post('/jobs/{job}/hide', [HideJobController::class, 'hideJob'])->name('job.hide');
        
         //user submitted jobs
         Route::get('/finished-job',  [FinishJobController::class, 'finishedJobs'])->name('finished.jobs'); 

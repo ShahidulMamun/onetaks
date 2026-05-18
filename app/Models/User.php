@@ -55,4 +55,9 @@ class User extends Authenticatable
     {
     return $this->hasMany(UserTransaction::class);
     }
+
+    public function hiddenJobs()
+   {
+    return $this->hasMany(HideJob::class);
+   }
 }

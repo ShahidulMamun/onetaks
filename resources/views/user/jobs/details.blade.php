@@ -502,6 +502,8 @@
 {{-- ── Hide Modal ── --}}
 <div class="modal fade" id="hideModal" tabindex="-1" aria-labelledby="hideModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-sm">
+    <form method="post" action="{{route('user.job.hide',$job->id)}}">
+      @csrf
     <div class="modal-content text-center" style="font-size:12px;">
       <div class="modal-header border-0 pb-0 position-relative">
         <h5 class="modal-title w-100 fw-bold" style="font-size:14px;">Hide Job</h5>
@@ -515,6 +517,7 @@
         <button class="btn btn-danger px-4 btn-sm" data-bs-dismiss="modal" style="font-size:12px;">No</button>
       </div>
     </div>
+  </form>
   </div>
 </div>
 
@@ -556,10 +559,10 @@
     setTimeout(() => showToast('Report submitted successfully!'), 400);
   });
 
-  document.getElementById('yesHideBtn').addEventListener('click', function () {
-    bootstrap.Modal.getInstance(document.getElementById('hideModal')).hide();
-    setTimeout(() => showToast('Job has been hidden!'), 400);
-  });
+  // document.getElementById('yesHideBtn').addEventListener('click', function () {
+  //   bootstrap.Modal.getInstance(document.getElementById('hideModal')).hide();
+  //   setTimeout(() => showToast('Job has been hidden!'), 400);
+  // });
 
   document.addEventListener('DOMContentLoaded', function () {
     [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))

@@ -20,25 +20,29 @@ class UserDashboardController extends Controller
     ->first();
 
            $userId = Auth::id();
- 
-        // ── এই user আগে যে job IDs submit করেছে ──
-        // ⚠️ 'job_submissions' — আপনার actual table name দিন
-        // ⚠️ 'job_id' — আপনার actual column name দিন
+        
+        //already submit check
         $submittedJobIds = DB::table('job_submits')
             ->where('user_id', $userId)
             ->pluck('job_id')
             ->toArray();
+        
+        // hide check
+        $hiddenJobIds = DB::table('hide_jobs')
+        ->where('user_id', $userId)
+        ->pluck('job_id')
+        ->toArray();
  
-        // ── Base scope (সব query তে common) ──
+        // common query
         $baseQuery = JobPost::with('continent')
             ->where('status', 'active')
             // ->where('user_id', '!=', $userId)    
-            ->whereNotIn('id', $submittedJobIds)     
+            ->whereNotIn('id', $submittedJobIds)
+            ->whereNotIn('id', $hiddenJobIds)      
             ->where('worker_remaining', '>', 0);    
  
       
         //  Boost jobs
-        
         $boostedJobs = (clone $baseQuery)
             ->where('is_boosted', true)
             ->where('boosted_until', '>', now())
@@ -46,8 +50,7 @@ class UserDashboardController extends Controller
             ->get();
  
   
-        //   TOP jobs
-    
+        //   top jobs
         $topJobs = (clone $baseQuery)
             ->where('is_top', true)
             ->where(function ($q) {
@@ -59,7 +62,7 @@ class UserDashboardController extends Controller
             ->get();
  
      
-        //  NORMAL jobs
+        //  normal jobs
         $normalJobs = (clone $baseQuery)
             ->where('is_top', false)
             ->where(function ($q) {
@@ -70,7 +73,7 @@ class UserDashboardController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
  
-        // ── Priority order এ merge ──
+        // ── Priority order merge ──
         $jobs = $boostedJobs->concat($topJobs)->concat($normalJobs);
  
         $setting = WebsiteSetting::first();
