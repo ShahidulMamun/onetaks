@@ -46,6 +46,16 @@ class User extends Authenticatable
         ];
     }
 
+     public function postedJobs()
+    {
+     return $this->hasMany(JobPost::class);
+    }
+
+     public function submittedJobs()
+    {
+     return $this->hasMany(JobSubmit::class);
+    }
+
     public function notifications()
     {
      return $this->hasMany(UserNotification::class);

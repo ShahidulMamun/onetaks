@@ -8,11 +8,35 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-    public function index(){
-
-    	$users = User::orderBy('id','desc')->paginate(20);
-    	return view('admin.user.index',compact('users'));
+    public function index(Request $request)
+   {
+    $query = User::orderBy('id', 'desc')
+                 ->with('postedJobs', 'submittedJobs');
+ 
+    // Search by ID
+    if ($request->filled('search_id')) {
+        $query->where('id', $request->search_id);
     }
+ 
+    // Search by username
+    if ($request->filled('search_username')) {
+        $query->where('name', 'like', '%' . $request->search_username . '%');
+    }
+ 
+    // Search by email
+    if ($request->filled('search_email')) {
+        $query->where('email', 'like', '%' . $request->search_email . '%');
+    }
+ 
+    // Filter by status
+    if ($request->filled('search_status')) {
+        $query->where('status', $request->search_status);
+    }
+ 
+    $users = $query->paginate(5);
+ 
+    return view('admin.user.index', compact('users'));
+   }
 
 
     public function userActiveInactive(Request $request){
