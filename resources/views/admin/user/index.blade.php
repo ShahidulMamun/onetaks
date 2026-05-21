@@ -89,7 +89,11 @@ body{font-family:system-ui,sans-serif;background:#f1f5f9;color:#0f172a;font-size
 /* Pagination */
 .pagination-bar{padding:12px 16px;border-top:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
 .pagination-info{font-size:12px;color:#64748b}
-.pagination{margin:0}
+.custom-pagination{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.pg-btn{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;padding:0 10px;border-radius:8px;font-size:12px;font-weight:500;text-decoration:none;border:1px solid #e2e8f0;background:#fff;color:#64748b;cursor:pointer;transition:all .15s;line-height:1}
+.pg-btn:hover{background:#f1f5f9;color:#0f172a;text-decoration:none}
+.pg-btn-active{background:#2563eb !important;color:#fff !important;border-color:#2563eb !important;cursor:default}
+.pg-btn-disabled{background:#f8fafc;color:#cbd5e1;border-color:#e2e8f0;cursor:not-allowed;opacity:.6}
 
 /* Mobile */
 @media(max-width:640px){
@@ -298,9 +302,36 @@ body{font-family:system-ui,sans-serif;background:#f1f5f9;color:#0f172a;font-size
           <span class="pagination-info">
             Showing {{ $users->firstItem() }}–{{ $users->lastItem() }} of {{ $users->total() }} users
           </span>
-          <div>
-            {{ $users->appends(request()->query())->links() }}
+          <div class="custom-pagination">
+
+            {{-- Previous --}}
+            @if($users->onFirstPage())
+              <span class="pg-btn pg-btn-disabled">&#8592; Prev</span>
+            @else
+              <a href="{{ $users->appends(request()->query())->previousPageUrl() }}" class="pg-btn">&#8592; Prev</a>
+            @endif
+
+            {{-- Page numbers --}}
+            @foreach($users->appends(request()->query())->getUrlRange(1, $users->lastPage()) as $page => $url)
+              @if($page == $users->currentPage())
+                <span class="pg-btn pg-btn-active">{{ $page }}</span>
+              @else
+                <a href="{{ $url }}" class="pg-btn">{{ $page }}</a>
+              @endif
+            @endforeach
+
+            {{-- Next --}}
+            @if($users->hasMorePages())
+              <a href="{{ $users->appends(request()->query())->nextPageUrl() }}" class="pg-btn">Next &#8594;</a>
+            @else
+              <span class="pg-btn pg-btn-disabled">Next &#8594;</span>
+            @endif
+
           </div>
+        </div>
+        @else
+        <div class="pagination-bar">
+          <span class="pagination-info">Showing all {{ $users->total() }} users</span>
         </div>
         @endif
 
