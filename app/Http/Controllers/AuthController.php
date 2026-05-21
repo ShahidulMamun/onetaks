@@ -30,6 +30,15 @@ public function login(Request $request)
 
         $user = Auth::user();
 
+         // check inactive user
+        if ($user->status == 0) {
+            Auth::logout();
+            return back()->withErrors([
+                'email' => 'Your account is inactive'
+            ]);
+        }
+
+
         // admin redirect
         if ($user->role === 'admin' && $user->admin_type == 1) {
             return redirect()->route('admin.dashboard');
