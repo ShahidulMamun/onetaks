@@ -32,7 +32,7 @@ class UserDepositController extends Controller
 
         // ðŸ”¥Sanitation
         $payment_method_id = (int) $request->payment_method_id;
-        $amount = (int) $request->amount;
+        $amount = $request->amount;
         $transaction_id = trim(strip_tags($request->transaction_id));
         $sender_number = preg_replace('/[^0-9]/', '', $request->sender_number);
         

@@ -583,6 +583,58 @@ class UserJobController extends Controller
     return redirect()->back()->with('success', 'Job stoped successfully and refund added.');
 }
 
+
+  public function jobMute($id, $code)
+  {
+    $job = JobPost::where('id', $id)
+        ->where('code', $code)
+        ->first();
+
+    if (!$job) {
+        return back()->with('error', 'Job id or code is invalid');
+    }
+
+    if ($job->user_id != Auth::user()->id) {
+        abort(403, 'Unauthorized');
+    }
+
+    // If already paused
+    if ($job->status === 'mute') {
+        return back()->with('error', 'Job is already Muted');
+    }
+
+    $job->update(['status'=>'mute']);
+
+
+    return redirect()->back()->with('success', 'Job Muted successfully');
+}
+
+  public function jobUnmute($id, $code)
+  {
+    $job = JobPost::where('id', $id)
+        ->where('code', $code)
+        ->first();
+
+    if (!$job) {
+        return back()->with('error', 'Job id or code is invalid');
+    }
+
+    if ($job->user_id != Auth::user()->id) {
+        abort(403, 'Unauthorized');
+    }
+
+    // If already paused
+    if ($job->status === 'unmute') {
+        return back()->with('error', 'Job is already unuted');
+    }
+
+    $job->update(['status'=>'active']);
+
+
+    return redirect()->back()->with('success', 'Job unmute successfully');
+}
+
+
    
 
 }

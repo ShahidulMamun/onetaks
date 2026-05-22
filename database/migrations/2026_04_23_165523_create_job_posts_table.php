@@ -36,7 +36,7 @@ return new class extends Migration
             $table->string('secret_code')->nullable();
             $table->string('secret_code_example')->nullable();
             $table->json('proofs'); // [{type: 'text'|'image', label: '...'}]
-            $table->enum('status', ['pending','pause','reject','active','complete','stop'])->default('pending');
+            $table->enum('status', ['pending','pause','reject','active','complete','stop','mute','unmute'])->default('pending');
             $table->string('reject_reason')->nullable();
             $table->boolean('is_top')->default(false);
             $table->integer('top_order')->nullable();

@@ -121,6 +121,12 @@ Route::middleware(['auth', 'user'])
         //job paused route for user
         Route::patch('/pause-job/{id}/{code}', [UserJobController::class, 'jobStopMoneyBack'])->name('job.money-back');
 
+
+        Route::patch('/mute-job/{id}/{code}', [UserJobController::class, 'jobMute'])->name('job.mute');
+        Route::patch('/unmute-job/{id}/{code}', [UserJobController::class, 'jobUnmute'])->name('job.unmute');
+
+
+
         Route::get('/job-details/{code}',  [UserJobController::class, 'details'])->name('job-details');
         Route::get('/my-jobs',  [UserJobController::class, 'myjobs'])->name('my.jobs');
         Route::get('/find-jobs',  [UserJobController::class, 'findjobs'])->name('find.jobs'); 

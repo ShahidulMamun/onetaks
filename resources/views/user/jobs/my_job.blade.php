@@ -522,6 +522,31 @@
                                     </button>
                                 </form>
                                 @endif
+
+                                @if($job->status != 'mute')
+                                <form action="{{ route('user.job.mute', [$job->id, $job->code]) }}"
+                                      method="POST"
+                                      onsubmit="return confirm('Mute this job?')">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="btn btn-warning btn-sm">
+                                        <i class="bi bi-wallet2 me-1"></i>Mute
+                                    </button>
+                                </form>
+                           
+                                @else
+                                  <form action="{{ route('user.job.unmute', [$job->id, $job->code]) }}"
+                                      method="POST"
+                                      onsubmit="return confirm('Unmute this job?')">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        <i class="bi bi-wallet2 me-1"></i>Unmute
+                                    </button>
+                                </form>
+                                @endif
+
+
                             </div>
                         </td>
                     </tr>
