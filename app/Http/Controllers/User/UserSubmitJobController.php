@@ -4,180 +4,20 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\JobPost;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 use App\Models\UserNotification;
 use App\Models\UserTransaction;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 use App\Models\JobSubmit;
+use App\Models\JobPost;
+
 
 class UserSubmitJobController extends Controller
 {
-  //   public function storeSubmitjob(Request $request, $code,$slug){
 
-  //       // return $request->all();
-
-
-  //      $job = JobPost::where('code',$code)->first();
-
-  //        if (!$job) {
-  //       return back()->with('error','Invalid Request');
-  //      }
-
-  //     $proofs = collect($job->proofs);
-      
-  //     $hasText = $proofs->contains(fn($item) => $item['type'] === 'text');
-  //     $hasFile = $proofs->contains(fn($item) => $item['type'] === 'file');
-
-
-       
-
-	 //    // Validation
-
-  //     $request->validate([
-
-  //       'images' => ['required', 'array'],
-  //       // TEXT
-  //       'texts' => [
-  //           $hasText ? 'required' : 'nullable',
-  //           'array'
-  //       ],
-  //       'texts.*' => [
-  //           $hasText ? 'required' : 'nullable',
-  //           'string',
-  //           'max:100'
-  //       ],
-  //       // IMAGE
-  //       'images' => [
-  //           $hasFile ? 'required' : 'nullable',
-  //           'array'
-  //       ],
-  //       'images.*' => [
-  //           $hasFile ? 'required' : 'nullable',
-  //           'image',
-  //           'mimes:jpg,jpeg,png',
-  //           'max:1024'
-  //       ],
-
-  //   ]);
-	 
-	
-
-
-  //      if($job->worker_need==0){
-  //      	 return back()->with('error','No worker need this job');
-  //      }
-
-  //      if($job->status !=='active'){
-  //      	 return back()->with('error','This job not available');
-  //      }
-
-  //      if ($job->user_id === Auth::user()->id) {
-
-  //        return back()->with('error','You can not submit your jobs');
-  //      }
-
-  //     $alreadySubmitted = DB::table('job_submits')
-  //      ->where('job_id', $job->id)
-  //      ->where('user_id', auth()->id())
-  //      ->exists();
-
-  //     if($alreadySubmitted){
-
-  //         return back()->with(
-  //             'error',
-  //             'You already submitted this job'
-  //         );
-  //     }
-
-
-
-  //      $status = 'pending';
-
-  //      if($job->has_secret_code==1){
-
-  //      	 $request->validate([
-  //   	  'secret_code' =>['required','exists:job_posts,secret_code'],
-  //       ],
-  //       [
-  //        'secret_code.exists'=>'Secret code not match',
-  //       ]
-
-  //       );
-         
-  //        if ($job->secret_code !== $request->secret_code) {
-  //          return back()->with('error','Secret code not match');
-  //        }
-
-  //        $authuser = Auth::user();
-  //        $authuser->increment('current_earning',$job->worker_earn);
-  //        $authuser->increment('total_earning',$job->worker_earn);
-  //        $status = 'approved';
-  //       }
-
-  //       $job->increment('worker_done',1);
-  //       $job->decrement('worker_remaining',1);
-
-  //   DB::beginTransaction();
-
-  //   try {
-        
-  //       $texts = [];
-  //   		if ($request->filled('texts')) {
-  //   		    foreach ($request->texts as $text) {
-  //   		        if (!empty($text)) {
-  //   		            $texts[] = strip_tags($text);
-  //   		        }
-  //   		    }
-  //   		}
-
-  //   		$images = [];
-  //   		if ($request->hasFile('images')) {
-  //   		    foreach ($request->file('images') as $file) {
-  //   		        if ($file) {
-  //   		            $name = uniqid() . '.' . $file->getClientOriginalExtension();
-  //   		            $path = $file->storeAs('proofs', $name, 'public');
-  //   		            $images[] = $path;
-  //   		        }
-  //   		    }
-  //   		}
-
-  //         // submit job
-  //         DB::table('job_submits')->insert([
-  //         	  'job_id'  => $job->id,
-  //             'user_id' => auth()->user()->id,
-  //             'job_owner_user_id' => $job->user_id,
-  //             'proof_text'  => !empty($texts) ? json_encode($texts) : null,
-  //             'proof_image' => !empty($images) ? json_encode($images) : null,
-  //             'submitted_code'=>$request->secret_code ?? '',
-  //             'created_at' => now(),
-  //             'status'     =>$status,
-  //         ]);
-
-  //           //notification for job owner
-  //           $title = "Job submitted";
-  //           $message = $job->code." job has been submitted";
-  //           UserNotification::create([
-  //               'user_id' => $job->user_id,
-  //               'title'   => $title,
-  //               'message' => $message,
-  //               'status'  => 'pending',
-  //           ]);
-
-  //       DB::commit();
-
-  //       return back()->with('success', 'Proof submitted successfully');
-
-  //    } catch (\Exception $e) {
-
-  //       DB::rollBack();
-
-  //       return back()->with('error', 'Something went wrong');
-  //   }
-  // }
-
-public function storeSubmitjob(Request $request, $code, $slug)
-{
+  public function storeSubmitjob(Request $request, $code, $slug)
+  {
     // ─── 1. Job খোঁজো ────────────────────────────────────────────────
     $job = JobPost::where('code', $code)->firstOrFail();
 
@@ -380,6 +220,20 @@ public function storeSubmitjob(Request $request, $code, $slug)
             return back()->with('error', 'This submission is already processed.');
         }
 
+        /* Delete proof images */
+        if (!empty($submission->proof_image)) {
+            $images = is_array($submission->proof_image)
+                ? $submission->proof_image
+                : json_decode($submission->proof_image, true);
+
+            if (is_array($images)) {
+                foreach ($images as $image) {
+                    Storage::disk('public')->delete($image); // 'proofs/filename.jpg'
+                }
+            }
+        }
+
+
         $submission->update([
             'status' => 'rejected',
             'reject_reason' => $request->reject_reason,
@@ -429,6 +283,20 @@ public function storeSubmitjob(Request $request, $code, $slug)
 
         return back()->with('error', 'This submission is already processed.');
     }
+
+
+     /* Delete proof images */
+        if (!empty($submission->proof_image)) {
+            $images = is_array($submission->proof_image)
+                ? $submission->proof_image
+                : json_decode($submission->proof_image, true);
+
+            if (is_array($images)) {
+                foreach ($images as $image) {
+                    Storage::disk('public')->delete($image); // 'proofs/filename.jpg'
+                }
+            }
+        }
 
     DB::transaction(function () use ($submission, $job) {
 

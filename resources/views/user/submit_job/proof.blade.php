@@ -442,7 +442,7 @@ function openProofModal(subId) {
 
         _slides.forEach(function (src, i) {
             var cleanSrc = src.replace(/\\/g, '/');
-            var url      = '/storage/app/public/' + cleanSrc;
+            var url      = '/storage/' + cleanSrc;
 
             var slide = document.createElement('div');
             slide.className = 'slide' + (i === 0 ? ' active' : '');
