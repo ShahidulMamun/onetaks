@@ -148,7 +148,7 @@ Route::middleware(['auth', 'user'])
         Route::patch('/submit-jobs/{id}/approve', [UserSubmitJobController::class, 'submitApprove'])->name('submit-job.approve');
         Route::patch('/submit-jobs/{id}/reject',  [UserSubmitJobController::class, 'submitReject'])->name('submit-job.reject');
 
-        
+      Route::post('/submit-jobs/approve-selected', [UserSubmitJobController::class, 'submitApproveSelected'])->name('submit-job.approve-selected');  
 
 
         //banner ads route

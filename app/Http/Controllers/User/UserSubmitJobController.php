@@ -12,21 +12,19 @@ use App\Models\UserTransaction;
 use App\Models\JobSubmit;
 use App\Models\JobPost;
 
-
 class UserSubmitJobController extends Controller
 {
 
-  public function storeSubmitjob(Request $request, $code, $slug)
-  {
-    // ─── 1. Job খোঁজো ────────────────────────────────────────────────
+public function storeSubmitjob(Request $request, $code, $slug)
+{
+    
     $job = JobPost::where('code', $code)->firstOrFail();
 
-    // ─── 2. Proof type নির্ধারণ ──────────────────────────────────────
     $proofs  = collect($job->proofs);
     $hasText = $proofs->contains(fn($item) => $item['type'] === 'text');
     $hasFile = $proofs->contains(fn($item) => $item['type'] === 'file');
 
-    // ─── 3. Validation ───────────────────────────────────────────────
+   //Validation
     $rules = [
         'texts'    => [$hasText ? 'required' : 'nullable', 'array'],
         'texts.*'  => [$hasText ? 'required' : 'nullable', 'string', 'max:100'],
@@ -169,30 +167,37 @@ class UserSubmitJobController extends Controller
             'job_code' => $code,
         ]);
 
-        return back()->with('error', 'Something went wrong. Please try again.');
+        return back()->with('error',$e->getMessage());
     }
 }
-
-
     public function proof($id,$code){
-       $job = JobPost::where('id',$id)->where('code',$code)->with('submitjobs.user')->first();
+        
+        
+        // $job = JobPost::where('id',$id)->where('code',$code)->with('submitjobs.user')->first();
+        
+         $job = JobPost::where('id', $id)
+                  ->where('code', $code)
+                  ->with('continent')
+                  ->firstOrFail();
+      
 
-     if(!$job) {
-       return back()->with('error','Job id or code is invalid');
-     }
-    
-     if ($job->user_id != Auth::id()) {
-      abort(403);
-      }
+         if(!$job) {
+           return back()->with('error','Job id or code is invalid');
+         }
+        
+         if ($job->user_id != Auth::id()) {
+          abort(403);
+         }
+         
+         $submissions = JobSubmit::with('user')
+                    ->where('job_id', $job->id)
+                    ->latest()
+                    ->paginate(50);
 
-     return view('user.submit_job.proof',compact('job'));
+     return view('user.submit_job.proof',compact('job','submissions'));
    }
 
 
-   public function approve(){
-
-
-   }
 
    public function submitReject(Request $request, $id)
    {
@@ -211,16 +216,17 @@ class UserSubmitJobController extends Controller
 
         /* Security Check */
         if ($job->user_id != Auth::id()) {
-          abort(403);
-         }
+
+            abort(403);
+        }
 
         /* Already Processed */
         if ($submission->status !== 'pending') {
 
             return back()->with('error', 'This submission is already processed.');
         }
-
-        /* Delete proof images */
+        
+          /* Delete proof images */
         if (!empty($submission->proof_image)) {
             $images = is_array($submission->proof_image)
                 ? $submission->proof_image
@@ -242,9 +248,9 @@ class UserSubmitJobController extends Controller
         ]);
 
 
-        /* worker calculation */
-        $job->decrement('worker_done');
-        $job->increment('worker_remaining');
+            /* worker calculation */
+            $job->decrement('worker_done',1);
+            $job->increment('worker_remaining',1);
 
     
         //notification for job owner
@@ -274,7 +280,7 @@ class UserSubmitJobController extends Controller
     $job = $submission->job;
 
     /* Security Check */
-    if ($job->user_id !== Auth::id()) {
+    if ($job->user_id != Auth::id()) {
         abort(403);
     }
 
@@ -283,10 +289,9 @@ class UserSubmitJobController extends Controller
 
         return back()->with('error', 'This submission is already processed.');
     }
-
-
-     /* Delete proof images */
-        if (!empty($submission->proof_image)) {
+    
+      /* Delete proof images */
+      if (!empty($submission->proof_image)) {
             $images = is_array($submission->proof_image)
                 ? $submission->proof_image
                 : json_decode($submission->proof_image, true);
@@ -298,6 +303,7 @@ class UserSubmitJobController extends Controller
             }
         }
 
+
     DB::transaction(function () use ($submission, $job) {
 
         /* Approve Submission */
@@ -306,12 +312,10 @@ class UserSubmitJobController extends Controller
             'approved_at' => now(),
         ]);
         /* Worker Balance Add */
-        $submission->user->increment('total_earning',$job->worker_earn);
+         $submission->user->increment('total_earning',$job->worker_earn);
         $submission->user->increment('current_earning',$job->worker_earn);
         
-        /* Worker Remaining Decrease */
-        // $job->decrement('worker_remaining');
-        // $job->increment('worker_done');
+      
     });
 
     /* Notification for Worker */
@@ -340,4 +344,61 @@ class UserSubmitJobController extends Controller
         'Submission approved successfully.'
     );
   }
+  
+  public function submitApproveSelected(Request $request)
+{
+    $ids = $request->input('ids', []);
+    if (empty($ids)) {
+        return back()->with('error', 'No submissions selected.');
+    }
+
+    foreach ($ids as $id) {
+        $submission = JobSubmit::with(['job', 'user'])->find($id);
+        if (!$submission) continue;
+
+        $job = $submission->job;
+        if ($job->user_id != Auth::id()) continue;
+        if ($submission->status !== 'pending') continue;
+
+        if (!empty($submission->proof_image)) {
+            $images = is_array($submission->proof_image)
+                ? $submission->proof_image
+                : json_decode($submission->proof_image, true);
+            if (is_array($images)) {
+                foreach ($images as $image) {
+                    Storage::disk('public')->delete($image);
+                }
+            }
+        }
+
+        DB::transaction(function () use ($submission, $job) {
+            $submission->update([
+                'status' => 'approved',
+                'approved_at' => now(),
+            ]);
+            $submission->user->increment('total_earning', $job->worker_earn);
+            $submission->user->increment('current_earning', $job->worker_earn);
+        });
+
+        UserNotification::create([
+            'user_id' => $submission->user_id,
+            'title'   => "Submit job approved",
+            'message' => "Congratulations! Your submission for job " . $job->code . " has been approved.",
+            'status'  => 'pending',
+        ]);
+
+        UserTransaction::create([
+            'user_id' => $submission->user_id,
+            'transaction_id' => strtoupper(uniqid()),
+            'type' => "earning",
+            'amount' => $job->worker_earn,
+            'description' => "Earning from job submit",
+            'reference_id' => $job->id,
+            'status' => 'success',
+        ]);
+    }
+
+    return back()->with('success', 'Selected submissions approved successfully.');
+}
+
 }

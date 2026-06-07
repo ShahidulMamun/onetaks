@@ -17,6 +17,7 @@
 
     body { font-family: 'DM Sans', sans-serif; }
 
+    /* ── Card ── */
     .jobs-card {
         background: #fff;
         border-radius: var(--radius);
@@ -40,6 +41,7 @@
         font-size: .78rem; font-weight: 700;
     }
 
+    /* ── Table ── */
     table { margin: 0 !important; }
     thead th {
         font-family: 'Syne', sans-serif;
@@ -55,7 +57,16 @@
         font-size: .9rem; color: #333;
     }
     tbody tr:hover { background: #f4fdfb; }
+    tbody tr.row-selected { background: #edfaf5 !important; }
 
+    /* ── Checkbox ── */
+    .sub-checkbox, #select-all {
+        cursor: pointer;
+        width: 16px; height: 16px;
+        accent-color: var(--teal);
+    }
+
+    /* ── Status Pills ── */
     .status-pill {
         border-radius: 20px; padding: 3px 12px;
         font-size: .74rem; font-weight: 600;
@@ -65,6 +76,7 @@
     .status-pill.pending  { background:#fef9e7; color:#b7770d; }
     .status-pill.rejected { background:#fde8e8; color:#c0392b; }
 
+    /* ── Action Buttons ── */
     .action-group { display: flex; gap: 6px; flex-wrap: wrap; }
     .btn-view    { background: var(--teal);  color:#fff; }
     .btn-view:hover { background: var(--teal-dark); color:#fff; }
@@ -74,6 +86,24 @@
     .btn-reject:hover  { background: #c0392b; color:#fff; }
     .action-group .btn { font-size:.78rem; border-radius:8px; padding:5px 12px; border:none; font-weight:600; }
 
+    /* ── Bulk Approve Button ── */
+    #bulk-approve-btn {
+        display: none;
+        align-items: center; gap: 6px;
+        background: linear-gradient(135deg, #27ae60, #1e8449);
+        color: #fff; border: none; border-radius: 20px;
+        padding: 5px 16px; font-size: .8rem; font-weight: 700;
+        cursor: pointer; transition: all .2s;
+        box-shadow: 0 2px 8px rgba(39,174,96,.3);
+    }
+    #bulk-approve-btn:hover {
+        background: linear-gradient(135deg, #1e8449, #166336);
+        box-shadow: 0 4px 14px rgba(39,174,96,.45);
+        transform: translateY(-1px);
+    }
+    #bulk-approve-btn.visible { display: inline-flex; }
+
+    /* ── Modals ── */
     .modal-header {
         background: linear-gradient(135deg, #006A4E, #181c20);
         color: #fff; border: none;
@@ -99,7 +129,7 @@
         font-size: .8rem; color: #7d5a00;
     }
 
-    /* Slider */
+    /* ── Proof Slider ── */
     .slider-wrap { position: relative; background: #0d0d0d; border-radius: 10px; overflow: hidden; }
     .slider-stage { position: relative; width: 100%; height: 300px; display:flex; align-items:center; justify-content:center; }
     .slide { display: none; width:100%; height:100%; align-items:center; justify-content:center; }
@@ -143,6 +173,7 @@
         white-space:pre-wrap; margin-bottom:10px;
     }
 
+    /* ── Back Link ── */
     .back-link {
         display:inline-flex; align-items:center; gap:6px;
         color:var(--teal); font-size:.85rem; font-weight:600;
@@ -150,6 +181,7 @@
     }
     .back-link:hover { gap:10px; color:var(--teal-dark); }
 
+    /* ── Job Info Strip ── */
     .job-info-strip {
         background: linear-gradient(135deg, #0d462c 0%, #090a0a 100%);
         border-radius: var(--radius); padding:18px 24px;
@@ -165,31 +197,67 @@
     }
     .ji-stat .v { font-family:'Syne',sans-serif; font-weight:800; color:var(--teal); font-size:1.1rem; }
     .ji-stat .l { font-size:.7rem; color:rgba(255,255,255,.45); text-transform:uppercase; letter-spacing:.7px; }
+
+    /* ── Pagination ── */
+    .pagination-wrap {
+        padding: 16px 22px;
+        border-top: 1px solid var(--border);
+        display: flex; align-items: center; justify-content: space-between;
+        flex-wrap: wrap; gap: 10px;
+    }
+    .pagination-info { font-size: .82rem; color: var(--muted); }
+    .pagination { margin: 0; }
+    .page-link {
+        border-radius: 8px !important; margin: 0 2px;
+        font-size: .82rem; font-weight: 600;
+        color: var(--teal); border-color: var(--border);
+        padding: 6px 12px;
+    }
+    .page-link:hover { background: var(--teal-light); color: var(--teal-dark); border-color: var(--teal-light); }
+    .page-item.active .page-link {
+        background: var(--teal); border-color: var(--teal); color: #fff;
+    }
+    .page-item.disabled .page-link { color: #ccc; }
+
+    /* ── Selection Banner ── */
+    #selection-banner {
+        display: none;
+        background: linear-gradient(135deg, #edfaf5, #d1f2eb);
+        border: 1px solid var(--teal-light);
+        border-radius: 10px; padding: 10px 18px;
+        margin-bottom: 16px;
+        align-items: center; justify-content: space-between;
+        flex-wrap: wrap; gap: 8px;
+        font-size: .85rem; color: var(--teal-dark); font-weight: 600;
+    }
+    #selection-banner.visible { display: flex; }
+    #selection-banner .banner-note { font-size: .78rem; color: var(--muted); font-weight: 400; }
 </style>
 
 <br><br><br>
 
-{{-- JSON data store — safely pass PHP arrays to JS, no attribute escaping issues --}}
+{{-- JSON data store --}}
 <script type="application/json" id="submissions-data">
 {!! json_encode([
-    'items' => $job->submitjobs->map(function ($sub) {
-
+    'items' => $submissions->map(function ($sub) {
         return [
-
-            'id' => $sub->id,
-
+            'id'     => $sub->id,
             'worker' => $sub->user->name ?? ('Worker #'.$sub->user_id),
-
             'images' => $sub->proof_image ?? [],
-
-            'texts' => $sub->proof_text ?? [],
-
+            'texts'  => $sub->proof_text  ?? [],
         ];
-
     })->values()
-
 ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
 </script>
+
+{{-- Hidden Bulk Approve Form --}}
+<form id="bulk-approve-form"
+      action="{{ route('user.submit-job.approve-selected') }}"
+      method="POST"
+      style="display:none;">
+    @csrf
+    <div id="bulk-ids-container"></div>
+</form>
 
 <div class="container pb-5 mt-4">
 
@@ -219,19 +287,47 @@
         </div>
     </div>
 
+    {{-- Selection Banner --}}
+    <div id="selection-banner">
+        <div>
+            <i class="bi bi-check2-square me-2"></i>
+            <span id="banner-count">0</span> submission(s) selected on this page
+            <div class="banner-note mt-1">Only pending submissions on the current page can be selected.</div>
+        </div>
+        <div class="d-flex gap-2 align-items-center">
+            <button type="button" onclick="clearSelection()"
+                    class="btn btn-sm btn-light rounded-pill px-3"
+                    style="font-size:.78rem; font-weight:600;">
+                <i class="bi bi-x me-1"></i>Clear
+            </button>
+            <button id="bulk-approve-btn" type="button" onclick="submitBulkApprove()">
+                <i class="bi bi-check-all"></i>
+                Approve Selected (<span id="sel-count">0</span>)
+            </button>
+        </div>
+    </div>
+
     {{-- Submissions Table --}}
     <div class="jobs-card">
         <div class="card-top">
             <h6><i class="bi bi-card-checklist me-2 text-success"></i>Submitted Proofs</h6>
-            <span class="result-count">
-                {{ $job->worker_done }}
-            </span>
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+                <span class="result-count">{{ $submissions->total() }} total</span>
+                <span class="text-muted" style="font-size:.78rem;">
+                    Page {{ $submissions->currentPage() }} of {{ $submissions->lastPage() }}
+                </span>
+            </div>
         </div>
 
         <div class="table-responsive">
-            <table class="table table-hover align-middle table-responsive">
+            <table class="table table-hover align-middle">
                 <thead>
                     <tr>
+                        <th style="width:46px;">
+                            <input type="checkbox" id="select-all"
+                                   class="sub-checkbox"
+                                   title="Select all pending on this page">
+                        </th>
                         <th>#</th>
                         <th>Worker</th>
                         <th>Code</th>
@@ -241,13 +337,24 @@
                     </tr>
                 </thead>
                 <tbody>
-                @forelse($job->submitjobs as $idx => $sub)
+                @forelse($submissions as $idx => $sub)
                     @php $status = strtolower($sub->status ?? 'pending'); @endphp
-                    <tr>
-                        <td class="text-muted fw-semibold">{{ $idx + 1 }}</td>
+                    <tr id="row-{{ $sub->id }}" class="{{ $status === 'pending' ? '' : '' }}">
+                        <td>
+                            @if($status === 'pending')
+                                <input type="checkbox"
+                                       class="sub-checkbox row-cb"
+                                       value="{{ $sub->id }}"
+                                       data-row="row-{{ $sub->id }}">
+                            @else
+                                {{-- non-pending: empty cell --}}
+                            @endif
+                        </td>
+                        <td class="text-muted fw-semibold">
+                            {{ ($submissions->currentPage() - 1) * $submissions->perPage() + $idx + 1 }}
+                        </td>
                         <td>
                             <div class="fw-semibold">{{ $sub->user->name ?? 'Worker #'.$sub->user_id }}</div>
-                          
                         </td>
                         <td><code style="font-size:.8rem;">{{ $sub->submitted_code ?: '—' }}</code></td>
                         <td style="font-size:.8rem; color:var(--muted);">{{ $sub->created_at->format('d M Y') }}</td>
@@ -261,7 +368,6 @@
                         </td>
                         <td>
                             <div class="action-group">
-                                {{-- View Proof — pass only the submission ID; JS reads from the JSON store --}}
                                 <button class="btn btn-view btn-sm"
                                         onclick="openProofModal({{ $sub->id }})">
                                     <i class="bi bi-eye me-1"></i>View Proof
@@ -287,7 +393,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center py-5 text-muted">
+                        <td colspan="7" class="text-center py-5 text-muted">
                             <i class="bi bi-inbox fs-2 d-block mb-2"></i>
                             No submissions yet.
                         </td>
@@ -296,6 +402,18 @@
                 </tbody>
             </table>
         </div>
+
+        {{-- Pagination --}}
+        @if($submissions->hasPages())
+        <div class="pagination-wrap">
+            <div class="pagination-info">
+                Showing
+                <strong>{{ $submissions->firstItem() }}–{{ $submissions->lastItem() }}</strong>
+                of <strong>{{ $submissions->total() }}</strong> submissions
+            </div>
+            {{ $submissions->links('pagination::bootstrap-5') }}
+        </div>
+        @endif
     </div>
 
 </div>
@@ -391,7 +509,7 @@
 </footer>
 
 <script>
-/* ── Load submission data from the JSON store (no attribute escaping issues) ── */
+/* ── Load submission data from JSON store ── */
 var SUBMISSIONS = {};
 (function () {
     try {
@@ -405,7 +523,114 @@ var SUBMISSIONS = {};
     }
 })();
 
-/* ── Slider state ── */
+/* ════════════════════════════════════
+   BULK SELECTION — current page only
+   ════════════════════════════════════ */
+var selectAllCb  = document.getElementById('select-all');
+var banner       = document.getElementById('selection-banner');
+var selCountEl   = document.getElementById('sel-count');
+var bannerCount  = document.getElementById('banner-count');
+
+function getChecked() {
+    return document.querySelectorAll('.row-cb:checked');
+}
+
+function getAllRowCbs() {
+    return document.querySelectorAll('.row-cb');
+}
+
+function updateUI() {
+    var checked = getChecked();
+    var count   = checked.length;
+    var total   = getAllRowCbs().length;
+
+    /* Update count displays */
+    selCountEl.textContent  = count;
+    bannerCount.textContent = count;
+
+    /* Show / hide banner & button */
+    if (count > 0) {
+        banner.classList.add('visible');
+        document.getElementById('bulk-approve-btn').classList.add('visible');
+    } else {
+        banner.classList.remove('visible');
+        document.getElementById('bulk-approve-btn').classList.remove('visible');
+    }
+
+    /* Highlight selected rows */
+    document.querySelectorAll('.row-cb').forEach(function (cb) {
+        var row = document.getElementById(cb.dataset.row);
+        if (row) {
+            row.classList.toggle('row-selected', cb.checked);
+        }
+    });
+
+    /* Select-all state */
+    if (selectAllCb) {
+        if (count === 0) {
+            selectAllCb.checked       = false;
+            selectAllCb.indeterminate = false;
+        } else if (count === total) {
+            selectAllCb.checked       = true;
+            selectAllCb.indeterminate = false;
+        } else {
+            selectAllCb.checked       = false;
+            selectAllCb.indeterminate = true;
+        }
+    }
+}
+
+/* Select All toggle — only touches current page checkboxes */
+if (selectAllCb) {
+    selectAllCb.addEventListener('change', function () {
+        getAllRowCbs().forEach(function (cb) {
+            cb.checked = selectAllCb.checked;
+        });
+        updateUI();
+    });
+}
+
+/* Individual checkbox changes */
+document.addEventListener('change', function (e) {
+    if (e.target.classList.contains('row-cb')) {
+        updateUI();
+    }
+});
+
+function clearSelection() {
+    getAllRowCbs().forEach(function (cb) { cb.checked = false; });
+    if (selectAllCb) {
+        selectAllCb.checked       = false;
+        selectAllCb.indeterminate = false;
+    }
+    updateUI();
+}
+
+/* ── Submit Bulk Approve ── */
+function submitBulkApprove() {
+    var checked = getChecked();
+    if (checked.length === 0) return;
+
+    if (!confirm('Approve ' + checked.length + ' selected submission(s) on this page?')) return;
+
+    var form      = document.getElementById('bulk-approve-form');
+    var container = document.getElementById('bulk-ids-container');
+    container.innerHTML = '';
+
+    checked.forEach(function (cb) {
+        var input   = document.createElement('input');
+        input.type  = 'hidden';
+        input.name  = 'ids[]';
+        input.value = cb.value;
+        container.appendChild(input);
+    });
+
+    form.submit();
+}
+
+/* ════════════════════════
+   PROOF MODAL
+   ════════════════════════ */
 var _slides = [], _cur = 0;
 
 function openProofModal(subId) {
@@ -432,8 +657,8 @@ function openProofModal(subId) {
         thumbs.style.display  = 'none';
         document.getElementById('pm-counter').textContent = '0 / 0';
         var msg = document.createElement('div');
-        msg.className   = 'no-img-msg';
-        msg.innerHTML   = '<i class="bi bi-image" style="font-size:2rem;display:block;margin-bottom:8px;"></i>No images submitted';
+        msg.className = 'no-img-msg';
+        msg.innerHTML = '<i class="bi bi-image" style="font-size:2rem;display:block;margin-bottom:8px;"></i>No images submitted';
         stage.appendChild(msg);
     } else {
         prevBtn.style.display = '';
@@ -442,7 +667,7 @@ function openProofModal(subId) {
 
         _slides.forEach(function (src, i) {
             var cleanSrc = src.replace(/\\/g, '/');
-            var url      = '/storage/' + cleanSrc;
+            var url      = '/storage/app/public/' + cleanSrc;
 
             var slide = document.createElement('div');
             slide.className = 'slide' + (i === 0 ? ' active' : '');
@@ -477,12 +702,12 @@ function openProofModal(subId) {
         textWrap.innerHTML = '<div class="text-muted" style="font-size:.85rem;padding:6px 0;">No proof text submitted.</div>';
     } else {
         texts.forEach(function (t, i) {
-            var lbl       = document.createElement('div');
+            var lbl = document.createElement('div');
             lbl.className = 'text-muted mb-1';
             lbl.style.fontSize = '.75rem';
-            lbl.textContent    = 'Text #' + (i + 1);
+            lbl.textContent = 'Text #' + (i + 1);
 
-            var box       = document.createElement('div');
+            var box = document.createElement('div');
             box.className = 'proof-text-item';
             box.textContent = t;
 
