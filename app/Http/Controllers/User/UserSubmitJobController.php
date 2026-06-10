@@ -199,75 +199,157 @@ public function storeSubmitjob(Request $request, $code, $slug)
 
 
 
-   public function submitReject(Request $request, $id)
-   {
-      $request->validate([
-          'reject_reason' =>'required|string|max:500',
-      ]);
+   // public function submitReject(Request $request, $id)
+   // {
+   //    $request->validate([
+   //        'reject_reason' =>'required|string|max:500',
+   //    ]);
 
-      $submission = JobSubmit::with('job')->find($id);
+   //    $submission = JobSubmit::with('job')->find($id);
 
-        if (!$submission) {
+   //      if (!$submission) {
 
-            return back()->with('error', 'Submission not found.');
-        }
+   //          return back()->with('error', 'Submission not found.');
+   //      }
 
-       $job = $submission->job;
+   //     $job = $submission->job;
 
-        /* Security Check */
-        if ($job->user_id != Auth::id()) {
+   //      /* Security Check */
+   //      if ($job->user_id != Auth::id()) {
 
-            abort(403);
-        }
+   //          abort(403);
+   //      }
 
-        /* Already Processed */
-        if ($submission->status !== 'pending') {
+   //      /* Already Processed */
+   //      if ($submission->status !== 'pending') {
 
-            return back()->with('error', 'This submission is already processed.');
-        }
+   //          return back()->with('error', 'This submission is already processed.');
+   //      }
         
-          /* Delete proof images */
-        if (!empty($submission->proof_image)) {
-            $images = is_array($submission->proof_image)
-                ? $submission->proof_image
-                : json_decode($submission->proof_image, true);
+   //        /* Delete proof images */
+   //      if (!empty($submission->proof_image)) {
+   //          $images = is_array($submission->proof_image)
+   //              ? $submission->proof_image
+   //              : json_decode($submission->proof_image, true);
 
-            if (is_array($images)) {
-                foreach ($images as $image) {
-                    Storage::disk('public')->delete($image); // 'proofs/filename.jpg'
-                }
-            }
-        }
-
-
-        $submission->update([
-            'status' => 'rejected',
-            'reject_reason' => $request->reject_reason,
-            'rejected_at' => now(),
-
-        ]);
+   //          if (is_array($images)) {
+   //              foreach ($images as $image) {
+   //                  Storage::disk('public')->delete($image); // 'proofs/filename.jpg'
+   //              }
+   //          }
+   //      }
 
 
-            /* worker calculation */
-            $job->decrement('worker_done',1);
-            $job->increment('worker_remaining',1);
+   //      $submission->update([
+   //          'status' => 'rejected',
+   //          'reject_reason' => $request->reject_reason,
+   //          'rejected_at' => now(),
+
+   //      ]);
+
+
+   //      /* worker calculation */
+   //      $job->decrement('worker_done',1);
+   //      $job->increment('worker_remaining',1);
+       
+   //      if ($job->status=="completed") {
+   //          $job->status = 'active';
+   //          $job->save();
+   //      }
+       
 
     
-        //notification for job owner
-        $title = "Submit job rejected";
-        $message = "Your Submission ".$job->code." this job has been rejected";
-        UserNotification::create([
-            'user_id' => $submission->user_id,
-            'title'   => $title,
-            'message' => $message,
-            'status'  => 'pending',
+   //      //notification for job owner
+   //      $title = "Submit job rejected";
+   //      $message = "Your Submission ".$job->code." this job has been rejected";
+   //      UserNotification::create([
+   //          'user_id' => $submission->user_id,
+   //          'title'   => $title,
+   //          'message' => $message,
+   //          'status'  => 'pending',
+   //      ]);
+
+   //  return back()->with(
+   //      'success',
+   //      'Submission rejected successfully.'
+   //  );
+   // }
+
+   public function submitReject(Request $request, $id)
+    {
+        $request->validate([
+            'reject_reason' => 'required|string|max:500',
         ]);
 
-    return back()->with(
-        'success',
-        'Submission rejected successfully.'
-    );
-   }
+        try {
+            $submission = JobSubmit::with('job')->findOrFail($id); // auto 404
+
+            $job = $submission->job;
+
+            if (!$job) {
+                return back()->with('error', 'Job not found.');
+            }
+
+            /* Security Check */
+            if ($job->user_id != Auth::id()) {
+                abort(403);
+            }
+
+            /* Already Processed */
+            if ($submission->status !== 'pending') {
+                return back()->with('error', 'This submission is already processed.');
+            }
+
+            DB::transaction(function () use ($submission, $job, $request) {
+
+                $submission->update([
+                    'status'        => 'rejected',
+                    'reject_reason' => $request->reject_reason,
+                    'rejected_at'   => now(),
+                ]);
+
+                /* Worker calculation (guarded against going below zero) */
+                if ($job->worker_done > 0) {
+                    $job->decrement('worker_done', 1);
+                }
+                $job->increment('worker_remaining', 1);
+
+                if ($job->status === 'completed') {
+                    $job->status = 'active';
+                    $job->save();
+                }
+
+                /* Notify the worker */
+                UserNotification::create([
+                    'user_id' => $submission->user_id,
+                    'title'   => 'Submit job rejected',
+                    'message' => 'Your Submission ' . $job->code . ' this job has been rejected',
+                    'status'  => 'pending',
+                ]);
+            });
+
+            /* Delete proof images AFTER transaction succeeds */
+            if (!empty($submission->proof_image)) {
+                $images = is_array($submission->proof_image)
+                    ? $submission->proof_image
+                    : json_decode($submission->proof_image, true);
+
+                if (is_array($images)) {
+                    foreach ($images as $image) {
+                        Storage::disk('public')->delete($image);
+                    }
+                }
+            }
+
+            return back()->with('success', 'Submission rejected successfully.');
+
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return back()->with('error', 'Submission not found.');
+        } catch (\Exception $e) {
+            Log::error('submitReject failed: ' . $e->getMessage(), ['id' => $id]);
+            return back()->with('error', 'Something went wrong. Please try again.');
+        }
+    }
 
    public function submitApprove($id)
    {
