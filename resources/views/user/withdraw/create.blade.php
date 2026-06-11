@@ -16,7 +16,7 @@
                 |
                 <span>
                     <a class="fw-bold text-decoration-none text-dark"
-                       href="{{ route('user.deposit.history') }}">
+                       href="{{ route('user.withdraw.history') }}">
                         Withdraw History
                     </a>
                 </span>

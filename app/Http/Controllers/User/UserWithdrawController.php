@@ -69,7 +69,7 @@ class UserWithdrawController extends Controller
     // }
 
     public function create(Request $request)
-{
+ {
     try {
 
         $setting = WebsiteSetting::first();
@@ -120,8 +120,9 @@ class UserWithdrawController extends Controller
 
         // notification
         $message = "Your $" . $amount . " withdraw request submitted and pending";
-
+        $title = "Withdraw request success";
         UserNotification::create([
+            'title' => $title,
             'user_id' => $user->id,
             'message'  => $message,
             'status'   => 'pending',
@@ -137,5 +138,13 @@ class UserWithdrawController extends Controller
 
         return back()->with('error', $e->getMessage());
     }
-}
+ }
+
+ public function withdrawHistory(){
+    $withdraws = Withdraw::where('user_id',Auth::user()->id)
+    ->orderBy('created_at','desc')
+    ->get();
+    $count = count($withdraws);
+    return view('user.withdraw.history',compact('withdraws','count')); 
+ }
 }
