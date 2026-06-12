@@ -40,9 +40,9 @@
                                 @if($withdraw->status == 'pending')
                                     Request sent {{ $withdraw->created_at->format('d M y') }}
                                 @elseif($withdraw->status == 'approved')
-                                    Approved {{ $withdraw->approved_at->diffForHumans() }}
+                                    Approved {{ $withdraw->updated_at->format('d M y') }}
                                 @elseif($withdraw->status == 'rejected')
-                                    Rejected {{ $withdraw->updated_at->diffForHumans() }}
+                                    Rejected {{ $withdraw->updated_at->format('d M y') }}
                                 @endif
                             </td>
                          <!--    <td>{{ $withdraw->reason ?? '—' }}</td> -->
@@ -61,7 +61,7 @@
                         {{-- Top row: amount + status badge --}}
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <div>
-                                <span class="text-success fw-bold fs-6">${{ $withdraw->amount }}</span>
+                                <span class="text-success fw-bold fs-6">${{ $withdraw->amount }} = {{$withdraw->amount*$settings->dolar_rate}}TK</span>
                               <!--   <span class="text-muted small ms-1">Amount</span> -->
                             </div>
                             @if($withdraw->status == 'pending')
@@ -94,9 +94,9 @@
                                 @if($withdraw->status == 'pending')
                                     {{ $withdraw->created_at->format('d M y') }}
                                 @elseif($withdraw->status == 'approved')
-                                    {{ $withdraw->approved_at->diffForHumans() }}
+                                    {{ $withdraw->updated_at->format('d M y') }}
                                 @elseif($withdraw->status == 'rejected')
-                                    {{ $withdraw->updated_at->diffForHumans() }}
+                                    {{ $withdraw->updated_at->format('d M y') }}
                                 @endif
                             </div>
 <!-- 

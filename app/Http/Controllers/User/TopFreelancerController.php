@@ -11,6 +11,6 @@ class TopFreelancerController extends Controller
     public function index(){
 
     	 $topfreelancers = User::orderBy('total_earning','desc')->take(20)->get();
-    	return view('top-freelancer.index',compact('topfreelancers'));
+    	 return view('top-freelancer.index',compact('topfreelancers'));
     }
 }
