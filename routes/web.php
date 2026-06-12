@@ -27,6 +27,7 @@ use App\Http\Controllers\Admin\BreakingNoticeController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\WithdrawController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\User\TopFreelancerController;
 use Illuminate\Support\Facades\Route;
 
 // web pages
@@ -186,6 +187,9 @@ Route::middleware(['auth', 'user'])
         Route::get('/unseen-notifications',  [UserNotificationController::class, 'unSeenNotification'])->name('unseen-notifications');
         Route::get('/seen-notifications',  [UserNotificationController::class, 'SeenNotification'])->name('seen-notifications');
         Route::post('/notification/read/{id}', [UserNotificationController::class, 'markAsRead'])->name('notification.read');
+
+        //top freelancer
+      Route::get('/top-freelancers',  [TopFreelancerController::class, 'index'])->name('top-freelancer');
 
 
   });
