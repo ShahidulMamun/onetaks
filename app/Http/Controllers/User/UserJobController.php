@@ -185,7 +185,7 @@ class UserJobController extends Controller
 
         if($job){
           $user->decrement('current_deposit', $total_cost_with_charge);
-            
+          $user->increment('total_job_post',1); 
             //user notification
             $title = "Job posted";
             $message = "$".$total_cost_with_charge." has been deducted for job posting (including charge).";

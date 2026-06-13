@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\WithdrawController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\User\TopFreelancerController;
+use App\Http\Controllers\User\TopBuyerController;
 use Illuminate\Support\Facades\Route;
 
 // web pages
@@ -190,6 +191,10 @@ Route::middleware(['auth', 'user'])
 
         //top freelancer
       Route::get('/top-freelancers',  [TopFreelancerController::class, 'index'])->name('top-freelancer');
+
+      //top buyers
+      Route::get('/top-buyers',  [TopBuyerController::class, 'index'])->name('top-buyers');
+
 
 
   });

@@ -35,6 +35,7 @@ return new class extends Migration
         $table->decimal('current_deposit', 15, 2)->default(0);
         $table->foreignId('referred_by')->nullable()->constrained('users')->nullOnDelete();
         $table->integer('total_refer')->default(0);
+        $table->integer('total_job_post')->default(0);
         $table->decimal('deposit_commission_from_refer', 15, 2)->default(0);
         $table->decimal('earning_commission_from_refer', 15, 2)->default(0);
         $table->integer('satisfied_tasks')->default(0);
