@@ -210,13 +210,13 @@ tr:last-child td{border-bottom:none}
                     </div>
 
                     {{-- Social --}}
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">Facebook</label>
                         <input type="url" name="facebook" class="form-control"
                             value="{{ old('facebook', $setting->facebook) }}">
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">YouTube</label>
                         <input type="url" name="youtube" class="form-control"
                             value="{{ old('youtube', $setting->youtube) }}">
@@ -278,6 +278,19 @@ tr:last-child td{border-bottom:none}
                         <input type="number" step="0.01" name="deposit_bonus" class="form-control"
                             value="{{ old('deposit_bonus', $setting->deposit_bonus) }}">
                     </div>
+
+                     <div class="col-md-4">
+                        <label class="form-label">Reject Limit (%)</label>
+                        <input type="number" step="" name="max_reject_percentage" class="form-control"
+                            value="{{ old('max_reject_percentage', $setting->max_reject_percentage) }}">
+                     </div>
+
+                      <div class="col-md-12">
+                        <label class="form-label">Job Submit Rules</label>
+                        <textarea name="job_submit_rules" class="form-control" rows="2">{{ old('job_submit_rules', $setting->job_submit_rules) }}</textarea>
+                     </div>
+
+
 
                     {{-- Maintenance --}}
                     <div class="col-12">

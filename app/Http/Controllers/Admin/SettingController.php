@@ -43,6 +43,8 @@ class SettingController extends Controller
             'dolar_rate'    =>'required|numeric',
             'topjob_charge' =>'required',
             'boost_charge_per_hour'=>'required',
+            'job_submit_rules'=>'required',
+            'max_reject_percentage'=>'required',
         ]);
 
          $setting = WebsiteSetting::first();
@@ -91,6 +93,9 @@ class SettingController extends Controller
                 'meta_description'      => $request->meta_description,
                 'meta_keywords'         => $request->meta_keywords,
                 'boost_charge_per_hour' =>$request->boost_charge_per_hour,
+                'max_reject_percentage' =>$request->max_reject_percentage,
+                'job_submit_rules' =>$request->job_submit_rules,
+
             ]);
 
           $setting->save();

@@ -31,6 +31,8 @@ class WebsiteSetting extends Model
         'dolar_rate',
         'topjob_charge',
         'boost_charge_per_hour',
+        'job_submit_rules',
+        'max_reject_percentage',
     ];
 
     protected $casts = [
@@ -43,5 +45,6 @@ class WebsiteSetting extends Model
     'topjob_charge'         => 'decimal:2',
     'boost_charge_per_hour' => 'decimal:2',
     'deposit_bonus'         => 'decimal:2',
+    'max_reject_percentage' => 'integer',
   ];
 }
