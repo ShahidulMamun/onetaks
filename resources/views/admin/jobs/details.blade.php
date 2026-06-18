@@ -334,7 +334,7 @@ body{font-family:system-ui,sans-serif;background:#f1f5f9;color:#0f172a;font-size
             </div>
             <div class="dcard-body">
               @if($job->thumbnail)
-                <img src="{{ asset('storage/'.$job->thumbnail) }}" class="thumb-large" alt="Job Thumbnail">
+                <img src="{{ asset('storage/app/public/'.$job->thumbnail) }}" class="thumb-large" alt="Job Thumbnail">
               @else
                 <div class="thumb-placeholder-lg">
                   <svg viewBox="0 0 16 16" fill="none" stroke="#cbd5e1" stroke-width="1.4" width="28" height="28"><rect x="2" y="4" width="12" height="9" rx="2"/><path d="M2 10l3-3 3 3 2-2 4 4"/></svg>
@@ -379,9 +379,15 @@ body{font-family:system-ui,sans-serif;background:#f1f5f9;color:#0f172a;font-size
             </div>
             <div class="dcard-body">
               <div class="proofs-list">
-                @foreach($proofsArr as $idx => $proof)
+                @foreach($job->proofs as $idx => $proof)
                   <div class="proof-item">
                     <div class="proof-num">{{ $idx + 1 }}</div>
+                    @if($proof['type']=="file")
+                    <strong class="text-succcess">Screenshot:</strong>
+                    @else
+                     <strong class="text-primary">Text:</strong>
+                    @endif
+                    </br>
                     <span>{{ $proof['label'] }}</span>
                   </div>
                 @endforeach
@@ -560,6 +566,22 @@ body{font-family:system-ui,sans-serif;background:#f1f5f9;color:#0f172a;font-size
               </div>
             </div>
           </div>
+          
+           <div class="dcard">
+            <div class="dcard-head">
+              <div class="dcard-icon" style="background:#fdf4ff">
+                <svg viewBox="0 0 16 16" fill="none" stroke="#9333ea" stroke-width="1.6"><rect x="4" y="7" width="8" height="7" rx="1.5"/><path d="M6 7V5a2 2 0 0 1 4 0v2"/></svg>
+              </div>
+              <span class="dcard-title">Example Code</span>
+            </div>
+            <div class="dcard-body">
+              <div class="secret-box">
+                <svg viewBox="0 0 16 16" fill="none" stroke="#9333ea" stroke-width="1.6" width="16" height="16"><rect x="4" y="7" width="8" height="7" rx="1.5"/><path d="M6 7V5a2 2 0 0 1 4 0v2"/></svg>
+                <span class="secret-val">{{ $job->secret_code_example }}</span>
+              </div>
+            </div>
+          </div>
+          
           @endif
 
         </div>
