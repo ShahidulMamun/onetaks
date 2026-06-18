@@ -382,7 +382,7 @@ body{font-family:system-ui,sans-serif;background:#f1f5f9;color:#0f172a;font-size
                 @foreach($proofsArr as $idx => $proof)
                   <div class="proof-item">
                     <div class="proof-num">{{ $idx + 1 }}</div>
-                    <span>{{ is_string($proof) ? $proof : json_encode($proof) }}</span>
+                    <span>{{ $proof['label'] }}</span>
                   </div>
                 @endforeach
               </div>
