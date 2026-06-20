@@ -478,7 +478,7 @@
                             <span class="status-pill {{ strtolower($job->status) }}">{{ ucfirst($job->status) }}</span>
                         </td>
                         <td>
-                          <div class="action-group">
+                         <div class="action-group">
                             @if($job->status == 'active')
                                 <a href="{{ route('user.submit-job-proof', [$job->id, $job->code]) }}"
                                    class="btn btn-proof btn-sm">
@@ -525,6 +525,25 @@
                                     @method('PATCH')
                                     <button type="submit" class="btn btn-success btn-sm">
                                         <i class="bi bi-wallet2 me-1"></i>Unmute
+                                    </button>
+                                </form>
+
+                            @elseif($job->status == 'complete')
+                                <a href="{{ route('user.submit-job-proof', [$job->id, $job->code]) }}"
+                                   class="btn btn-proof btn-sm">
+                                    <i class="bi bi-eye me-1"></i>Proof
+                                </a>
+                                <button class="btn btn-edit btn-sm"
+                                    onclick='openEditModal({{ $job->id }},{{ $job->worker_need }},{{ $job->worker_earn }},@json($job->title),@json($job->description))'>
+                                    <i class="bi bi-pencil me-1"></i>Edit
+                                </button>
+                                <form action="{{ route('user.job.delete', [$job->id, $job->code]) }}"
+                                      method="POST"
+                                      onsubmit="return confirm('Delete this job?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-delete btn-sm">
+                                        <i class="bi bi-trash me-1"></i>Delete
                                     </button>
                                 </form>
 
@@ -585,7 +604,7 @@
                         @endif
                     </span>
                 </div>
-                 <div class="jcm-actions">
+                   <div class="jcm-actions">
                         <div class="action-group" style="width:100%;">
                             @if($job->status == 'active')
                                 <a href="{{ route('user.submit-job-proof', [$job->id, $job->code]) }}"
@@ -633,6 +652,25 @@
                                     @method('PATCH')
                                     <button type="submit" class="btn btn-success btn-sm">
                                         <i class="bi bi-wallet2 me-1"></i>Unmute
+                                    </button>
+                                </form>
+
+                            @elseif($job->status == 'complete')
+                                <a href="{{ route('user.submit-job-proof', [$job->id, $job->code]) }}"
+                                   class="btn btn-proof btn-sm">
+                                    <i class="bi bi-eye me-1"></i>Proof
+                                </a>
+                                <button class="btn btn-edit btn-sm"
+                                    onclick='openEditModal({{ $job->id }},{{ $job->worker_need }},{{ $job->worker_earn }},@json($job->title),@json($job->description))'>
+                                    <i class="bi bi-pencil me-1"></i>Edit
+                                </button>
+                                <form action="{{ route('user.job.delete', [$job->id, $job->code]) }}"
+                                      method="POST"
+                                      onsubmit="return confirm('Delete this job?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-delete btn-sm">
+                                        <i class="bi bi-trash me-1"></i>Delete
                                     </button>
                                 </form>
 
