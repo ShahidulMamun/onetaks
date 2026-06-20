@@ -342,7 +342,7 @@ class UserJobController extends Controller
              UserTransaction::create([
             'user_id' => $user->id,
             'transaction_id' => strtoupper(uniqid()),
-            'type' => "charge",
+            'type' => "top_job_charge",
             'amount' => $topCharge,
             'description' => "Top job charge",
             'reference_id' => $job->id,
