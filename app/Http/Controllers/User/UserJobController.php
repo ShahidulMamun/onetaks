@@ -3,20 +3,23 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use App\Models\UserNotification;
+use App\Models\UserTransaction;
+use App\Models\WebsiteSetting;
 use App\Models\Continent;
 use App\Models\Category;
 use App\Models\SubCategory;
 use App\Models\JobPost;
-use App\Models\WebsiteSetting;
-use App\Models\UserNotification;
-use App\Models\UserTransaction;
 use App\Models\Banner;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
-use Auth;
+use App\Models\User;
 
 
 class UserJobController extends Controller
@@ -223,84 +226,166 @@ class UserJobController extends Controller
 
         return back()->with('success','Job posted successfully and pending for approval');
 
-    }
-
-
-
-    public function update(Request $request, $id)
-    {
-
-            // return $request->all();
-    $request->validate([
-         'extra_workers' => 'required|integer|min:1',
-         'job_title'       => 'required|string|max:255',
-         'job_description' => 'required|string',
-
-    ]);
- 
-    $job = JobPost::where('id', $id)
-                  ->where('user_id', Auth::id())
-                  ->firstOrFail();
- 
-    $setting      = Websitesetting::first();
-    $extraWorkers = (int) $request->extra_workers;
-    $workerEarn   = (float) $job->worker_earn;
-    $new_budget = $extraWorkers*$workerEarn;
-    $charge_parcantage   = (float) ($setting->jobpost_charge ?? 0);
-
-    $charge = (float)($new_budget*$charge_parcantage)/100;
- 
-    $totalCharge  = $new_budget+$charge;
- 
-    $user = Auth::user();
-    if ($user->current_deposit < $totalCharge) {
-        return back()->with('error', 'Insufficient deposit. Required: $' . number_format($totalCharge, 2));
-    }
- 
-    DB::transaction(function () use ($job, $extraWorkers, $totalCharge, $user) {
-        $job->increment('worker_need', $extraWorkers);
-        $job->increment('worker_remaining', $extraWorkers);
-        $user->decrement('current_deposit', $totalCharge);
-    });
-
-        $job->status='pending';
-        $job->save();
-           
-           //user notification 
-            $title = "Job update";
-            $message = "$".$totalCharge." has been deducted for edit ".$job->code." job (including charge).";
-            UserNotification::create([
-                'user_id' => $user->id,
-                'title'   =>$title,
-                'message' => $message,
-                'status'  => 'pending',
-            ]);
-
-           
-           //payment transaction
-           UserTransaction::create([
-            'user_id' => $user->id,
-            'transaction_id' => strtoupper(uniqid()),
-            'type' => "jobpost_payment",
-            'amount' => $new_budget,
-            'description' => "Job edit cost has beeb deducted",
-            'reference_id' => "Job ID ".$job->id,
-            'status' => 'success',
-           ]);
-           
-           //charge transaction
-            UserTransaction::create([
-            'user_id' => $user->id,
-            'transaction_id' => strtoupper(uniqid()),
-            'type' => "jobpost_charge",
-            'amount' => $charge,
-            'description' => "Job edit charge has been deducted",
-            'reference_id' => "Job ID ".$job->id,
-            'status' => 'success',
-           ]);
-
-    return back()->with('success', $extraWorkers . ' workers added successfully.');
    }
+
+   public function update(Request $request, $id)
+  {
+        // ১. Validation — thumbnail nullable, বাকিগুলো required
+        $request->validate([
+            'extra_workers'   => 'required|integer|min:1|max:5000',
+            'job_title'       => 'required|string|max:255',
+            'job_description' => 'required|string|max:5000',
+            'thumbnail'       => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
+
+        // ২. Job ownership check (existence + ownership verify — lock এখনও না)
+        $job = JobPost::where('id', $id)
+                      ->where('user_id', Auth::id())
+                      ->firstOrFail();
+
+        // ৩. Sanitize input — trim + strip_tags দিয়ে XSS/extra whitespace ঠেকানো
+        $newTitle       = trim(strip_tags($request->job_title));
+        $newDescription = trim(strip_tags($request->job_description));
+
+        if ($newTitle === '' || $newDescription === '') {
+            return back()->with('error', 'Title and description cannot be empty.');
+        }
+
+        // ৪. Change detection (initial snapshot দিয়ে — UX hint হিসেবে; authoritative status decision transaction-এর ভিতরে আবার হবে)
+        $titleChanged       = $job->title !== $newTitle;
+        $descriptionChanged = $job->description !== $newDescription;
+        $thumbnailChanged   = $request->hasFile('thumbnail');
+
+        // ৫. Status decide: কোনো content change হলে pending, শুধু worker বাড়ালে active
+        $status = ($titleChanged || $descriptionChanged || $thumbnailChanged) ? 'pending' : 'active';
+
+        
+
+        // ৬. Charge calculation
+        $setting           = Websitesetting::first();
+        $extraWorkers       = (int) $request->extra_workers;
+        $workerEarn         = (float) $job->worker_earn;
+        $new_budget         = $extraWorkers * $workerEarn;
+        $charge_parcantage  = (float) ($setting->jobpost_charge ?? 0);
+        $charge             = round(($new_budget * $charge_parcantage) / 100, 2);
+        $totalCharge        = round($new_budget + $charge, 2);
+
+        //message define 
+        $message = $status === 'pending' ? 'Job updated and sent for review.' : $extraWorkers . ' workers added successfully.';
+
+        // ৭. Early deposit check — fast UX feedback, file upload করার আগেই (authoritative check নয়, সেটা নিচে lock নিয়ে হবে)
+        $user = Auth::user();
+        if ($user->current_deposit < $totalCharge) {
+            return back()->with('error', 'Insufficient deposit. Required: $' . number_format($totalCharge, 2));
+        }
+
+        // ৮. নতুন thumbnail upload করো (যদি দেওয়া থাকে) — পুরনোটা এখনও মুছবে না
+        $newThumbnailPath = null;
+        if ($thumbnailChanged) {
+            try {
+                $newThumbnailPath = $request->file('thumbnail')->store('job-thumbnails', 'public');
+            } catch (\Exception $e) {
+                Log::error('Thumbnail upload failed for job ' . $job->id . ': ' . $e->getMessage());
+                return back()->with('error', 'Thumbnail upload failed. Please try again.');
+            }
+        }
+
+        $oldThumbnailPath = $job->thumbnail; // রোলব্যাক/cleanup-এর জন্য রেফারেন্স রাখা
+
+        // ৯. DB transaction — row-level lock + authoritative checks + সব DB write (job, deposit, notification, transaction records) একসাথে atomic
+        try {
+            DB::transaction(function () use (
+                $job, $user, $extraWorkers, $totalCharge, $new_budget, $charge,
+                $newTitle, $newDescription, $status,
+                $newThumbnailPath, $thumbnailChanged
+            ) {
+                // Race-condition-safe: fresh row lock নিয়ে আবার পড়ো, পুরনো $job/$user object না
+                $lockedJob  = JobPost::where('id', $job->id)->lockForUpdate()->first();
+                $lockedUser = User::where('id', $user->id)->lockForUpdate()->first();
+
+                if (!$lockedJob || !$lockedUser) {
+                    throw new \RuntimeException('record_not_found');
+                }
+
+                // Authoritative deposit check — fresh balance দিয়ে, lock নেওয়ার পরে
+                if ($lockedUser->current_deposit < $totalCharge) {
+                    throw new \RuntimeException('insufficient_deposit');
+                }
+                
+                $lockedJob->worker_need += $extraWorkers;
+                $lockedJob->worker_remaining += $extraWorkers;
+                $lockedUser->current_deposit -= $totalCharge;
+
+                $lockedJob->title       = $newTitle;
+                $lockedJob->description = $newDescription;
+                $lockedJob->status      = $status;
+
+                if ($thumbnailChanged) {
+                    $lockedJob->thumbnail = $newThumbnailPath;
+                }
+
+                $lockedJob->save();
+                $lockedUser->save();
+
+                // ── Notification + transaction records — একই atomic transaction-এর অংশ ──
+                UserNotification::create([
+                    'user_id' => $lockedUser->id,
+                    'title'   => "Job update",
+                    'message' => "$" . number_format($totalCharge, 2) . " has been deducted for edit " . $lockedJob->code . " job (including charge).",
+                    'status'  => 'pending',
+                ]);
+
+                UserTransaction::create([
+                    'user_id'        => $lockedUser->id,
+                    'transaction_id' => strtoupper(Str::uuid()),
+                    'type'           => "jobpost_payment",
+                    'amount'         => $new_budget,
+                    'description'    => "Job edit cost has been deducted",
+                    'reference_id'   => "Job ID " . $lockedJob->id,
+                    'status'         => 'success',
+                ]);
+
+                UserTransaction::create([
+                    'user_id'        => $lockedUser->id,
+                    'transaction_id' => strtoupper(Str::uuid()),
+                    'type'           => "jobpost_charge",
+                    'amount'         => $charge,
+                    'description'    => "Job edit charge has been deducted",
+                    'reference_id'   => "Job ID " . $lockedJob->id,
+                    'status'         => 'success',
+                ]);
+            });
+        } catch (\RuntimeException $e) {
+            // নতুন uploaded ফাইল cleanup করো (orphan file ঠেকাতে)
+            if ($thumbnailChanged && $newThumbnailPath && Storage::disk('public')->exists($newThumbnailPath)) {
+                Storage::disk('public')->delete($newThumbnailPath);
+            }
+
+            if ($e->getMessage() === 'insufficient_deposit') {
+                return back()->with('error', 'Insufficient deposit. Required: $' . number_format($totalCharge, 2));
+            }
+
+            Log::error('Job update failed for job ' . $job->id . ': ' . $e->getMessage());
+            return back()->with('error', 'Something went wrong while updating the job. Please try again.');
+        } catch (\Exception $e) {
+            if ($thumbnailChanged && $newThumbnailPath && Storage::disk('public')->exists($newThumbnailPath)) {
+                Storage::disk('public')->delete($newThumbnailPath);
+            }
+            Log::error('Job update transaction failed for job ' . $job->id . ': ' . $e->getMessage());
+            return back()->with('error', 'Something went wrong while updating the job. Please try again.');
+        }
+
+        // ১০. Transaction সফল হওয়ার পরই পুরনো thumbnail delete করো (filesystem op — DB rollback-এর সাথে সম্পর্কহীন, তাই transaction-এর বাইরে রাখা সঠিক)
+        if ($thumbnailChanged && $oldThumbnailPath && Storage::disk('public')->exists($oldThumbnailPath)) {
+            Storage::disk('public')->delete($oldThumbnailPath);
+        }
+
+        return back()->with('success', $message);
+    }
+
+
+
+   
 
    public function makeTopJob($id)
    {

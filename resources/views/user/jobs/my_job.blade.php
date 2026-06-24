@@ -405,6 +405,22 @@
         color: #7d5a00;
     }
 
+    /* ── Thumbnail preview (Edit Modal) ── */
+    .thumb-preview-wrap {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 12px;
+    }
+
+    .thumb-preview-wrap img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 12px;
+        border: 1.5px solid var(--border);
+        background: #f8f9fa;
+    }
+
     /* ── Responsive show/hide ── */
     @media (max-width: 767px) {
         .desktop-view { display: none !important; }
@@ -478,89 +494,89 @@
                             <span class="status-pill {{ strtolower($job->status) }}">{{ ucfirst($job->status) }}</span>
                         </td>
                         <td>
-                         <div class="action-group">
-                            @if($job->status == 'active')
-                                <a href="{{ route('user.submit-job-proof', [$job->id, $job->code]) }}"
-                                   class="btn btn-proof btn-sm">
-                                    <i class="bi bi-eye me-1"></i>Proof
-                                </a>
-                                <button class="btn btn-edit btn-sm"
-                                    onclick='openEditModal({{ $job->id }},{{ $job->worker_need }},{{ $job->worker_earn }},@json($job->title),@json($job->description))'>
-                                    <i class="bi bi-pencil me-1"></i>Edit
-                                </button>
-                                @if(!$job->is_top)
-                                <button class="btn btn-top btn-sm"
-                                    onclick="openTopJobModal({{ $job->id }}, '{{ addslashes($job->title) }}')">
-                                    <i class="bi bi-star me-1"></i>Top
-                                </button>
+                            <div class="action-group">
+                                @if($job->status == 'active')
+                                    <a href="{{ route('user.submit-job-proof', [$job->id, $job->code]) }}"
+                                       class="btn btn-proof btn-sm">
+                                        <i class="bi bi-eye me-1"></i>Proof
+                                    </a>
+                                    <button class="btn btn-edit btn-sm"
+                                        onclick='openEditModal({{ $job->id }},{{ $job->worker_need }},{{ $job->worker_earn }},@json($job->title),@json($job->description),@json($job->thumbnail))'>
+                                        <i class="bi bi-pencil me-1"></i>Edit
+                                    </button>
+                                    @if(!$job->is_top)
+                                    <button class="btn btn-top btn-sm"
+                                        onclick="openTopJobModal({{ $job->id }}, '{{ addslashes($job->title) }}')">
+                                        <i class="bi bi-star me-1"></i>Top
+                                    </button>
+                                    @endif
+                                    <button class="btn btn-boost btn-sm"
+                                        onclick="openBoostModal({{ $job->id }}, '{{ addslashes($job->title) }}', {{ $job->isBoostedActive() ? 'true' : 'false' }})">
+                                        <i class="bi bi-rocket-takeoff me-1"></i>Boost
+                                    </button>
+                                    <form action="{{ route('user.job.money-back', [$job->id, $job->code]) }}"
+                                          method="POST"
+                                          onsubmit="return confirm('Stop this job?')">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn btn-dark btn-sm">
+                                            <i class="bi bi-wallet2 me-1"></i>Money Back
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('user.job.mute', [$job->id, $job->code]) }}"
+                                          method="POST"
+                                          onsubmit="return confirm('Mute this job?')">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn btn-warning btn-sm">
+                                            <i class="bi bi-wallet2 me-1"></i>Mute
+                                        </button>
+                                    </form>
+
+                                @elseif($job->status == 'mute')
+                                    <form action="{{ route('user.job.unmute', [$job->id, $job->code]) }}"
+                                          method="POST"
+                                          onsubmit="return confirm('Unmute this job?')">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn btn-success btn-sm">
+                                            <i class="bi bi-wallet2 me-1"></i>Unmute
+                                        </button>
+                                    </form>
+
+                                @elseif($job->status == 'completed')
+                                    <a href="{{ route('user.submit-job-proof', [$job->id, $job->code]) }}"
+                                       class="btn btn-proof btn-sm">
+                                        <i class="bi bi-eye me-1"></i>Proof
+                                    </a>
+                                    <button class="btn btn-edit btn-sm"
+                                        onclick='openEditModal({{ $job->id }},{{ $job->worker_need }},{{ $job->worker_earn }},@json($job->title),@json($job->description),@json($job->thumbnail))'>
+                                        <i class="bi bi-pencil me-1"></i>Edit
+                                    </button>
+                                    <form action="{{ route('user.job.delete', [$job->id, $job->code]) }}"
+                                          method="POST"
+                                          onsubmit="return confirm('Delete this job?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-delete btn-sm">
+                                            <i class="bi bi-trash me-1"></i>Delete
+                                        </button>
+                                    </form>
+
+                                @elseif(in_array($job->status, ['reject', 'stop']))
+                                    <form action="{{ route('user.job.delete', [$job->id, $job->code]) }}"
+                                          method="POST"
+                                          onsubmit="return confirm('Delete this job?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-delete btn-sm">
+                                            <i class="bi bi-trash me-1"></i>Delete
+                                        </button>
+                                    </form>
+
                                 @endif
-                                <button class="btn btn-boost btn-sm"
-                                    onclick="openBoostModal({{ $job->id }}, '{{ addslashes($job->title) }}', {{ $job->isBoostedActive() ? 'true' : 'false' }})">
-                                    <i class="bi bi-rocket-takeoff me-1"></i>Boost
-                                </button>
-                                <form action="{{ route('user.job.money-back', [$job->id, $job->code]) }}"
-                                      method="POST"
-                                      onsubmit="return confirm('Stop this job?')">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit" class="btn btn-dark btn-sm">
-                                        <i class="bi bi-wallet2 me-1"></i>Money Back
-                                    </button>
-                                </form>
-                                <form action="{{ route('user.job.mute', [$job->id, $job->code]) }}"
-                                      method="POST"
-                                      onsubmit="return confirm('Mute this job?')">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit" class="btn btn-warning btn-sm">
-                                        <i class="bi bi-wallet2 me-1"></i>Mute
-                                    </button>
-                                </form>
-
-                            @elseif($job->status == 'mute')
-                                <form action="{{ route('user.job.unmute', [$job->id, $job->code]) }}"
-                                      method="POST"
-                                      onsubmit="return confirm('Unmute this job?')">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit" class="btn btn-success btn-sm">
-                                        <i class="bi bi-wallet2 me-1"></i>Unmute
-                                    </button>
-                                </form>
-
-                            @elseif($job->status == 'complete')
-                                <a href="{{ route('user.submit-job-proof', [$job->id, $job->code]) }}"
-                                   class="btn btn-proof btn-sm">
-                                    <i class="bi bi-eye me-1"></i>Proof
-                                </a>
-                                <button class="btn btn-edit btn-sm"
-                                    onclick='openEditModal({{ $job->id }},{{ $job->worker_need }},{{ $job->worker_earn }},@json($job->title),@json($job->description))'>
-                                    <i class="bi bi-pencil me-1"></i>Edit
-                                </button>
-                                <form action="{{ route('user.job.delete', [$job->id, $job->code]) }}"
-                                      method="POST"
-                                      onsubmit="return confirm('Delete this job?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-delete btn-sm">
-                                        <i class="bi bi-trash me-1"></i>Delete
-                                    </button>
-                                </form>
-
-                            @elseif(in_array($job->status, ['reject', 'stop']))
-                                <form action="{{ route('user.job.delete', [$job->id, $job->code]) }}"
-                                      method="POST"
-                                      onsubmit="return confirm('Delete this job?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-delete btn-sm">
-                                        <i class="bi bi-trash me-1"></i>Delete
-                                    </button>
-                                </form>
-
-                            @endif
-                            {{-- status == 'pending' → no action button --}}
-                        </div>
+                                {{-- status == 'pending' → no action button --}}
+                            </div>
                         </td>
                     </tr>
                 @empty
@@ -604,7 +620,7 @@
                         @endif
                     </span>
                 </div>
-                   <div class="jcm-actions">
+                    <div class="jcm-actions">
                         <div class="action-group" style="width:100%;">
                             @if($job->status == 'active')
                                 <a href="{{ route('user.submit-job-proof', [$job->id, $job->code]) }}"
@@ -612,7 +628,7 @@
                                     <i class="bi bi-eye me-1"></i>Proof
                                 </a>
                                 <button class="btn btn-edit btn-sm"
-                                    onclick='openEditModal({{ $job->id }},{{ $job->worker_need }},{{ $job->worker_earn }},@json($job->title),@json($job->description))'>
+                                    onclick='openEditModal({{ $job->id }},{{ $job->worker_need }},{{ $job->worker_earn }},@json($job->title),@json($job->description),@json($job->thumbnail))'>
                                     <i class="bi bi-pencil me-1"></i>Edit
                                 </button>
                                 @if(!$job->is_top)
@@ -655,13 +671,13 @@
                                     </button>
                                 </form>
 
-                            @elseif($job->status == 'complete')
+                            @elseif($job->status == 'completed')
                                 <a href="{{ route('user.submit-job-proof', [$job->id, $job->code]) }}"
                                    class="btn btn-proof btn-sm">
                                     <i class="bi bi-eye me-1"></i>Proof
                                 </a>
                                 <button class="btn btn-edit btn-sm"
-                                    onclick='openEditModal({{ $job->id }},{{ $job->worker_need }},{{ $job->worker_earn }},@json($job->title),@json($job->description))'>
+                                    onclick='openEditModal({{ $job->id }},{{ $job->worker_need }},{{ $job->worker_earn }},@json($job->title),@json($job->description),@json($job->thumbnail))'>
                                     <i class="bi bi-pencil me-1"></i>Edit
                                 </button>
                                 <form action="{{ route('user.job.delete', [$job->id, $job->code]) }}"
@@ -708,13 +724,30 @@
                 <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Edit Job</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form id="editWorkerForm" method="POST">
+            <form id="editWorkerForm" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PATCH')
                 <div class="modal-body p-4">
                     <div class="info-note mb-3">
                         <i class="bi bi-info-circle me-1"></i>
-                        You can only <strong>increase</strong> the number of workers.
+                      <strong>
+                          শুধু Worker সংখ্যা বাড়ালে জব লাইভ থাকবে 
+                      </strong>কিন্তু Title, Description বা Thumbnail পরিবর্তন করলে job আবার <strong>Pending</strong> এ চলে যাবে এবং re-approval লাগবে।
+                    </div>
+
+                    {{-- Thumbnail Preview + Upload --}}
+                    <div class="thumb-preview-wrap">
+                        <img id="current_thumbnail_preview" src="" alt="Thumbnail">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Thumbnail</label>
+                        <input type="file" id="jobThumbnail" name="thumbnail" class="form-control"
+                               accept="image/png, image/jpeg, image/jpg, image/webp"
+                               onchange="previewNewThumbnail(event)">
+                        <small class="text-muted mt-1 d-block" style="font-size:11px;">
+                            বর্তমান thumbnail রাখতে চাইলে খালি রাখুন। JPG/PNG/WEBP, max 2MB.
+                        </small>
                     </div>
 
                     <div class="mb-3">
@@ -904,16 +937,35 @@
     let _editEarn = 0;
 
     /* ── Edit Modal ── */
-    function openEditModal(jobId, currentWorkers, workerEarn, jobTitle, jobDescription) {
+    function openEditModal(jobId, currentWorkers, workerEarn, jobTitle, jobDescription, jobThumbnail) {
         _editEarn = parseFloat(workerEarn);
         document.getElementById('editWorkerForm').action = '/user/jobs/' + jobId + '/update-workers';
         document.getElementById('current_total').textContent  = currentWorkers;
         document.getElementById('jobTitle').value             = jobTitle;
         document.getElementById('jobDescription').value       = jobDescription;
         document.getElementById('extra_workers').value        = '';
+        document.getElementById('jobThumbnail').value         = '';
         document.getElementById('prev-earn').textContent      = '$' + _editEarn.toFixed(2);
+
+        // Show current thumbnail (or a placeholder if none exists)
+        const preview = document.getElementById('current_thumbnail_preview');
+        if (jobThumbnail) {
+            preview.src = '/storage/' + jobThumbnail;
+        } else {
+            preview.src = 'https://via.placeholder.com/100x100?text=No+Image';
+        }
+
         recalcEdit();
         new bootstrap.Modal(document.getElementById('editWorkerModal')).show();
+    }
+
+    // Live preview when a new thumbnail file is chosen
+    function previewNewThumbnail(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById('current_thumbnail_preview');
+        if (file) {
+            preview.src = URL.createObjectURL(file);
+        }
     }
 
     function recalcEdit() {
