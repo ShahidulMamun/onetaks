@@ -189,7 +189,9 @@ tr:last-child td{border-bottom:none}
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 1.5a5 5 0 0 1 5 5v2l1 2H2l1-2v-2a5 5 0 0 1 5-5Z"/><path d="M6.5 13.5a1.5 1.5 0 0 0 3 0"/></svg>
         <div class="ndot"></div>
       </div>
-      <div class="ava">AD</div>
+      <div class="ava">
+        <a href="{{route('admin.profile')}}" class="text-white" style="text-decoration: none;color: #fff">AD</a>
+      </div>
     </div>
   </div>
 

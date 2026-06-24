@@ -26,6 +26,7 @@ use App\Http\Controllers\Admin\DepositController;
 use App\Http\Controllers\Admin\BreakingNoticeController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\WithdrawController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\User\TopFreelancerController;
 use App\Http\Controllers\User\TopBuyerController;
@@ -318,6 +319,11 @@ Route::middleware(['auth', 'admin'])
     Route::post('/notice-update/',     [BreakingNoticeController::class, 'update'])->name('notice-update');
 
 
+    Route::get('/profile', [ProfileController::class, 'Profile'])->name('profile');
+    Route::put('/profile/update', [ProfileController::class, 'updateProfile'])
+        ->name('profile.update');
+    Route::put('/admin/password/update', [ProfileController::class, 'updatePassword'])
+        ->name('password.update');
 
     });
  
