@@ -233,6 +233,57 @@
   <div class="page-header">
     <h6>My Submitted Tasks</h6>
     <p>Your submitted work will be rated within a maximum of 6 days.</p>
+    
+      <div class="row mt-3 g-2">
+        <div class="col-md-3 col-6">
+            <div class="d-flex align-items-center p-2" style="background-color: rgba(99, 102, 241, 0.08); border-left: 3px solid #6366f1; border-radius: 6px;">
+                <div class="me-2">
+                    <i class="fa fa-tasks" style="color: #6366f1; font-size: 16px;"></i>
+                </div>
+                <div>
+                    <small class="text-muted d-block" style="font-size: 11px;">Total</small>
+                    <strong style="font-size: 16px;">{{ $totalSubmit }}</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-6">
+            <div class="d-flex align-items-center p-2" style="background-color: rgba(251, 191, 36, 0.08); border-left: 3px solid #f59e0b; border-radius: 6px;">
+                <div class="me-2">
+                    <i class="fa fa-hourglass-half" style="color: #f59e0b; font-size: 16px;"></i>
+                </div>
+                <div>
+                    <small class="text-muted d-block" style="font-size: 11px;">Pending</small>
+                    <strong style="font-size: 16px;">{{ $pendingCount }}</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-6">
+            <div class="d-flex align-items-center p-2" style="background-color: rgba(16, 185, 129, 0.08); border-left: 3px solid #10b981; border-radius: 6px;">
+                <div class="me-2">
+                    <i class="fa fa-check-circle" style="color: #10b981; font-size: 16px;"></i>
+                </div>
+                <div>
+                    <small class="text-muted d-block" style="font-size: 11px;">Approved</small>
+                    <strong style="font-size: 16px;">{{ $approvedCount }}</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-6">
+            <div class="d-flex align-items-center p-2" style="background-color: rgba(244, 63, 94, 0.08); border-left: 3px solid #f43f5e; border-radius: 6px;">
+                <div class="me-2">
+                    <i class="fa fa-times-circle" style="color: #f43f5e; font-size: 16px;"></i>
+                </div>
+                <div>
+                    <small class="text-muted d-block" style="font-size: 11px;">Rejected</small>
+                    <strong style="font-size: 16px;">{{ $rejectedCount }}</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
   </div>
 
   {{-- ── Filter Bar ── --}}

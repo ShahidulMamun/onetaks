@@ -321,9 +321,9 @@ Route::middleware(['auth', 'admin'])
 
     Route::get('/profile', [ProfileController::class, 'Profile'])->name('profile');
     Route::put('/profile/update', [ProfileController::class, 'updateProfile'])
-        ->name('profile.update');
+        ->name('profile.update')->middleware('throttle:2,1');
     Route::put('/admin/password/update', [ProfileController::class, 'updatePassword'])
-        ->name('password.update');
+        ->name('password.update')->middleware('throttle:5,1');
 
     });
  
